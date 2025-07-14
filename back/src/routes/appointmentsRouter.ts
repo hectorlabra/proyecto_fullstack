@@ -1,3 +1,14 @@
+/**
+ * Router de Express para gestionar las rutas relacionadas con los turnos (appointments).
+ *
+ * Rutas disponibles:
+ * - GET /appointments: Obtiene el listado de todos los turnos.
+ * - GET /appointments/:id: Obtiene el detalle de un turno específico por su ID.
+ * - POST /appointments/schedule: Agenda un nuevo turno.
+ * - PUT /appointments/cancel: Cambia el estatus de un turno a "cancelled".
+ *
+ * @module appointmentsRouter
+ */
 import { Router } from "express";
 import {
   getAllAppointments,

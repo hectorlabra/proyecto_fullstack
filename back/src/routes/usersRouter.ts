@@ -1,3 +1,14 @@
+/**
+ * Router de Express para manejar las rutas relacionadas con usuarios.
+ *
+ * Rutas disponibles:
+ * - GET /users: Obtiene el listado de todos los usuarios.
+ * - GET /users/:id: Obtiene el detalle de un usuario específico por su ID.
+ * - POST /users/register: Registra un nuevo usuario.
+ * - POST /users/login: Permite el login de un usuario en la aplicación.
+ *
+ * @module usersRouter
+ */
 import { Router } from "express";
 import {
   getAllUsers,
