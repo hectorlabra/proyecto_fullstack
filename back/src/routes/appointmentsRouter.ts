@@ -28,7 +28,7 @@ appointmentsRouter.get("/:id", getAppointmentById);
 // POST /appointments/schedule => Agendar un nuevo turno
 appointmentsRouter.post("/schedule", scheduleAppointment);
 
-// PUT /appointments/cancel => Cambiar el estatus de un turno a "cancelled"
+// PUT /appointments/cancel/:id => Cambiar el estatus de un turno a "cancelled"
 appointmentsRouter.put("/cancel/:id", cancelAppointment);
 
 export default appointmentsRouter;

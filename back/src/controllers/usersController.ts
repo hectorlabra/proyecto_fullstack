@@ -31,6 +31,7 @@
  */
 import { Request, Response } from "express";
 import * as usersService from "../services/usersService";
+import * as credentialsService from "../services/credentialsService";
 
 // Devuelve todos los usuarios
 // GET /users
@@ -39,7 +40,7 @@ export const getAllUsers = (_req: Request, res: Response): void => {
     const users = usersService.getAllUsers();
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -48,42 +49,56 @@ export const getAllUsers = (_req: Request, res: Response): void => {
 export const getUserById = (req: Request, res: Response): void => {
   try {
     const { id } = req.params;
-    const userId = parseInt(id);
 
+    // Validar que el ID sea numérico
+    const userId = parseInt(id);
     if (isNaN(userId)) {
-      res.status(400).json({ message: "ID de usuario inválido" });
+      res.status(400).json({ error: "ID inválido" });
       return;
     }
 
     const user = usersService.getUserById(userId);
-
     if (!user) {
-      res.status(404).json({ message: "Usuario no encontrado" });
+      res.status(404).json({ error: "Usuario no encontrado" });
       return;
     }
 
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
 // Registra un nuevo usuario
 // POST /users/register
-export const registerUser = (req: Request, res: Response) => {
+export const registerUser = (req: Request, res: Response): void => {
   try {
-    // Extraemos los datos del cuerpo (body) de la petición
     const { name, email, birthdate, nDni, username, password } = req.body;
 
-    // Validación básica de campos requeridos
+    // Validar campos requeridos
     if (!name || !email || !birthdate || !nDni || !username || !password) {
-      return res.status(400).json({
-        message:
+      res.status(400).json({
+        error:
           "Todos los campos son obligatorios: name, email, birthdate, nDni, username, password",
       });
+      return;
     }
 
-    // Crear el usuario utilizando el servicio
+    // Validar que los campos no estén vacíos
+    if (
+      name.trim() === "" ||
+      email.trim() === "" ||
+      birthdate.trim() === "" ||
+      nDni.trim() === "" ||
+      username.trim() === "" ||
+      password.trim() === ""
+    ) {
+      res.status(400).json({
+        error: "Los campos no pueden estar vacíos",
+      });
+      return;
+    }
+
     const newUser = usersService.createUser({
       name,
       email,
@@ -93,76 +108,56 @@ export const registerUser = (req: Request, res: Response) => {
       password,
     });
 
-    // Responder con el usuario creado (sin mostrar las credenciales)
-    return res.status(201).json({
-      message: "Usuario registrado exitosamente",
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        birthdate: newUser.birthdate,
-        nDni: newUser.nDni,
-      },
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+    res.status(201).json(newUser);
+  } catch (error: any) {
+    if (error.message === "El email ya está registrado") {
+      res.status(400).json({ error: "El email ya está registrado" });
+    } else if (error.message === "El DNI ya está registrado") {
+      res.status(400).json({ error: "El DNI ya está registrado" });
+    } else if (error.message === "El nombre de usuario ya existe") {
+      res.status(400).json({ error: "El nombre de usuario ya existe" });
+    } else {
+      res.status(500).json({ error: "Error interno del servidor" });
     }
-    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
 // Login de usuario
 // POST /users/login
-import * as credentialsService from "../services/credentialsService";
 export const loginUser = (req: Request, res: Response): void => {
   try {
     const { username, password } = req.body;
 
-    // Validación básica de campos requeridos
+    // Validar campos requeridos
     if (!username || !password) {
       res.status(400).json({
-        message: "Username y password son requeridos",
+        error: "Username y password son requeridos",
       });
       return;
     }
 
-    // Validar credenciales usando el servicio
-    const credentialsId = credentialsService.validateCredential(
+    // Validar credenciales
+    const credentialId = credentialsService.validateCredential(
       username,
       password
     );
-
-    if (!credentialsId) {
-      res.status(401).json({
-        message: "Credenciales inválidas",
-      });
+    if (!credentialId) {
+      res.status(401).json({ error: "Credenciales inválidas" });
       return;
     }
 
-    // Buscar el usuario asociado a estas credenciales
-    // Sugerencia: Implementar getUserByCredentialsId en el servicio para mayor eficiencia.
-    // const users = usersService.getAllUsers();
-    // const user = users.find((u) => u.credentialsId === credentialsId);
-    const user = usersService.getUserByCredentialsId(credentialsId); // <-- Más eficiente
-
+    // Obtener el usuario por credentialId
+    const user = usersService.getUserByCredentialsId(credentialId);
     if (!user) {
-      res.status(404).json({
-        message: "Usuario no encontrado",
-      });
+      res.status(401).json({ error: "Credenciales inválidas" });
       return;
     }
 
-    // Login exitoso
     res.status(200).json({
-      message: "Login exitoso",
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
+      login: true,
+      user: user,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };

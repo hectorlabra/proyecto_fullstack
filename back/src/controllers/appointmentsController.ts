@@ -35,6 +35,7 @@
  */
 import { Request, Response } from "express";
 import * as appointmentsService from "../services/appointmentsService";
+import * as usersService from "../services/usersService";
 
 // GET /appointments => Obtener el listado de todos los turnos
 export const getAllAppointments = (_req: Request, res: Response): void => {
@@ -42,7 +43,7 @@ export const getAllAppointments = (_req: Request, res: Response): void => {
     const appointments = appointmentsService.getAllAppointments();
     res.status(200).json(appointments);
   } catch (error) {
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -50,57 +51,85 @@ export const getAllAppointments = (_req: Request, res: Response): void => {
 export const getAppointmentById = (req: Request, res: Response): void => {
   try {
     const { id } = req.params;
-    const appointmentId = parseInt(id);
 
+    // Validar que el ID sea numérico
+    const appointmentId = parseInt(id);
     if (isNaN(appointmentId)) {
-      res.status(400).json({ message: "ID de turno inválido" });
+      res.status(400).json({ error: "ID inválido" });
       return;
     }
 
     const appointment = appointmentsService.getAppointmentById(appointmentId);
-
     if (!appointment) {
-      res.status(404).json({ message: "Turno no encontrado" });
+      res.status(404).json({ error: "Turno no encontrado" });
       return;
     }
 
     res.status(200).json(appointment);
   } catch (error) {
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
 // POST /appointments/schedule => Agendar un nuevo turno
-export const scheduleAppointment = (req: Request, res: Response) => {
+export const scheduleAppointment = (req: Request, res: Response): void => {
   try {
-    // Extraemos los datos que el cliente debe proveer
     const { userId, date, time, notes } = req.body;
 
-    // Validamos que la información esencial esté presente
+    // Validar campos requeridos
     if (!userId || !date || !time) {
-      return res
-        .status(400)
-        .json({ message: "userId, date y time son requeridos." });
+      res.status(400).json({
+        error: "userId, date y time son requeridos",
+      });
+      return;
     }
 
-    // Crear el turno usando el servicio
+    // Validar que userId sea numérico
+    const userIdNum = parseInt(userId);
+    if (isNaN(userIdNum)) {
+      res.status(400).json({ error: "userId debe ser un número válido" });
+      return;
+    }
+
+    // Verificar que el usuario existe
+    const user = usersService.getUserById(userIdNum);
+    if (!user) {
+      res.status(400).json({ error: "El usuario especificado no existe" });
+      return;
+    }
+
     const newAppointment = appointmentsService.createAppointment({
-      userId,
+      userId: userIdNum,
       date,
       time,
       notes,
     });
 
-    // Responder con el turno creado
-    return res.status(201).json({
-      message: "Turno agendado exitosamente",
-      appointment: newAppointment,
-    });
-  } catch (error) {
-    if (error instanceof Error) {
-      return res.status(400).json({ message: error.message });
+    res.status(201).json(newAppointment);
+  } catch (error: any) {
+    if (error.message === "El formato de fecha debe ser YYYY-MM-DD") {
+      res
+        .status(400)
+        .json({ error: "El formato de fecha debe ser YYYY-MM-DD" });
+    } else if (error.message === "El formato de hora debe ser HH:mm") {
+      res.status(400).json({ error: "El formato de hora debe ser HH:mm" });
+    } else if (
+      error.message ===
+      "Ya existe un turno activo para este usuario en la misma fecha y hora"
+    ) {
+      res
+        .status(400)
+        .json({
+          error:
+            "Ya existe un turno activo para este usuario en la misma fecha y hora",
+        });
+    } else if (error.message === "NO PUEDE HABER UN TURNO SIN ID DE USUARIO") {
+      res
+        .status(400)
+        .json({ error: "NO PUEDE HABER UN TURNO SIN ID DE USUARIO" });
+    } else {
+      res.status(500).json({ error: "Error interno del servidor" });
     }
-    return res.status(500).json({ message: "Error interno del servidor" });
   }
 };
 
@@ -108,18 +137,18 @@ export const scheduleAppointment = (req: Request, res: Response) => {
 export const cancelAppointment = (req: Request, res: Response): void => {
   try {
     const { id } = req.params;
-    const appointmentId = parseInt(id);
 
+    // Validar que el ID sea numérico
+    const appointmentId = parseInt(id);
     if (isNaN(appointmentId)) {
-      res.status(400).json({ message: "ID de turno inválido" });
+      res.status(400).json({ error: "ID inválido" });
       return;
     }
 
     const cancelledAppointment =
       appointmentsService.cancelAppointment(appointmentId);
-
     if (!cancelledAppointment) {
-      res.status(404).json({ message: "Turno no encontrado" });
+      res.status(404).json({ error: "Turno no encontrado" });
       return;
     }
 
@@ -128,6 +157,6 @@ export const cancelAppointment = (req: Request, res: Response): void => {
       appointment: cancelledAppointment,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
