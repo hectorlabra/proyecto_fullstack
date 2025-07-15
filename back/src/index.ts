@@ -10,7 +10,6 @@
  */
 import express from "express";
 import { config } from "./config/envs";
-import router from "./routes/index";
 
 const app = express();
 
@@ -18,8 +17,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Test route
+app.get("/test", (_, res) => {
+  res.json({
+    message: "Express server is working",
+    timestamp: new Date().toISOString(),
+    pid: process.pid,
+  });
+});
+
+// Import router AFTER creating the app
+import router from "./routes/index";
+
 // Routes
-app.use(router);
+app.use("/", router);
 
 const PORT = config.PORT;
 

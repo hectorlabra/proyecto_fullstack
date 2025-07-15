@@ -34,49 +34,100 @@
  * @returns Envía una respuesta confirmando la cancelación del turno.
  */
 import { Request, Response } from "express";
+import * as appointmentsService from "../services/appointmentsService";
 
 // GET /appointments => Obtener el listado de todos los turnos
 export const getAllAppointments = (_req: Request, res: Response): void => {
-  res.send("Obtener el listado de todos los turnos de todos los usuarios");
+  try {
+    const appointments = appointmentsService.getAllAppointments();
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
 };
 
 // GET /appointments/:id => Obtener el detalle de un turno específico
 export const getAppointmentById = (req: Request, res: Response): void => {
-  const { id } = req.params;
-  res.send(`Obtener el detalle del turno con ID: ${id}`);
+  try {
+    const { id } = req.params;
+    const appointmentId = parseInt(id);
+
+    if (isNaN(appointmentId)) {
+      res.status(400).json({ message: "ID de turno inválido" });
+      return;
+    }
+
+    const appointment = appointmentsService.getAppointmentById(appointmentId);
+
+    if (!appointment) {
+      res.status(404).json({ message: "Turno no encontrado" });
+      return;
+    }
+
+    res.status(200).json(appointment);
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
 };
 
 // POST /appointments/schedule => Agendar un nuevo turno
 export const scheduleAppointment = (req: Request, res: Response) => {
-  // 1. Extraemos solo los datos que el cliente debe proveer.
-  const { userId, date, time, notes } = req.body;
+  try {
+    // Extraemos los datos que el cliente debe proveer
+    const { userId, date, time, notes } = req.body;
 
-  // 2. Validamos que la información esencial esté presente.
-  if (!userId || !date || !time) {
-    return res
-      .status(400)
-      .json({ message: "userId, date y time son requeridos." });
+    // Validamos que la información esencial esté presente
+    if (!userId || !date || !time) {
+      return res
+        .status(400)
+        .json({ message: "userId, date y time son requeridos." });
+    }
+
+    // Crear el turno usando el servicio
+    const newAppointment = appointmentsService.createAppointment({
+      userId,
+      date,
+      time,
+      notes,
+    });
+
+    // Responder con el turno creado
+    return res.status(201).json({
+      message: "Turno agendado exitosamente",
+      appointment: newAppointment,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Error interno del servidor" });
   }
-
-  // 3. (Futuro) Aquí guardarías en la base de datos.
-
-  // 4. Simulamos la respuesta del servidor con el objeto "completo".
-  const newAppointment: any = {
-    id: Math.floor(Math.random() * 1000), // ID simulado
-    userId,
-    date,
-    time,
-    status: "scheduled", // Estado por defecto asignado por el servidor
-    notes,
-  };
-
-  // Respondemos con el recurso completo recién creado.
-  return res.status(201).json(newAppointment);
 };
 
-// PUT /appointments/cancel => Cambiar el estatus de un turno a "cancelled"
+// PUT /appointments/cancel/:id => Cambiar el estatus de un turno a "cancelled"
 export const cancelAppointment = (req: Request, res: Response): void => {
-  const { id } = req.params;
-  // Lógica futura para encontrar y cancelar el turno con ese ID
-  res.status(200).send(`El turno con ID ${id} ha sido cancelado.`);
+  try {
+    const { id } = req.params;
+    const appointmentId = parseInt(id);
+
+    if (isNaN(appointmentId)) {
+      res.status(400).json({ message: "ID de turno inválido" });
+      return;
+    }
+
+    const cancelledAppointment =
+      appointmentsService.cancelAppointment(appointmentId);
+
+    if (!cancelledAppointment) {
+      res.status(404).json({ message: "Turno no encontrado" });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Turno cancelado exitosamente",
+      appointment: cancelledAppointment,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
 };
