@@ -10,8 +10,8 @@
  * @see appointmentsRouter
  */
 import { Router } from "express";
-import usersRouter from "./usersRouter.js";
-import appointmentsRouter from "./appointmentsRouter.js";
+import usersRouter from "./usersRouter";
+import appointmentsRouter from "./appointmentsRouter";
 
 const router = Router();
 
