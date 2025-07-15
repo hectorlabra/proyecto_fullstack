@@ -10,6 +10,7 @@
  */
 import express from "express";
 import { config } from "./config/envs";
+import router from "./routes/index";
 
 const app = express();
 
@@ -25,9 +26,6 @@ app.get("/test", (_, res) => {
     pid: process.pid,
   });
 });
-
-// Import router AFTER creating the app
-import router from "./routes/index";
 
 // Routes
 app.use("/", router);
