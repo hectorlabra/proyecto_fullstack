@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": "ts",
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "tsc && node ./dist/index.js"
+  "exec": "ts-node ./src/index.ts"
 }

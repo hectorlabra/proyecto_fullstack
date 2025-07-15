@@ -29,6 +29,6 @@ appointmentsRouter.get("/:id", getAppointmentById);
 appointmentsRouter.post("/schedule", scheduleAppointment);
 
 // PUT /appointments/cancel => Cambiar el estatus de un turno a "cancelled"
-appointmentsRouter.put("/cancel", cancelAppointment);
+appointmentsRouter.put("/cancel/:id", cancelAppointment);
 
 export default appointmentsRouter;
