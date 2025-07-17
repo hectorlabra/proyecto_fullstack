@@ -16,6 +16,9 @@ import {
   registerUser,
   loginUser,
 } from "../controllers/usersController";
+import { validationMiddleware } from "../middlewares/validation.middleware";
+import { CreateUserDto } from "../dtos/users/create-user.dto";
+import { LoginDto } from "../dtos/credentials/login.dto";
 
 const usersRouter = Router();
 
@@ -26,9 +29,13 @@ usersRouter.get("/", getAllUsers);
 usersRouter.get("/:id", getUserById);
 
 // POST /users/register => Registro de un nuevo usuario
-usersRouter.post("/register", registerUser);
+usersRouter.post(
+  "/register",
+  validationMiddleware(CreateUserDto),
+  registerUser
+);
 
 // POST /users/login => Login del usuario a la aplicación
-usersRouter.post("/login", loginUser);
+usersRouter.post("/login", validationMiddleware(LoginDto), loginUser);
 
 export default usersRouter;

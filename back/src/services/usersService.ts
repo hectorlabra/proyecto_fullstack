@@ -1,127 +1,131 @@
-import { User } from "../interfaces/User";
-import {
-  createCredential,
-  getCredentialByUsername,
-} from "./credentialsService";
-
-// Array de usuarios de prueba (mock data)
-let users: User[] = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john.doe@email.com",
-    birthdate: "1990-05-15",
-    nDni: "12345678",
-    credentialsId: 1,
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "jane.smith@email.com",
-    birthdate: "1985-08-22",
-    nDni: "87654321",
-    credentialsId: 2,
-  },
-  {
-    id: 3,
-    name: "Mike Johnson",
-    email: "mike.johnson@email.com",
-    birthdate: "1992-12-03",
-    nDni: "11223344",
-    credentialsId: 3,
-  },
-  {
-    id: 4,
-    name: "Sarah Wilson",
-    email: "sarah.wilson@email.com",
-    birthdate: "1988-03-18",
-    nDni: "44332211",
-    credentialsId: 4,
-  },
-  {
-    id: 5,
-    name: "David Brown",
-    email: "david.brown@email.com",
-    birthdate: "1995-09-07",
-    nDni: "55667788",
-    credentialsId: 5,
-  },
-];
-
-let nextUserId = 6;
+import { AppDataSource } from "../data-source";
+import { User } from "../entities/User.entity";
+import { Credential } from "../entities/Credential.entity";
+import { CreateUserDto } from "../dtos/users/create-user.dto";
+import { hash } from "bcrypt";
+import { Repository } from "typeorm";
 
 /**
- * Obtiene todos los usuarios
- * @returns Array de todos los usuarios
+ * Servicio para manejar operaciones relacionadas con usuarios.
+ * Utiliza TypeORM para interactuar con la base de datos.
  */
-export const getAllUsers = (): User[] => {
-  return users;
+
+/**
+ * Obtiene todos los usuarios con sus relaciones
+ * @returns Promise<User[]> - Array de todos los usuarios
+ */
+export const getAllUsers = async (): Promise<User[]> => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  return await userRepository.find({
+    relations: ["appointments"],
+  });
 };
 
 /**
  * Obtiene un usuario por su ID
  * @param id - ID del usuario a buscar
- * @returns Usuario encontrado o undefined si no existe
+ * @returns Promise<User | null> - Usuario encontrado o null si no existe
  */
-export const getUserById = (id: number): User | undefined => {
-  return users.find((user) => user.id === id);
+export const getUserById = async (id: number): Promise<User | null> => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  return await userRepository.findOne({
+    where: { id },
+    relations: ["appointments", "credential"],
+  });
 };
 
 /**
  * Obtiene un usuario por el ID de sus credenciales
  * @param credentialId - ID de las credenciales del usuario
- * @returns Usuario encontrado o undefined si no existe
+ * @returns Promise<User | null> - Usuario encontrado o null si no existe
  */
-export const getUserByCredentialsId = (
+export const getUserByCredentialsId = async (
   credentialId: number
-): User | undefined => {
-  return users.find((user) => user.credentialsId === credentialId);
+): Promise<User | null> => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  return await userRepository.findOne({
+    where: { credential: { id: credentialId } },
+    relations: ["credential", "appointments"],
+  });
 };
 
 /**
- * Crea un nuevo usuario
- * @param userData - Datos del usuario (name, email, birthdate, nDni, username, password)
- * @returns Usuario creado
+ * Obtiene un usuario por su email
+ * @param email - Email del usuario a buscar
+ * @returns Promise<User | null> - Usuario encontrado o null si no existe
  */
-export const createUser = (userData: {
-  name: string;
-  email: string;
-  birthdate: string;
-  nDni: string;
-  username: string;
-  password: string;
-}): User => {
-  // 1. Verificar que el email no exista ya
-  const existingUser = users.find((user) => user.email === userData.email);
-  if (existingUser) {
+export const getUserByEmail = async (email: string): Promise<User | null> => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  return await userRepository.findOne({
+    where: { email },
+    relations: ["credential"],
+  });
+};
+
+/**
+ * Crea un nuevo usuario con sus credenciales
+ * @param userData - DTO con los datos del usuario
+ * @returns Promise<User> - Usuario creado
+ * @throws Error si el email, DNI o username ya existen
+ */
+export const createUser = async (userData: CreateUserDto): Promise<User> => {
+  const userRepository: Repository<User> = AppDataSource.getRepository(User);
+  const credentialRepository: Repository<Credential> =
+    AppDataSource.getRepository(Credential);
+
+  // Verificar que el email no exista ya
+  const existingUserByEmail = await getUserByEmail(userData.email);
+  if (existingUserByEmail) {
     throw new Error("El email ya está registrado");
   }
 
-  // 2. Verificar que el DNI no exista ya
-  const existingDni = users.find((user) => user.nDni === userData.nDni);
-  if (existingDni) {
+  // Verificar que el DNI no exista ya
+  const existingUserByDni = await userRepository.findOne({
+    where: { nDni: userData.nDni },
+  });
+  if (existingUserByDni) {
     throw new Error("El DNI ya está registrado");
   }
 
-  // 3. Verificar que el username no exista ya en las credenciales
-  const existingCredential = getCredentialByUsername(userData.username);
+  // Verificar que el username no exista ya
+  const existingCredential = await credentialRepository.findOne({
+    where: { username: userData.username },
+  });
   if (existingCredential) {
     throw new Error("El nombre de usuario ya existe");
   }
 
-  // 4. Crear las credenciales primero
-  const credentialsId = createCredential(userData.username, userData.password);
+  // Iniciar transacción
+  return await AppDataSource.transaction(async (manager) => {
+    // 1. Crear el usuario
+    const newUser = manager.create(User, {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      phone: userData.phone,
+      dateOfBirth: userData.dateOfBirth,
+      nDni: userData.nDni,
+    });
 
-  // 5. Crear el usuario
-  const newUser: User = {
-    id: nextUserId++,
-    name: userData.name,
-    email: userData.email,
-    birthdate: userData.birthdate,
-    nDni: userData.nDni,
-    credentialsId,
-  };
+    const savedUser = await manager.save(User, newUser);
 
-  users.push(newUser);
-  return newUser;
+    // 2. Hashear la contraseña
+    const saltRounds = 10;
+    const hashedPassword = await hash(userData.password, saltRounds);
+
+    // 3. Crear las credenciales
+    const newCredential = manager.create(Credential, {
+      username: userData.username,
+      passwordHash: hashedPassword,
+      userId: savedUser.id,
+    });
+
+    await manager.save(Credential, newCredential);
+    console.log(`User ${savedUser.id} created successfully.`);
+
+    return manager.findOneOrFail(User, {
+      where: { id: savedUser.id },
+      relations: ["credential"],
+    });
+  });
 };

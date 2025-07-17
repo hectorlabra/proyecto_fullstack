@@ -18,7 +18,7 @@
  * Controlador para registrar un nuevo usuario.
  *
  * @route POST /users/register
- * @param _req - Objeto de solicitud de Express (no utilizado).
+ * @param req - Objeto de solicitud de Express que contiene el DTO validado.
  * @param res - Objeto de respuesta de Express.
  */
 
@@ -26,27 +26,36 @@
  * Controlador para el login de un usuario en la aplicación.
  *
  * @route POST /users/login
- * @param _req - Objeto de solicitud de Express (no utilizado).
+ * @param req - Objeto de solicitud de Express que contiene el DTO validado.
  * @param res - Objeto de respuesta de Express.
  */
 import { Request, Response } from "express";
 import * as usersService from "../services/usersService";
 import * as credentialsService from "../services/credentialsService";
+import { CreateUserDto } from "../dtos/users/create-user.dto";
+import { LoginDto } from "../dtos/credentials/login.dto";
 
 // Devuelve todos los usuarios
 // GET /users
-export const getAllUsers = (_req: Request, res: Response): void => {
+export const getAllUsers = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const users = usersService.getAllUsers();
+    const users = await usersService.getAllUsers();
     res.status(200).json(users);
   } catch (error) {
+    console.error("Error al obtener usuarios:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
 // Devuelve un usuario por ID
 // GET /users/:id
-export const getUserById = (req: Request, res: Response): void => {
+export const getUserById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { id } = req.params;
 
@@ -57,7 +66,7 @@ export const getUserById = (req: Request, res: Response): void => {
       return;
     }
 
-    const user = usersService.getUserById(userId);
+    const user = await usersService.getUserById(userId);
     if (!user) {
       res.status(404).json({ error: "Usuario no encontrado" });
       return;
@@ -65,57 +74,44 @@ export const getUserById = (req: Request, res: Response): void => {
 
     res.status(200).json(user);
   } catch (error) {
+    console.error("Error al obtener usuario:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
 // Registra un nuevo usuario
 // POST /users/register
-export const registerUser = (req: Request, res: Response): void => {
+export const registerUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const { name, email, birthdate, nDni, username, password } = req.body;
+    const userData: CreateUserDto = req.body;
 
-    // Validar campos requeridos
-    if (!name || !email || !birthdate || !nDni || !username || !password) {
-      res.status(400).json({
-        error:
-          "Todos los campos son obligatorios: name, email, birthdate, nDni, username, password",
-      });
-      return;
-    }
+    const newUser = await usersService.createUser(userData);
 
-    // Validar que los campos no estén vacíos
-    if (
-      name.trim() === "" ||
-      email.trim() === "" ||
-      birthdate.trim() === "" ||
-      nDni.trim() === "" ||
-      username.trim() === "" ||
-      password.trim() === ""
-    ) {
-      res.status(400).json({
-        error: "Los campos no pueden estar vacíos",
-      });
-      return;
-    }
+    // Retornar el usuario sin incluir información sensible
+    const userResponse = {
+      id: newUser.id,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      phone: newUser.phone,
+      dateOfBirth: newUser.dateOfBirth,
+      nDni: newUser.nDni,
+      createdAt: newUser.createdAt,
+    };
 
-    const newUser = usersService.createUser({
-      name,
-      email,
-      birthdate,
-      nDni,
-      username,
-      password,
-    });
-
-    res.status(201).json(newUser);
+    res.status(201).json(userResponse);
   } catch (error: any) {
-    if (error.message === "El email ya está registrado") {
-      res.status(400).json({ error: "El email ya está registrado" });
-    } else if (error.message === "El DNI ya está registrado") {
-      res.status(400).json({ error: "El DNI ya está registrado" });
-    } else if (error.message === "El nombre de usuario ya existe") {
-      res.status(400).json({ error: "El nombre de usuario ya existe" });
+    console.error("Error al registrar usuario:", error);
+
+    if (
+      error.message === "El email ya está registrado" ||
+      error.message === "El DNI ya está registrado" ||
+      error.message === "El nombre de usuario ya existe"
+    ) {
+      res.status(400).json({ error: error.message });
     } else {
       res.status(500).json({ error: "Error interno del servidor" });
     }
@@ -124,40 +120,41 @@ export const registerUser = (req: Request, res: Response): void => {
 
 // Login de usuario
 // POST /users/login
-export const loginUser = (req: Request, res: Response): void => {
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, password } = req.body;
-
-    // Validar campos requeridos
-    if (!username || !password) {
-      res.status(400).json({
-        error: "Username y password son requeridos",
-      });
-      return;
-    }
+    const loginData: LoginDto = req.body;
 
     // Validar credenciales
-    const credentialId = credentialsService.validateCredential(
-      username,
-      password
-    );
-    if (!credentialId) {
+    const credential = await credentialsService.validateCredential(loginData);
+    if (!credential) {
       res.status(401).json({ error: "Credenciales inválidas" });
       return;
     }
 
     // Obtener el usuario por credentialId
-    const user = usersService.getUserByCredentialsId(credentialId);
+    const user = await usersService.getUserByCredentialsId(credential.id);
     if (!user) {
       res.status(401).json({ error: "Credenciales inválidas" });
       return;
     }
 
+    // Retornar información del login exitoso sin información sensible
+    const userResponse = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: user.phone,
+      dateOfBirth: user.dateOfBirth,
+      nDni: user.nDni,
+    };
+
     res.status(200).json({
       login: true,
-      user: user,
+      user: userResponse,
     });
   } catch (error) {
+    console.error("Error al realizar login:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };

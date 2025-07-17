@@ -20,7 +20,7 @@
  * Agenda un nuevo turno
  *
  * @route POST /appointments/schedule
- * @param _req - Objeto de solicitud de Express (no utilizado).
+ * @param req - Objeto de solicitud de Express que contiene el DTO validado.
  * @param res - Objeto de respuesta de Express.
  * @returns Envía una respuesta confirmando el agendamiento del turno.
  */
@@ -28,27 +28,34 @@
 /**
  * Cancela un turno
  *
- * @route PUT /appointments/cancel
- * @param _req - Objeto de solicitud de Express (no utilizado).
+ * @route PUT /appointments/cancel/:id
+ * @param req - Objeto de solicitud de Express que contiene el ID del turno.
  * @param res - Objeto de respuesta de Express.
  * @returns Envía una respuesta confirmando la cancelación del turno.
  */
 import { Request, Response } from "express";
 import * as appointmentsService from "../services/appointmentsService";
-import * as usersService from "../services/usersService";
+import { CreateAppointmentDto } from "../dtos/appointments/create-appointment.dto";
 
 // GET /appointments => Obtener el listado de todos los turnos
-export const getAllAppointments = (_req: Request, res: Response): void => {
+export const getAllAppointments = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const appointments = appointmentsService.getAllAppointments();
+    const appointments = await appointmentsService.getAllAppointments();
     res.status(200).json(appointments);
   } catch (error) {
+    console.error("Error al obtener turnos:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
 // GET /appointments/:id => Obtener el detalle de un turno específico
-export const getAppointmentById = (req: Request, res: Response): void => {
+export const getAppointmentById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { id } = req.params;
 
@@ -59,7 +66,9 @@ export const getAppointmentById = (req: Request, res: Response): void => {
       return;
     }
 
-    const appointment = appointmentsService.getAppointmentById(appointmentId);
+    const appointment = await appointmentsService.getAppointmentById(
+      appointmentId
+    );
     if (!appointment) {
       res.status(404).json({ error: "Turno no encontrado" });
       return;
@@ -67,66 +76,37 @@ export const getAppointmentById = (req: Request, res: Response): void => {
 
     res.status(200).json(appointment);
   } catch (error) {
+    console.error("Error al obtener turno:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
 // POST /appointments/schedule => Agendar un nuevo turno
-export const scheduleAppointment = (req: Request, res: Response): void => {
+export const scheduleAppointment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
-    const { userId, date, time, notes } = req.body;
+    const appointmentData: CreateAppointmentDto = req.body;
 
-    // Validar campos requeridos
-    if (!userId || !date || !time) {
-      res.status(400).json({
-        error: "userId, date y time son requeridos",
-      });
-      return;
-    }
-
-    // Validar que userId sea numérico
-    const userIdNum = parseInt(userId);
-    if (isNaN(userIdNum)) {
-      res.status(400).json({ error: "userId debe ser un número válido" });
-      return;
-    }
-
-    // Verificar que el usuario existe
-    const user = usersService.getUserById(userIdNum);
-    if (!user) {
-      res.status(400).json({ error: "El usuario especificado no existe" });
-      return;
-    }
-
-    const newAppointment = appointmentsService.createAppointment({
-      userId: userIdNum,
-      date,
-      time,
-      notes,
-    });
+    const newAppointment = await appointmentsService.createAppointment(
+      appointmentData
+    );
 
     res.status(201).json(newAppointment);
   } catch (error: any) {
-    if (error.message === "El formato de fecha debe ser YYYY-MM-DD") {
-      res
-        .status(400)
-        .json({ error: "El formato de fecha debe ser YYYY-MM-DD" });
-    } else if (error.message === "El formato de hora debe ser HH:mm") {
-      res.status(400).json({ error: "El formato de hora debe ser HH:mm" });
-    } else if (
+    console.error("Error al agendar turno:", error);
+
+    if (
+      error.message === "El usuario especificado no existe" ||
+      error.message === "No se pueden agendar citas en fechas pasadas" ||
       error.message ===
-      "Ya existe un turno activo para este usuario en la misma fecha y hora"
+        "Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM" ||
+      error.message === "Las citas solo pueden agendarse de lunes a viernes" ||
+      error.message ===
+        "Ya existe una cita activa para este usuario en la misma fecha y hora"
     ) {
-      res
-        .status(400)
-        .json({
-          error:
-            "Ya existe un turno activo para este usuario en la misma fecha y hora",
-        });
-    } else if (error.message === "NO PUEDE HABER UN TURNO SIN ID DE USUARIO") {
-      res
-        .status(400)
-        .json({ error: "NO PUEDE HABER UN TURNO SIN ID DE USUARIO" });
+      res.status(400).json({ error: error.message });
     } else {
       res.status(500).json({ error: "Error interno del servidor" });
     }
@@ -134,7 +114,10 @@ export const scheduleAppointment = (req: Request, res: Response): void => {
 };
 
 // PUT /appointments/cancel/:id => Cambiar el estatus de un turno a "cancelled"
-export const cancelAppointment = (req: Request, res: Response): void => {
+export const cancelAppointment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { id } = req.params;
 
@@ -145,8 +128,9 @@ export const cancelAppointment = (req: Request, res: Response): void => {
       return;
     }
 
-    const cancelledAppointment =
-      appointmentsService.cancelAppointment(appointmentId);
+    const cancelledAppointment = await appointmentsService.cancelAppointment(
+      appointmentId
+    );
     if (!cancelledAppointment) {
       res.status(404).json({ error: "Turno no encontrado" });
       return;
@@ -156,7 +140,18 @@ export const cancelAppointment = (req: Request, res: Response): void => {
       message: "Turno cancelado exitosamente",
       appointment: cancelledAppointment,
     });
-  } catch (error) {
-    res.status(500).json({ error: "Error interno del servidor" });
+  } catch (error: any) {
+    console.error("Error al cancelar turno:", error);
+
+    if (
+      error.message === "La cita no existe" ||
+      error.message === "Solo se pueden cancelar citas programadas" ||
+      error.message ===
+        "Las citas solo pueden cancelarse hasta el día anterior a la fecha programada"
+    ) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
   }
 };
