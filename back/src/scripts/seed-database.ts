@@ -16,14 +16,24 @@ async function seedDatabase() {
     console.log("✅ Conexión establecida");
 
     const userRepository = AppDataSource.getRepository(User);
-    const credentialRepository = AppDataSource.getRepository(Credential);
     const appointmentRepository = AppDataSource.getRepository(Appointment);
 
-    // Limpiar tablas existentes (opcional, comentar si no se quiere limpiar)
-    console.log("🗑️ Limpiando datos existentes...");
-    await appointmentRepository.delete({});
-    await credentialRepository.delete({});
-    await userRepository.delete({});
+    // Verificar si ya hay datos
+    const existingUsersCount = await userRepository.count();
+    if (existingUsersCount > 0) {
+      console.log(
+        `📊 Ya existen ${existingUsersCount} usuarios en la base de datos.`
+      );
+      console.log(
+        "ℹ️  Si quieres limpiar los datos, hazlo manualmente desde psql o elimina las tablas."
+      );
+      console.log("🎉 Script completado - usando datos existentes");
+      return;
+    }
+
+    console.log(
+      "🗑️ Base de datos vacía, procediendo a crear datos de prueba..."
+    );
 
     console.log("👥 Creando usuarios de prueba...");
 
