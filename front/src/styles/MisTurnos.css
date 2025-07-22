@@ -1,0 +1,57 @@
+/* Estilos para el componente MisTurnos */
+.mis-turnos-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mis-turnos-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  font-weight: 300;
+}
+
+.no-appointments {
+  text-align: center;
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.no-appointments-text {
+  font-size: 18px;
+  color: #6c757d;
+  margin: 0;
+}
+
+.appointments-info {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .mis-turnos-container {
+    padding: 15px;
+  }
+
+  .mis-turnos-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+
+  .no-appointments {
+    padding: 30px 20px;
+  }
+}

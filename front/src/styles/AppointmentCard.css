@@ -1,0 +1,105 @@
+/* Estilos para el componente AppointmentCard */
+.appointment-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.appointment-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.appointment-header {
+  margin-bottom: 12px;
+}
+
+.appointment-id {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.appointment-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  text-transform: uppercase;
+}
+
+.appointment-status.scheduled {
+  background-color: #28a745;
+}
+
+.appointment-status.canceled {
+  background-color: #dc3545;
+}
+
+.appointment-status.completed {
+  background-color: #6c757d;
+}
+
+.appointment-datetime {
+  margin-bottom: 12px;
+}
+
+.appointment-date,
+.appointment-time {
+  margin: 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.appointment-user-info {
+  margin-bottom: 12px;
+}
+
+.appointment-patient,
+.appointment-email {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.appointment-notes {
+  background-color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 12px;
+  border-left: 4px solid #007bff;
+}
+
+.appointment-notes-text {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .appointment-card {
+    padding: 12px;
+  }
+
+  .appointment-id {
+    font-size: 1.1rem;
+  }
+
+  .appointment-date,
+  .appointment-time {
+    font-size: 14px;
+  }
+
+  .appointment-patient,
+  .appointment-email {
+    font-size: 13px;
+  }
+}

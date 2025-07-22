@@ -107,16 +107,3 @@ export const getStatusLabel = (status) => {
       return "Estado desconocido";
   }
 };
-
-export const getStatusColor = (status) => {
-  switch (status) {
-    case AppointmentStatus.SCHEDULED:
-      return "#28a745"; // Verde
-    case AppointmentStatus.CANCELED:
-      return "#dc3545"; // Rojo
-    case AppointmentStatus.COMPLETED:
-      return "#6c757d"; // Gris
-    default:
-      return "#000000"; // Negro
-  }
-};
