@@ -4,7 +4,7 @@ import AppointmentCard from "../components/AppointmentCard";
 import "../styles/MisTurnos.css";
 
 const MisTurnos = () => {
-  const [appointments, setAppointments] = useState(myAppointments);
+  const [appointments, _setAppointments] = useState(myAppointments);
 
   // Verificar el estado (temporal para desarrollo)
   console.log("Turnos cargados:", appointments);
