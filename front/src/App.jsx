@@ -15,6 +15,8 @@
 import "./App.css";
 import Home from "./views/Home";
 import MisTurnos from "./views/MisTurnos";
+import Register from "./views/Register";
+import Login from "./views/Login";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
@@ -25,6 +27,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/mis-turnos" element={<MisTurnos />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
   );

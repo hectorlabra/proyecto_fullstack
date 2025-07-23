@@ -15,7 +15,12 @@ function Navbar() {
         <li>
           <Link to="/mis-turnos">Mis Turnos</Link>
         </li>
-        <li>Usuarios</li>
+        <li>
+          <Link to="/register">Registro</Link>
+        </li>
+        <li>
+          <Link to="/login">Login</Link>
+        </li>
       </ul>
     </nav>
   );
