@@ -22,6 +22,10 @@ function Login() {
   // Estado de errores de validación
   const [errors, setErrors] = useState({});
 
+  // Estado para el manejo del proceso de envío
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
+
   // Función para validar un campo específico
   const validateField = (name, value) => {
     let error = "";
@@ -81,9 +85,35 @@ function Login() {
     return allFieldsFilled && noErrors;
   };
 
+  // Función para hacer login en la API
+  const loginUserAPI = async (credentials) => {
+    try {
+      const response = await fetch("http://localhost:3000/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al iniciar sesión");
+      }
+
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
   // Handler para el envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Limpiar mensajes previos
+    setSubmitMessage({ type: "", text: "" });
 
     // Validar todos los campos antes del envío
     const newErrors = {};
@@ -94,10 +124,70 @@ function Login() {
 
     setErrors(newErrors);
 
-    // Si no hay errores, proceder con el envío
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Datos del formulario:", formData);
-      // Aquí se implementará la petición a la API en el próximo hito
+    // Si hay errores, no proceder
+    if (Object.keys(newErrors).length > 0) {
+      setSubmitMessage({
+        type: "error",
+        text: "Por favor, corrige los errores en el formulario",
+      });
+      return;
+    }
+
+    // Iniciar proceso de carga
+    setIsLoading(true);
+
+    try {
+      // Hacer la petición a la API
+      const result = await loginUserAPI(formData);
+
+      if (result.success) {
+        // Login exitoso
+        setSubmitMessage({
+          type: "success",
+          text: "¡Inicio de sesión exitoso! Redirigiendo...",
+        });
+
+        // Guardar información del usuario en localStorage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            user: result.data.user,
+            token: result.data.token,
+            loginTime: new Date().toISOString(),
+          })
+        );
+
+        // Limpiar el formulario
+        setFormData({
+          username: "",
+          password: "",
+        });
+        setErrors({});
+
+        // Redirigir después de un breve delay
+        setTimeout(() => {
+          window.location.href = "/mis-turnos";
+        }, 1500);
+      } else {
+        // Error en el login
+        setSubmitMessage({
+          type: "error",
+          text:
+            result.error ||
+            "Credenciales incorrectas. Verifica tu usuario y contraseña.",
+        });
+      }
+    } catch (error) {
+      // Error inesperado
+      setSubmitMessage({
+        type: "error",
+        text:
+          error.message ||
+          "Error de conexión. Verifica tu conexión a internet.",
+      });
+    } finally {
+      // Finalizar proceso de carga
+      setIsLoading(false);
     }
   };
 
@@ -106,6 +196,19 @@ function Login() {
       <div className="login-form">
         <h2>Iniciar Sesión</h2>
         <p>Accede a tu cuenta de MediCitas</p>
+
+        {/* Mensajes de feedback */}
+        {submitMessage.text && (
+          <div
+            className={`${
+              submitMessage.type === "success"
+                ? "success-message"
+                : "error-message-general"
+            }`}
+          >
+            {submitMessage.text}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -142,8 +245,19 @@ function Login() {
             )}
           </div>
 
-          <button type="submit" className="login-btn" disabled={!isFormValid()}>
-            Iniciar Sesión
+          <button
+            type="submit"
+            className={`login-btn ${isLoading ? "loading" : ""}`}
+            disabled={!isFormValid() || isLoading}
+          >
+            {isLoading ? (
+              <>
+                <span className="loading-spinner"></span>
+                Iniciando sesión...
+              </>
+            ) : (
+              "Iniciar Sesión"
+            )}
           </button>
         </form>
 
