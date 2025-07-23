@@ -11,13 +11,22 @@
  */
 import "reflect-metadata";
 import express from "express";
+import cors from "cors";
 import { config } from "./config/envs";
 import router from "./routes/index";
 import { AppDataSource } from "./data-source";
 
 const app = express();
 
+// Configuración de CORS
+const corsOptions = {
+  origin: "http://localhost:5173", // Puerto por defecto de Vite
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
 // Middlewares
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

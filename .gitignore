@@ -4,5 +4,4 @@ dist
 .DS_Store
 *.log
 npm-debug.log*
-TESTING_GUIDE.md
-ACTIVIDADES_COMPLETADAS.md
+assets
