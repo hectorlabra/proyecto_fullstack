@@ -28,6 +28,10 @@ function Register() {
   // Estado de errores de validación
   const [errors, setErrors] = useState({});
 
+  // Estado para el manejo del proceso de envío
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
+
   // Función para validar email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -172,9 +176,35 @@ function Register() {
     return allFieldsFilled && noErrors;
   };
 
+  // Función para registrar usuario en la API
+  const registerUserAPI = async (userData) => {
+    try {
+      const response = await fetch("http://localhost:3000/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Error al registrar usuario");
+      }
+
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
   // Handler para el envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Limpiar mensajes previos
+    setSubmitMessage({ type: "", text: "" });
 
     // Validar todos los campos antes del envío
     const newErrors = {};
@@ -185,10 +215,60 @@ function Register() {
 
     setErrors(newErrors);
 
-    // Si no hay errores, proceder con el envío
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Datos del formulario:", formData);
-      // Aquí se implementará la petición a la API en el próximo hito
+    // Si hay errores, no proceder
+    if (Object.keys(newErrors).length > 0) {
+      setSubmitMessage({
+        type: "error",
+        text: "Por favor, corrige los errores en el formulario",
+      });
+      return;
+    }
+
+    // Iniciar proceso de carga
+    setIsLoading(true);
+
+    try {
+      // Hacer la petición a la API
+      const result = await registerUserAPI(formData);
+
+      if (result.success) {
+        // Registro exitoso
+        setSubmitMessage({
+          type: "success",
+          text: "¡Registro exitoso! Ya puedes iniciar sesión con tu cuenta.",
+        });
+
+        // Limpiar el formulario
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          dateOfBirth: "",
+          nDni: "",
+          username: "",
+          password: "",
+        });
+        setErrors({});
+      } else {
+        // Error en el registro
+        setSubmitMessage({
+          type: "error",
+          text:
+            result.error || "Error al registrar usuario. Inténtalo de nuevo.",
+        });
+      }
+    } catch (error) {
+      // Error inesperado
+      setSubmitMessage({
+        type: "error",
+        text:
+          error.message ||
+          "Error de conexión. Verifica tu conexión a internet.",
+      });
+    } finally {
+      // Finalizar proceso de carga
+      setIsLoading(false);
     }
   };
 
@@ -197,6 +277,19 @@ function Register() {
       <div className="register-form">
         <h2>Registro de Usuario</h2>
         <p>Crea tu cuenta para acceder a MediCitas</p>
+
+        {/* Mensajes de feedback */}
+        {submitMessage.text && (
+          <div
+            className={`${
+              submitMessage.type === "success"
+                ? "success-message"
+                : "error-message-general"
+            }`}
+          >
+            {submitMessage.text}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -336,10 +429,17 @@ function Register() {
 
           <button
             type="submit"
-            className="register-btn"
-            disabled={!isFormValid()}
+            className={`register-btn ${isLoading ? "loading" : ""}`}
+            disabled={!isFormValid() || isLoading}
           >
-            Registrarse
+            {isLoading ? (
+              <>
+                <span className="loading-spinner"></span>
+                Registrando...
+              </>
+            ) : (
+              "Registrarse"
+            )}
           </button>
         </form>
 
