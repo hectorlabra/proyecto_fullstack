@@ -123,9 +123,23 @@
   color: #3498db;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .form-footer a:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.form-link {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.form-link:hover {
+  color: #2980b9;
   text-decoration: underline;
 }
 

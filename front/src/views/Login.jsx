@@ -10,9 +10,12 @@
  * <Login />
  */
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 
 function Login() {
+  const navigate = useNavigate();
+
   // Estado del formulario
   const [formData, setFormData] = useState({
     username: "",
@@ -178,7 +181,7 @@ function Login() {
 
         // Redirigir después de un breve delay
         setTimeout(() => {
-          window.location.href = "/mis-turnos";
+          navigate("/mis-turnos");
         }, 1500);
       } else {
         // Error en el login
@@ -275,7 +278,10 @@ function Login() {
 
         <div className="form-footer">
           <p>
-            ¿No tienes cuenta? <a href="/register">Regístrate aquí</a>
+            ¿No tienes cuenta?{" "}
+            <Link to="/register" className="form-link">
+              Regístrate aquí
+            </Link>
           </p>
         </div>
       </div>

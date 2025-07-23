@@ -10,6 +10,7 @@
  * <Register />
  */
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "../styles/Register.css";
 
 function Register() {
@@ -457,7 +458,10 @@ function Register() {
 
         <div className="form-footer">
           <p>
-            ¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a>
+            ¿Ya tienes cuenta?{" "}
+            <Link to="/login" className="form-link">
+              Inicia sesión aquí
+            </Link>
           </p>
         </div>
       </div>
