@@ -30,6 +30,11 @@ function Login() {
   const validateField = (name, value) => {
     let error = "";
 
+    // Verificar que value esté definido
+    if (value === undefined || value === null) {
+      value = "";
+    }
+
     switch (name) {
       case "username":
         if (!value.trim()) {
@@ -74,13 +79,20 @@ function Login() {
 
   // Función para verificar si el formulario es válido
   const isFormValid = () => {
+    // Verificar que formData y errors estén definidos
+    if (!formData || !errors) {
+      return false;
+    }
+
     // Verificar que todos los campos estén llenos
     const allFieldsFilled = Object.values(formData).every(
-      (value) => value.trim() !== ""
+      (value) => value && value.trim() !== ""
     );
 
     // Verificar que no haya errores
-    const noErrors = Object.values(errors).every((error) => error === "");
+    const noErrors = Object.values(errors).every(
+      (error) => !error || error === ""
+    );
 
     return allFieldsFilled && noErrors;
   };
