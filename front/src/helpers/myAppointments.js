@@ -87,23 +87,46 @@ export const myAppointments = [
   },
 ];
 
-// Estados disponibles para los turnos
+// Estados disponibles para los turnos (coinciden con el backend)
 export const AppointmentStatus = {
   SCHEDULED: "scheduled",
-  CANCELED: "canceled",
+  CANCELLED: "cancelled",
   COMPLETED: "completed",
+  ACTIVE: "active", // Nuevo estado que usa el backend
 };
 
 // Funciones auxiliares para trabajar con turnos
 export const getStatusLabel = (status) => {
   switch (status) {
     case AppointmentStatus.SCHEDULED:
+    case AppointmentStatus.ACTIVE: // El backend usa "active" para turnos programados
       return "Programado";
-    case AppointmentStatus.CANCELED:
+    case AppointmentStatus.CANCELLED:
       return "Cancelado";
     case AppointmentStatus.COMPLETED:
       return "Completado";
+    case "active":
+      return "Programado";
+    case "cancelled":
+      return "Cancelado";
     default:
       return "Estado desconocido";
+  }
+};
+
+// Función para obtener la clase CSS según el estado
+export const getStatusClass = (status) => {
+  switch (status) {
+    case AppointmentStatus.SCHEDULED:
+    case AppointmentStatus.ACTIVE:
+    case "active":
+      return "status-active";
+    case AppointmentStatus.CANCELLED:
+    case "cancelled":
+      return "status-cancelled";
+    case AppointmentStatus.COMPLETED:
+      return "status-completed";
+    default:
+      return "status-unknown";
   }
 };
