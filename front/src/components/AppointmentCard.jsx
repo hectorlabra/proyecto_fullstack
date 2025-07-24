@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useUser } from "../context/UserContext";
 import { getStatusLabel, getStatusClass } from "../helpers/myAppointments";
 import "../styles/AppointmentCard.css";
 
 const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
   const { id, date, time, status, notes, user } = appointment;
-  const [isLoading, setIsLoading] = useState(false);
+  const { cancelAppointment: cancelAppointmentContext, isLoading } = useUser();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
   // Formatear fecha para mostrar de manera más legible
@@ -42,38 +43,24 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     return appointmentDate >= tomorrow;
   };
 
-  // Función para cancelar la cita
+  // Función para cancelar la cita usando el Context
   const cancelAppointment = async () => {
-    setIsLoading(true);
-
     try {
-      const response = await fetch(
-        `http://localhost:3000/appointments/cancel/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const result = await cancelAppointmentContext(id);
+
+      if (result.success) {
+        // Notificar al componente padre que se actualizó una cita
+        if (onAppointmentUpdate) {
+          onAppointmentUpdate();
         }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Error al cancelar la cita");
+        setShowConfirmDialog(false);
+      } else {
+        // Mostrar error
+        alert(`Error al cancelar la cita: ${result.error}`);
       }
-
-      // Notificar al componente padre que se actualizó una cita
-      if (onAppointmentUpdate) {
-        onAppointmentUpdate();
-      }
-
-      setShowConfirmDialog(false);
     } catch (error) {
       console.error("Error al cancelar cita:", error);
       alert(`Error al cancelar la cita: ${error.message}`);
-    } finally {
-      setIsLoading(false);
     }
   };
 

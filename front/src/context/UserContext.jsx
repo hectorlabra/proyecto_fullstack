@@ -333,7 +333,7 @@ export const UserProvider = ({ children }) => {
             dispatch({
               type: ACTION_TYPES.LOGIN_USER,
               payload: {
-                user: parsedUserData.user,
+                user: parsedUserData,
                 appointments: parsedUserData.appointments || [],
               },
             });

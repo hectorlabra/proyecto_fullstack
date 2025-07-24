@@ -1,7 +1,7 @@
 /**
  * CreateAppointment Component
  *
- * Formulario para crear una nueva cita médica.
+ * Formulario para crear una nueva cita médica usando Context API.
  * Incluye validaciones de fecha, hora y notas.
  * Requiere que el usuario esté autenticado.
  *
@@ -10,10 +10,12 @@
  */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "../styles/CreateAppointment.css";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
+  const { user, createAppointment, isLoading } = useUser();
 
   // Estado del formulario
   const [formData, setFormData] = useState({
@@ -26,16 +28,14 @@ const CreateAppointment = () => {
   const [errors, setErrors] = useState({});
 
   // Estado para el manejo del proceso de envío
-  const [isLoading, setIsLoading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
   // Verificar autenticación al cargar el componente
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user") || "null");
     if (!user) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [user, navigate]);
 
   // Función para generar fecha mínima (hoy)
   const getMinDate = () => {
@@ -137,55 +137,6 @@ const CreateAppointment = () => {
     return requiredFieldsFilled && noErrors;
   };
 
-  // Función para crear cita en la API
-  const createAppointmentAPI = async (appointmentData) => {
-    try {
-      const response = await fetch(
-        "http://localhost:3000/appointments/schedule",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(appointmentData),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // Manejar diferentes tipos de errores del servidor
-        let errorMessage = data.error || "Error al crear la cita";
-
-        if (response.status === 400) {
-          // Errores de validación
-          errorMessage =
-            data.error || "Datos inválidos. Verifica la información ingresada.";
-        } else if (response.status === 409) {
-          // Conflictos (ej: cita duplicada)
-          errorMessage =
-            "Ya existe una cita en ese horario. Selecciona otra fecha u hora.";
-        } else if (response.status >= 500) {
-          // Errores del servidor
-          errorMessage =
-            "Error interno del servidor. Intenta nuevamente en unos minutos.";
-        }
-
-        throw new Error(errorMessage);
-      }
-
-      return { success: true, data };
-    } catch (error) {
-      console.error("Error al crear cita:", error);
-      return {
-        success: false,
-        error:
-          error.message ||
-          "Error de conexión. Verifica tu conexión a internet.",
-      };
-    }
-  };
-
   // Handler para el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -211,8 +162,7 @@ const CreateAppointment = () => {
       return;
     }
 
-    // Obtener información del usuario
-    const user = JSON.parse(localStorage.getItem("user") || "null");
+    // Verificar que hay usuario
     if (!user) {
       navigate("/login");
       return;
@@ -226,12 +176,9 @@ const CreateAppointment = () => {
       notes: formData.notes.trim() || undefined,
     };
 
-    // Iniciar proceso de carga
-    setIsLoading(true);
-
     try {
-      // Hacer la petición a la API
-      const result = await createAppointmentAPI(appointmentData);
+      // Usar la función del context para crear la cita
+      const result = await createAppointment(appointmentData);
 
       if (result.success) {
         // Cita creada exitosamente
@@ -267,9 +214,6 @@ const CreateAppointment = () => {
           error.message ||
           "Error de conexión. Verifica tu conexión a internet.",
       });
-    } finally {
-      // Finalizar proceso de carga
-      setIsLoading(false);
     }
   };
 

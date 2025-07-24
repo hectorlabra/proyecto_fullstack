@@ -11,10 +11,12 @@
  */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "../styles/Login.css";
 
 function Login() {
   const navigate = useNavigate();
+  const { login, clearError } = useUser();
 
   // Estado del formulario
   const [formData, setFormData] = useState({
@@ -25,7 +27,7 @@ function Login() {
   // Estado de errores de validación
   const [errors, setErrors] = useState({});
 
-  // Estado para el manejo del proceso de envío
+  // Estado para el manejo del proceso de envío (mantenemos para compatibilidad con UI)
   const [isLoading, setIsLoading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
@@ -100,35 +102,13 @@ function Login() {
     return allFieldsFilled && noErrors;
   };
 
-  // Función para hacer login en la API
-  const loginUserAPI = async (credentials) => {
-    try {
-      const response = await fetch("http://localhost:3000/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Error al iniciar sesión");
-      }
-
-      return { success: true, data };
-    } catch (error) {
-      return { success: false, error: error.message };
-    }
-  };
-
   // Handler para el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Limpiar mensajes previos
     setSubmitMessage({ type: "", text: "" });
+    clearError();
 
     // Validar todos los campos antes del envío
     const newErrors = {};
@@ -152,8 +132,8 @@ function Login() {
     setIsLoading(true);
 
     try {
-      // Hacer la petición a la API
-      const result = await loginUserAPI(formData);
+      // Usar la función de login del contexto
+      const result = await login(formData);
 
       if (result.success) {
         // Login exitoso
@@ -161,16 +141,6 @@ function Login() {
           type: "success",
           text: "¡Inicio de sesión exitoso! Redirigiendo...",
         });
-
-        // Guardar información del usuario en localStorage
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            user: result.data.user,
-            token: result.data.token,
-            loginTime: new Date().toISOString(),
-          })
-        );
 
         // Limpiar el formulario
         setFormData({

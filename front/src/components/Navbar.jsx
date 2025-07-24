@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "../styles/Navbar.css";
 
 function Navbar() {
-  // Verificar si hay usuario logueado
-  const user = JSON.parse(localStorage.getItem("user") || "null");
+  const { user, logout } = useUser();
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    logout();
     window.location.href = "/";
   };
 
