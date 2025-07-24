@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AppointmentCard from "../components/AppointmentCard";
+import EmptyAppointments from "../components/EmptyAppointments";
 import "../styles/MisTurnos.css";
 
 const MisTurnos = () => {
@@ -23,6 +24,8 @@ const MisTurnos = () => {
   const fetchUserAppointments = async (userId) => {
     try {
       setLoading(true);
+      setError(null);
+
       // Obtener todos los turnos y filtrar por userId
       const response = await axios.get("http://localhost:3000/appointments");
 
@@ -39,11 +42,21 @@ const MisTurnos = () => {
         userData.appointments = userAppointments;
         localStorage.setItem("user", JSON.stringify(userData));
       }
-
-      setError(null);
     } catch (err) {
       console.error("Error al obtener turnos del usuario:", err);
-      setError("Error al cargar tus turnos");
+      let errorMessage = "Error al cargar tus turnos";
+
+      if (err.response) {
+        // Error del servidor con respuesta
+        errorMessage =
+          err.response.data?.error ||
+          `Error del servidor (${err.response.status})`;
+      } else if (err.request) {
+        // Error de red
+        errorMessage = "Error de conexión. Verifica tu conexión a internet.";
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -94,6 +107,7 @@ const MisTurnos = () => {
           </p>
         </div>
         <div className="loading">
+          <div className="loading-spinner"></div>
           <p>Cargando tus turnos...</p>
         </div>
       </div>
@@ -132,21 +146,7 @@ const MisTurnos = () => {
       </div>
 
       {appointments.length === 0 ? (
-        <div className="no-appointments">
-          <div className="no-appointments-icon">📅</div>
-          <h3 className="no-appointments-title">
-            No tienes turnos programados
-          </h3>
-          <p className="no-appointments-text">
-            Aún no has agendado ninguna cita médica.
-          </p>
-          <button
-            className="schedule-appointment-btn"
-            onClick={() => navigate("/agendar-cita")}
-          >
-            Agendar Primera Cita
-          </button>
-        </div>
+        <EmptyAppointments onScheduleClick={() => navigate("/agendar-cita")} />
       ) : (
         <div>
           <div className="appointments-header">

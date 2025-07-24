@@ -154,12 +154,35 @@ const CreateAppointment = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Error al crear la cita");
+        // Manejar diferentes tipos de errores del servidor
+        let errorMessage = data.error || "Error al crear la cita";
+
+        if (response.status === 400) {
+          // Errores de validación
+          errorMessage =
+            data.error || "Datos inválidos. Verifica la información ingresada.";
+        } else if (response.status === 409) {
+          // Conflictos (ej: cita duplicada)
+          errorMessage =
+            "Ya existe una cita en ese horario. Selecciona otra fecha u hora.";
+        } else if (response.status >= 500) {
+          // Errores del servidor
+          errorMessage =
+            "Error interno del servidor. Intenta nuevamente en unos minutos.";
+        }
+
+        throw new Error(errorMessage);
       }
 
       return { success: true, data };
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error("Error al crear cita:", error);
+      return {
+        success: false,
+        error:
+          error.message ||
+          "Error de conexión. Verifica tu conexión a internet.",
+      };
     }
   };
 
