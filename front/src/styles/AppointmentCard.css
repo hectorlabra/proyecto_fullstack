@@ -1,105 +1,337 @@
 /* Estilos para el componente AppointmentCard */
 .appointment-card {
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
+  border-radius: 12px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 .appointment-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .appointment-header {
-  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 12px;
 }
 
 .appointment-id {
-  margin: 0 0 8px 0;
+  margin: 0;
   color: #333;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 
 .appointment-status {
   display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: bold;
   color: white;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.appointment-status.scheduled {
-  background-color: #28a745;
+/* Estados de citas actualizados */
+.appointment-status.status-active {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
-.appointment-status.canceled {
-  background-color: #dc3545;
+.appointment-status.status-cancelled {
+  background: linear-gradient(45deg, #dc3545, #e74c3c);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.appointment-status.status-completed {
+  background: linear-gradient(45deg, #6c757d, #495057);
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+}
+
+.appointment-status.status-unknown {
+  background: linear-gradient(45deg, #ffc107, #fd7e14);
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+}
+
+/* Compatibilidad con estados antiguos */
+.appointment-status.scheduled,
+.appointment-status.active {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.appointment-status.canceled,
+.appointment-status.cancelled {
+  background: linear-gradient(45deg, #dc3545, #e74c3c);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
 }
 
 .appointment-status.completed {
-  background-color: #6c757d;
+  background: linear-gradient(45deg, #6c757d, #495057);
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
 }
 
 .appointment-datetime {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .appointment-date,
 .appointment-time {
-  margin: 4px 0;
-  font-size: 16px;
+  margin: 0;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #333;
+  color: #495057;
+  background-color: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
 }
 
 .appointment-user-info {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  background-color: #e3f2fd;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #2196f3;
 }
 
 .appointment-patient,
 .appointment-email {
   margin: 4px 0;
-  font-size: 14px;
-  color: #666;
+  font-size: 0.95rem;
+  color: #1565c0;
+  font-weight: 500;
 }
 
 .appointment-notes {
-  background-color: #fff;
-  padding: 8px;
-  border-radius: 4px;
-  margin-top: 12px;
-  border-left: 4px solid #007bff;
+  background-color: #fff3cd;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border-left: 4px solid #ffc107;
 }
 
 .appointment-notes-text {
   margin: 0;
-  font-size: 14px;
-  color: #555;
-  line-height: 1.4;
+  font-size: 0.95rem;
+  color: #856404;
+  line-height: 1.5;
+}
+
+/* Sección de acciones */
+.appointment-actions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e9ecef;
+  text-align: center;
+}
+
+.cancel-btn {
+  background: linear-gradient(45deg, #dc3545, #c82333);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cancel-btn:hover:not(:disabled) {
+  background: linear-gradient(45deg, #c82333, #a71e2a);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cancel-info {
+  color: #6c757d;
+  font-size: 0.85rem;
+  margin: 0;
+  font-style: italic;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+.cancelled-text {
+  color: #dc3545;
+  font-weight: 500;
+  background-color: #f8d7da;
+}
+
+/* Estilos del diálogo de confirmación */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.dialog-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  animation: dialogFadeIn 0.3s ease-out;
+}
+
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dialog-content h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.dialog-content p {
+  color: #666;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.dialog-warning {
+  color: #dc3545 !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.dialog-cancel-btn,
+.dialog-confirm-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 120px;
+}
+
+.dialog-cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.dialog-cancel-btn:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.dialog-confirm-btn {
+  background: linear-gradient(45deg, #dc3545, #c82333);
+  color: white;
+}
+
+.dialog-confirm-btn:hover:not(:disabled) {
+  background: linear-gradient(45deg, #c82333, #a71e2a);
+}
+
+.dialog-cancel-btn:disabled,
+.dialog-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .appointment-card {
-    padding: 12px;
+    padding: 16px;
+  }
+
+  .appointment-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 
   .appointment-id {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+  }
+
+  .appointment-datetime {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .appointment-date,
   .appointment-time {
-    font-size: 14px;
+    font-size: 1rem;
   }
 
   .appointment-patient,
   .appointment-email {
-    font-size: 13px;
+    font-size: 0.9rem;
+  }
+
+  .dialog-content {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .dialog-actions {
+    flex-direction: column;
+  }
+
+  .dialog-cancel-btn,
+  .dialog-confirm-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .appointment-datetime {
+    gap: 0.25rem;
+  }
+
+  .appointment-date,
+  .appointment-time {
+    font-size: 0.95rem;
+    padding: 6px 10px;
   }
 }
