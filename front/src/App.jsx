@@ -17,6 +17,7 @@ import Home from "./views/Home";
 import MisTurnos from "./views/MisTurnos";
 import Register from "./views/Register";
 import Login from "./views/Login";
+import CreateAppointment from "./views/CreateAppointment";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/mis-turnos" element={<MisTurnos />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/agendar-cita" element={<CreateAppointment />} />
       </Routes>
     </div>
   );

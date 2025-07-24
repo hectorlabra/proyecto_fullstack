@@ -26,6 +26,9 @@ function Navbar() {
               <Link to="/mis-turnos">Mis Turnos</Link>
             </li>
             <li>
+              <Link to="/agendar-cita">Agendar Cita</Link>
+            </li>
+            <li>
               <span className="user-greeting">Hola, {user.user.firstName}</span>
             </li>
             <li>
