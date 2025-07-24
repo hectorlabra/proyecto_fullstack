@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import { getStatusLabel, getStatusClass } from "../helpers/myAppointments";
 import "../styles/AppointmentCard.css";
 

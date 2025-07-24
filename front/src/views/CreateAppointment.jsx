@@ -10,7 +10,7 @@
  */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import "../styles/CreateAppointment.css";
 
 const CreateAppointment = () => {

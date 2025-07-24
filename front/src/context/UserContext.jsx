@@ -7,7 +7,7 @@
  * - Funciones de autenticación (login, logout)
  * - Funciones de gestión de turnos (crear, cancelar, obtener)
  */
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
 
 // Tipos de acciones para el reducer
 const ACTION_TYPES = {
@@ -96,15 +96,6 @@ const userReducer = (state, action) => {
 
 // Crear el contexto
 const UserContext = createContext();
-
-// Hook personalizado para usar el contexto
-export const useUser = () => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error("useUser debe ser usado dentro de un UserProvider");
-  }
-  return context;
-};
 
 // Provider del contexto
 export const UserProvider = ({ children }) => {

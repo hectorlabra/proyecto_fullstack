@@ -8,7 +8,7 @@
  */
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../hooks/useUser";
 import AppointmentCard from "../components/AppointmentCard";
 import EmptyAppointments from "../components/EmptyAppointments";
 import "../styles/MisTurnos.css";
