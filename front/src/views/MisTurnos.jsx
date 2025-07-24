@@ -1,3 +1,11 @@
+/**
+ * MisTurnos Component
+ *
+ * Displays the user's appointments. Fetches data from an API, handles loading and error states,
+ * and renders appointments using `AppointmentCard`.
+ *
+ * @returns {JSX.Element}
+ */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AppointmentCard from "../components/AppointmentCard";
