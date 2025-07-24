@@ -329,7 +329,7 @@ const CreateAppointment = () => {
               <span className="error-message">{errors.notes}</span>
             )}
             <small className="field-hint">
-              {formData.notes.length}/500 caracteres
+              {(formData.notes || "").length}/500 caracteres
             </small>
           </div>
 
