@@ -1,42 +1,9 @@
-/**
- * Controlador para obtener el listado de todos los usuarios.
- *
- * @route GET /users
- * @param _req - Objeto de solicitud de Express (no utilizado).
- * @param res - Objeto de respuesta de Express.
- */
-
-/**
- * Controlador para obtener el detalle de un usuario específico por ID.
- *
- * @route GET /users/:id
- * @param req - Objeto de solicitud de Express, contiene el parámetro `id`.
- * @param res - Objeto de respuesta de Express.
- */
-
-/**
- * Controlador para registrar un nuevo usuario.
- *
- * @route POST /users/register
- * @param req - Objeto de solicitud de Express que contiene el DTO validado.
- * @param res - Objeto de respuesta de Express.
- */
-
-/**
- * Controlador para el login de un usuario en la aplicación.
- *
- * @route POST /users/login
- * @param req - Objeto de solicitud de Express que contiene el DTO validado.
- * @param res - Objeto de respuesta de Express.
- */
 import { Request, Response } from "express";
 import * as usersService from "../services/usersService";
 import * as credentialsService from "../services/credentialsService";
 import { CreateUserDto } from "../dtos/users/create-user.dto";
 import { LoginDto } from "../dtos/credentials/login.dto";
 
-// Devuelve todos los usuarios
-// GET /users
 export const getAllUsers = async (
   _req: Request,
   res: Response
@@ -50,17 +17,14 @@ export const getAllUsers = async (
   }
 };
 
-// Devuelve un usuario por ID
-// GET /users/:id
 export const getUserById = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
     const { id } = req.params;
-
-    // Validar que el ID sea numérico
     const userId = parseInt(id);
+
     if (isNaN(userId)) {
       res.status(400).json({ error: "ID inválido" });
       return;
@@ -79,18 +43,13 @@ export const getUserById = async (
   }
 };
 
-// Registra un nuevo usuario
-// POST /users/register
 export const registerUser = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
     const userData: CreateUserDto = req.body;
-
     const newUser = await usersService.createUser(userData);
-
-    // Retornar el usuario sin incluir información sensible
     const userResponse = {
       id: newUser.id,
       firstName: newUser.firstName,

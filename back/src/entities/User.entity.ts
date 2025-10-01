@@ -15,10 +15,6 @@ import {
   Length,
 } from "class-validator";
 
-/**
- * Entidad que representa un usuario del sistema.
- * Almacena la información personal de los pacientes del consultorio médico.
- */
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
@@ -67,7 +63,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // Relaciones
   @OneToOne("Credential", "user", {
     cascade: true,
     onDelete: "CASCADE",
@@ -77,7 +72,6 @@ export class User {
   @OneToMany("Appointment", "user")
   appointments: any[];
 
-  // Getter para el nombre completo
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;
   }
