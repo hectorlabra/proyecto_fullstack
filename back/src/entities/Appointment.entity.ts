@@ -17,19 +17,12 @@ import {
   IsNumber,
 } from "class-validator";
 
-/**
- * Enum para los estados de las citas médicas
- */
 export enum AppointmentStatus {
   SCHEDULED = "scheduled",
   CANCELED = "canceled",
   COMPLETED = "completed",
 }
 
-/**
- * Entidad que representa una cita médica en el sistema.
- * Almacena la información de los turnos agendados por los pacientes.
- */
 @Entity("appointments")
 export class Appointment {
   @PrimaryGeneratedColumn()
@@ -69,7 +62,6 @@ export class Appointment {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // Relación ManyToOne con User
   @ManyToOne("User", "appointments", {
     onDelete: "CASCADE",
   })
@@ -81,22 +73,18 @@ export class Appointment {
   @IsNotEmpty({ message: "El ID del usuario es obligatorio" })
   userId: number;
 
-  // Getter para verificar si la cita está activa
   get isActive(): boolean {
     return this.status === AppointmentStatus.SCHEDULED;
   }
 
-  // Getter para verificar si la cita está cancelada
   get isCanceled(): boolean {
     return this.status === AppointmentStatus.CANCELED;
   }
 
-  // Getter para verificar si la cita está completada
   get isCompleted(): boolean {
     return this.status === AppointmentStatus.COMPLETED;
   }
 
-  // Método para verificar si la cita puede ser cancelada
   canBeCanceled(): boolean {
     const appointmentDate = new Date(this.date);
     const today = new Date();
