@@ -1,15 +1,5 @@
-/**
- * User Context - Manejo del estado global de usuario y turnos
- *
- * Este contexto maneja toda la información relacionada con:
- * - Usuario autenticado
- * - Turnos del usuario
- * - Funciones de autenticación (login, logout)
- * - Funciones de gestión de turnos (crear, cancelar, obtener)
- */
 import React, { createContext, useReducer, useEffect } from "react";
 
-// Tipos de acciones para el reducer
 const ACTION_TYPES = {
   LOGIN_USER: "LOGIN_USER",
   LOGOUT_USER: "LOGOUT_USER",
@@ -21,7 +11,6 @@ const ACTION_TYPES = {
   CLEAR_ERROR: "CLEAR_ERROR",
 };
 
-// Estado inicial del contexto
 const initialState = {
   user: null,
   userAppointments: [],
@@ -30,7 +19,6 @@ const initialState = {
   isAuthenticated: false,
 };
 
-// Reducer para manejar los cambios de estado
 const userReducer = (state, action) => {
   switch (action.type) {
     case ACTION_TYPES.LOGIN_USER:
@@ -94,14 +82,11 @@ const userReducer = (state, action) => {
   }
 };
 
-// Crear el contexto
 const UserContext = createContext();
 
-// Provider del contexto
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
-  // Función para hacer login
   const login = async (credentials) => {
     try {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
@@ -121,7 +106,6 @@ export const UserProvider = ({ children }) => {
         throw new Error(data.message || "Error al iniciar sesión");
       }
 
-      // Guardar en localStorage para persistencia
       const userData = {
         user: data.user,
         token: data.token,
@@ -129,13 +113,11 @@ export const UserProvider = ({ children }) => {
       };
       localStorage.setItem("user", JSON.stringify(userData));
 
-      // Actualizar estado del contexto
       dispatch({
         type: ACTION_TYPES.LOGIN_USER,
         payload: { user: data.user, appointments: [] },
       });
 
-      // Cargar turnos del usuario
       await fetchUserAppointments(data.user.id);
 
       return { success: true, data };
@@ -148,13 +130,11 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // Función para hacer logout
   const logout = () => {
     localStorage.removeItem("user");
     dispatch({ type: ACTION_TYPES.LOGOUT_USER });
   };
 
-  // Función para obtener turnos del usuario
   const fetchUserAppointments = async (userId) => {
     try {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
@@ -176,7 +156,6 @@ export const UserProvider = ({ children }) => {
         payload: userAppointments,
       });
 
-      // Actualizar localStorage
       const userData = JSON.parse(localStorage.getItem("user"));
       if (userData) {
         userData.appointments = userAppointments;
@@ -193,7 +172,6 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // Función para crear una nueva cita
   const createAppointment = async (appointmentData) => {
     try {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
@@ -229,13 +207,11 @@ export const UserProvider = ({ children }) => {
         throw new Error(errorMessage);
       }
 
-      // Añadir la nueva cita al estado
       dispatch({
         type: ACTION_TYPES.ADD_APPOINTMENT,
         payload: data,
       });
 
-      // Actualizar localStorage
       const userData = JSON.parse(localStorage.getItem("user"));
       if (userData) {
         userData.appointments = [...(userData.appointments || []), data];
@@ -252,7 +228,6 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // Función para cancelar una cita
   const cancelAppointment = async (appointmentId) => {
     try {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
@@ -274,13 +249,11 @@ export const UserProvider = ({ children }) => {
         throw new Error(data.error || "Error al cancelar la cita");
       }
 
-      // Actualizar la cita en el estado
       dispatch({
         type: ACTION_TYPES.UPDATE_APPOINTMENT,
         payload: data.appointment,
       });
 
-      // Actualizar localStorage
       const userData = JSON.parse(localStorage.getItem("user"));
       if (userData && userData.appointments) {
         userData.appointments = userData.appointments.map((appointment) =>
@@ -299,19 +272,16 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  // Función para limpiar errores
   const clearError = () => {
     dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
   };
 
-  // Función para refrescar turnos
   const refreshAppointments = async () => {
     if (state.user) {
       return await fetchUserAppointments(state.user.id);
     }
   };
 
-  // Verificar autenticación al iniciar la aplicación
   useEffect(() => {
     const initializeAuth = () => {
       try {
@@ -319,7 +289,6 @@ export const UserProvider = ({ children }) => {
         if (userData) {
           const parsedUserData = JSON.parse(userData);
 
-          // Verificar que los datos sean válidos
           if (parsedUserData.user && parsedUserData.user.id) {
             dispatch({
               type: ACTION_TYPES.LOGIN_USER,
@@ -329,7 +298,6 @@ export const UserProvider = ({ children }) => {
               },
             });
 
-            // Recargar turnos desde el servidor para mantener sincronización
             fetchUserAppointments(parsedUserData.user.id);
           }
         }
@@ -342,16 +310,12 @@ export const UserProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-  // Valor del contexto
   const contextValue = {
-    // Estado
     user: state.user,
     userAppointments: state.userAppointments,
     isLoading: state.isLoading,
     error: state.error,
     isAuthenticated: state.isAuthenticated,
-
-    // Funciones
     login,
     logout,
     createAppointment,

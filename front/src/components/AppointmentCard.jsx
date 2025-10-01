@@ -8,7 +8,6 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
   const { cancelAppointment: cancelAppointmentContext, isLoading } = useUser();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-  // Formatear fecha para mostrar de manera más legible
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -19,7 +18,6 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     return new Date(dateString).toLocaleDateString("es-ES", options);
   };
 
-  // Formatear hora para mostrar en formato 12 horas
   const formatTime = (timeString) => {
     const [hours, minutes] = timeString.split(":");
     const hour24 = parseInt(hours);
@@ -28,13 +26,11 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     return `${hour12}:${minutes} ${ampm}`;
   };
 
-  // Verificar si la cita puede ser cancelada
   const canCancel = () => {
     if (status === "cancelled" || status === "completed") {
       return false;
     }
 
-    // Verificar si es al menos un día antes
     const appointmentDate = new Date(date);
     const today = new Date();
     const tomorrow = new Date(today);
@@ -43,19 +39,16 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     return appointmentDate >= tomorrow;
   };
 
-  // Función para cancelar la cita usando el Context
   const cancelAppointment = async () => {
     try {
       const result = await cancelAppointmentContext(id);
 
       if (result.success) {
-        // Notificar al componente padre que se actualizó una cita
         if (onAppointmentUpdate) {
           onAppointmentUpdate();
         }
         setShowConfirmDialog(false);
       } else {
-        // Mostrar error
         alert(`Error al cancelar la cita: ${result.error}`);
       }
     } catch (error) {
@@ -64,12 +57,10 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     }
   };
 
-  // Handler para mostrar el diálogo de confirmación
   const handleCancelClick = () => {
     setShowConfirmDialog(true);
   };
 
-  // Handler para cancelar el diálogo
   const handleCancelDialog = () => {
     setShowConfirmDialog(false);
   };
@@ -109,7 +100,6 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
           </div>
         )}
 
-        {/* Botones de acción */}
         <div className="appointment-actions">
           {canCancel() && (
             <button
@@ -137,7 +127,6 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
         </div>
       </div>
 
-      {/* Diálogo de confirmación */}
       {showConfirmDialog && (
         <div className="dialog-overlay">
           <div className="dialog-content">

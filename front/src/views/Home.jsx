@@ -1,9 +1,3 @@
-/**
- * Home component renders the main landing page of the application.
- *
- * @component
- * @returns {JSX.Element} The rendered Home page with a title.
- */
 import React from "react";
 import "../styles/Home.css";
 

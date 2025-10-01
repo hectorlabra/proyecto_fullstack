@@ -1,4 +1,3 @@
-// Datos de muestra para turnos - simulan la estructura del backend
 export const myAppointments = [
   {
     id: 1,
@@ -87,19 +86,17 @@ export const myAppointments = [
   },
 ];
 
-// Estados disponibles para los turnos (coinciden con el backend)
 export const AppointmentStatus = {
   SCHEDULED: "scheduled",
   CANCELLED: "cancelled",
   COMPLETED: "completed",
-  ACTIVE: "active", // Nuevo estado que usa el backend
+  ACTIVE: "active",
 };
 
-// Funciones auxiliares para trabajar con turnos
 export const getStatusLabel = (status) => {
   switch (status) {
     case AppointmentStatus.SCHEDULED:
-    case AppointmentStatus.ACTIVE: // El backend usa "active" para turnos programados
+    case AppointmentStatus.ACTIVE:
       return "Programado";
     case AppointmentStatus.CANCELLED:
       return "Cancelado";
@@ -114,7 +111,6 @@ export const getStatusLabel = (status) => {
   }
 };
 
-// Función para obtener la clase CSS según el estado
 export const getStatusClass = (status) => {
   switch (status) {
     case AppointmentStatus.SCHEDULED:
