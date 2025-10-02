@@ -2,9 +2,12 @@ import "reflect-metadata";
 import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import pinoHttp from "pino-http";
 import { config } from "./config/envs";
+import { logger } from "./config/logger";
 import router from "./routes/index";
 import { AppDataSource } from "./data-source";
+import { errorHandler, notFoundHandler } from "./middlewares/error.middleware";
 
 const app = express();
 
@@ -28,6 +31,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+app.use(pinoHttp({ logger }));
 app.use(cors(corsOptions));
 
 if (config.ENABLE_RATE_LIMIT) {
@@ -40,7 +44,7 @@ if (config.ENABLE_RATE_LIMIT) {
     legacyHeaders: false,
   });
   app.use(limiter);
-  console.log("⏱️  Rate limiting habilitado: 100 requests/15min");
+  logger.info("⏱️  Rate limiting habilitado: 100 requests/15min");
 }
 
 app.use(express.json());
@@ -56,23 +60,29 @@ app.get("/test", (_, res) => {
 
 app.use("/", router);
 
+app.use(notFoundHandler);
+app.use(errorHandler);
+
 const PORT = config.PORT;
 
 async function initializeApp() {
   try {
-    console.log("🔄 Conectando a la base de datos...");
+    logger.info("🔄 Conectando a la base de datos...");
     await AppDataSource.initialize();
-    console.log("✅ Conexión a la base de datos establecida");
+    logger.info("✅ Conexión a la base de datos establecida");
 
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor ejecutándose en el puerto ${PORT}`);
-      console.log(
-        `📊 Base de datos: ${config.DB_DATABASE} en ${config.DB_HOST}:${config.DB_PORT}`
-      );
-      console.log(`🌍 Entorno: ${config.NODE_ENV}`);
+      logger.info({
+        msg: "🚀 Servidor ejecutándose",
+        port: PORT,
+        database: config.DB_DATABASE,
+        host: config.DB_HOST,
+        dbPort: config.DB_PORT,
+        environment: config.NODE_ENV,
+      });
     });
   } catch (error) {
-    console.error("❌ Error al inicializar la aplicación:", error);
+    logger.error({ err: error, msg: "❌ Error al inicializar la aplicación" });
     process.exit(1);
   }
 }
