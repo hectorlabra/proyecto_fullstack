@@ -289,7 +289,18 @@ export const UserProvider = ({ children }) => {
 
   const refreshAppointments = async () => {
     if (state.user) {
-      return await fetchUserAppointments(state.user.id);
+      // Manejar estructura anidada: state.user puede ser {user: {...}, token, loginTime}
+      // o puede ser directamente el objeto user {id, firstName, ...}
+      const userId = state.user.user?.id || state.user.id;
+      console.log("refreshAppointments - state.user:", state.user);
+      console.log("refreshAppointments - userId extracted:", userId);
+
+      if (!userId) {
+        console.error("No se pudo extraer userId de state.user");
+        return { success: false, error: "Usuario no válido" };
+      }
+
+      return await fetchUserAppointments(userId);
     }
   };
 
