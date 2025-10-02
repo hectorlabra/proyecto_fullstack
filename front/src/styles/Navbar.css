@@ -70,7 +70,32 @@
     gap: 1rem;
   }
 
+  .logo h2 {
+    font-size: 1.3rem;
+  }
+
   .nav-links {
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.75rem;
+  }
+
+  .logo h2 {
+    font-size: 1.2rem;
+  }
+
+  .nav-links {
+    font-size: 0.9rem;
   }
 }

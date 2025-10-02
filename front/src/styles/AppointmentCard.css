@@ -279,6 +279,12 @@
 }
 
 /* Responsive design */
+@media (max-width: 1024px) {
+  .appointment-card {
+    padding: 18px;
+  }
+}
+
 @media (max-width: 768px) {
   .appointment-card {
     padding: 16px;
@@ -294,6 +300,11 @@
     font-size: 1.2rem;
   }
 
+  .appointment-status {
+    font-size: 0.8rem;
+    padding: 5px 14px;
+  }
+
   .appointment-datetime {
     flex-direction: column;
     gap: 0.5rem;
@@ -307,6 +318,11 @@
   .appointment-patient,
   .appointment-email {
     font-size: 0.9rem;
+  }
+
+  .cancel-btn {
+    width: 100%;
+    padding: 12px 20px;
   }
 
   .dialog-content {
@@ -325,13 +341,43 @@
 }
 
 @media (max-width: 480px) {
+  .appointment-card {
+    padding: 14px;
+    margin-bottom: 0.75rem;
+  }
+
+  .appointment-id {
+    font-size: 1.1rem;
+  }
+
   .appointment-datetime {
     gap: 0.25rem;
   }
 
   .appointment-date,
   .appointment-time {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 6px 10px;
+  }
+
+  .appointment-notes {
+    padding: 10px;
+  }
+
+  .appointment-notes-text {
+    font-size: 0.9rem;
+  }
+
+  .cancel-btn {
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+
+  .dialog-content {
+    padding: 1.25rem;
+  }
+
+  .dialog-content h3 {
+    font-size: 1.1rem;
   }
 }
