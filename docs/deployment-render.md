@@ -297,12 +297,36 @@ from origin 'https://tu-frontend.onrender.com' has been blocked by CORS policy
 
 ### Error de conexión a base de datos
 
-**Síntoma**: Backend crashea con error PostgreSQL
+**Síntoma 1**: Backend crashea con `database "medical_appointments" does not exist`
+
+**Causa**: El nombre de la base de datos en Render es diferente al configurado
 
 **Solución**:
 
-1. Verificar credenciales de DB en variables de entorno
-2. Confirmar `DB_SSL=true`
+1. Ir a tu PostgreSQL service en Render → **Info**
+2. Copiar **"Internal Database URL"** completa
+3. Ir a tu Web Service → **Environment**
+4. Agregar/editar variable: `DATABASE_URL=[pegar URL completa]`
+5. Eliminar las variables `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_DATABASE` si existen
+6. Click **Save Changes**
+7. Hacer **Manual Deploy**
+
+**Ejemplo de DATABASE_URL correcta:**
+
+```
+postgresql://medical_appointments_qivi_user:PASSWORD@dpg-d3fceh3uibrs73dr83k0-a/medical_appointments_qivi
+```
+
+> 💡 **Nota**: El sufijo `_qivi` (o similar) es auto-generado por Render para hacer el nombre único.
+
+---
+
+**Síntoma 2**: Backend crashea con error PostgreSQL genérico
+
+**Solución**:
+
+1. Verificar que DATABASE_URL esté configurada correctamente
+2. Si usas variables individuales, confirmar `DB_SSL=true`
 3. Usar "Internal Database URL" de Render (no externa)
 4. Verificar que base de datos esté Live en Render
 
