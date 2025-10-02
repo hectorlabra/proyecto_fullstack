@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 import { config } from "./config/envs";
 import router from "./routes/index";
 import { AppDataSource } from "./data-source";
@@ -28,6 +29,20 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+if (config.ENABLE_RATE_LIMIT) {
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message:
+      "Demasiadas peticiones desde esta IP, por favor intente de nuevo más tarde.",
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
+  app.use(limiter);
+  console.log("⏱️  Rate limiting habilitado: 100 requests/15min");
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

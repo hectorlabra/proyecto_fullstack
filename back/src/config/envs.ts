@@ -12,4 +12,5 @@ export const config = {
   DB_SSL: process.env.DB_SSL === "true",
   NODE_ENV: process.env.NODE_ENV || "development",
   ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS || "http://localhost:5173",
+  ENABLE_RATE_LIMIT: process.env.ENABLE_RATE_LIMIT !== "false",
 };
