@@ -92,7 +92,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
-      const response = await fetch("http://localhost:3000/users/login", {
+      const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -140,7 +140,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
-      const response = await fetch("http://localhost:3000/appointments");
+      const response = await fetch(`${API_URL}/appointments`);
 
       if (!response.ok) {
         throw new Error("Error al obtener turnos");
@@ -177,16 +177,13 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
-      const response = await fetch(
-        "http://localhost:3000/appointments/schedule",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(appointmentData),
-        }
-      );
+      const response = await fetch(`${API_URL}/appointments/schedule`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(appointmentData),
+      });
 
       const data = await response.json();
 
@@ -234,7 +231,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
       const response = await fetch(
-        `http://localhost:3000/appointments/cancel/${appointmentId}`,
+        `${API_URL}/appointments/cancel/${appointmentId}`,
         {
           method: "PUT",
           headers: {

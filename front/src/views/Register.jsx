@@ -9,9 +9,10 @@
  * // Renders the registration form with all required fields
  * <Register />
  */
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Register.css";
+import API_URL from "../config/api";
 
 function Register() {
   // Estado del formulario
@@ -192,7 +193,7 @@ function Register() {
   // Función para registrar usuario en la API
   const registerUserAPI = async (userData) => {
     try {
-      const response = await fetch("http://localhost:3000/users/register", {
+      const response = await fetch(`${API_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
