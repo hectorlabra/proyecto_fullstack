@@ -22,27 +22,30 @@ import CreateAppointment from "./views/CreateAppointment";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { UserProvider } from "./context/UserContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   return (
-    <UserProvider>
-      <div className="App">
-        <a href="#main-content" className="skip-link">
-          Saltar al contenido principal
-        </a>
-        <Navbar />
-        <main id="main-content" role="main">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/mis-turnos" element={<MisTurnos />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/agendar-cita" element={<CreateAppointment />} />
-            <Route path="*" element={<Home />} />
-          </Routes>
-        </main>
-      </div>
-    </UserProvider>
+    <ErrorBoundary>
+      <UserProvider>
+        <div className="App">
+          <a href="#main-content" className="skip-link">
+            Saltar al contenido principal
+          </a>
+          <Navbar />
+          <main id="main-content" role="main">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/mis-turnos" element={<MisTurnos />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/agendar-cita" element={<CreateAppointment />} />
+              <Route path="*" element={<Home />} />
+            </Routes>
+          </main>
+        </div>
+      </UserProvider>
+    </ErrorBoundary>
   );
 }
 
