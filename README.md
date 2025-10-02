@@ -139,10 +139,24 @@ Para diagramas detallados de arquitectura y modelo de datos, ver [Documentación
    # Crear base de datos
    createdb appointments_db
 
-   # Opcional: Poblar con datos de prueba
+   # Poblar con datos de prueba (recomendado)
    cd back
    npm run seed
    ```
+
+   **Credenciales de Demo:**
+
+   | Usuario            | Contraseña   | Rol           | Email                      |
+   | ------------------ | ------------ | ------------- | -------------------------- |
+   | `admin`            | `Admin123!`  | Administrador | admin@medicapp.com         |
+   | `maria.gonzalez`   | `Maria123!`  | Usuario       | maria.gonzalez@email.com   |
+   | `carlos.rodriguez` | `Carlos123!` | Usuario       | carlos.rodriguez@email.com |
+
+   El seed crea automáticamente:
+
+   - 1 usuario administrador
+   - 2 usuarios regulares
+   - 5 citas de ejemplo (scheduled, completed, canceled)
 
 5. **Verificar instalación**:
    - Estado del backend: http://localhost:3000/health
