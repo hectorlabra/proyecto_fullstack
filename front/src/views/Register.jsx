@@ -288,10 +288,9 @@ function Register() {
   return (
     <div className="register-container">
       <div className="register-form">
-        <h2>Registro de Usuario</h2>
+        <h1>Registro de Usuario</h1>
         <p>Crea tu cuenta para acceder a MediCitas</p>
 
-        {/* Mensajes de feedback */}
         {submitMessage.text && (
           <div
             className={`${
@@ -299,12 +298,14 @@ function Register() {
                 ? "success-message"
                 : "error-message-general"
             }`}
+            role="alert"
+            aria-live="polite"
           >
             {submitMessage.text}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} aria-label="Formulario de registro">
           <div className="form-group">
             <label htmlFor="firstName">Nombres</label>
             <input

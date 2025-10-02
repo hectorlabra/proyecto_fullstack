@@ -12,11 +12,11 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" role="navigation" aria-label="Navegación principal">
       <div className="logo">
         <h2>MediCitas</h2>
       </div>
-      <ul className="nav-links">
+      <ul className="nav-links" role="list">
         <li>
           <Link to="/">Inicio</Link>
         </li>
@@ -32,7 +32,11 @@ function Navbar() {
               <span className="user-greeting">Hola, {user.user.firstName}</span>
             </li>
             <li>
-              <button onClick={handleLogout} className="logout-btn">
+              <button
+                onClick={handleLogout}
+                className="logout-btn"
+                aria-label="Cerrar sesión de usuario"
+              >
                 Cerrar Sesión
               </button>
             </li>

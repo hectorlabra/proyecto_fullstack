@@ -1,0 +1,117 @@
+/* Skip link para navegación por teclado - WCAG 2.1 A */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 10000;
+  border-radius: 0 0 4px 0;
+  font-weight: 600;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Mejoras de foco visible - WCAG 2.1 AA */
+*:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Mejoras de contraste para mensajes de error */
+.error-message,
+.error-message-general[class*="error"] {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+
+/* Mejoras de contraste para mensajes de éxito */
+.success-message {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+}
+
+/* Indicadores de estado para lectores de pantalla */
+[aria-live="polite"],
+[aria-live="assertive"] {
+  position: relative;
+}
+
+/* Mejoras para navegación por teclado en listas */
+[role="list"] {
+  list-style: none;
+}
+
+/* Estados hover y focus consistentes para interactividad */
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+button:hover:not(:disabled),
+button:focus:not(:disabled) {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+/* Indicador visual para elementos deshabilitados */
+button:disabled,
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mejoras de tamaño mínimo de toque - WCAG 2.1 AA */
+button,
+a,
+input[type="checkbox"],
+input[type="radio"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Asegurar que los labels estén asociados visualmente */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Mejoras para estados de validación */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-color: #dc3545;
+  background-color: #fff5f5;
+}
+
+input[aria-invalid="false"]:focus,
+select[aria-invalid="false"]:focus,
+textarea[aria-invalid="false"]:focus {
+  border-color: #28a745;
+}

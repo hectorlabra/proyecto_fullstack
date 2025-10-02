@@ -179,10 +179,9 @@ function Login() {
   return (
     <div className="login-container">
       <div className="login-form">
-        <h2>Iniciar Sesión</h2>
+        <h1>Iniciar Sesión</h1>
         <p>Accede a tu cuenta de MediCitas</p>
 
-        {/* Mensajes de feedback */}
         {submitMessage.text && (
           <div
             className={`${
@@ -190,12 +189,17 @@ function Login() {
                 ? "success-message"
                 : "error-message-general"
             }`}
+            role="alert"
+            aria-live="polite"
           >
             {submitMessage.text}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          aria-label="Formulario de inicio de sesión"
+        >
           <div className="form-group">
             <label htmlFor="username">Nombre de Usuario</label>
             <input
@@ -206,10 +210,15 @@ function Login() {
               onChange={handleInputChange}
               placeholder="Ingresa tu nombre de usuario"
               className={errors.username ? "error" : ""}
+              aria-required="true"
+              aria-invalid={errors.username ? "true" : "false"}
+              aria-describedby={errors.username ? "username-error" : undefined}
               required
             />
             {errors.username && (
-              <span className="error-message">{errors.username}</span>
+              <span className="error-message" id="username-error" role="alert">
+                {errors.username}
+              </span>
             )}
           </div>
 
@@ -223,10 +232,15 @@ function Login() {
               onChange={handleInputChange}
               placeholder="Ingresa tu contraseña"
               className={errors.password ? "error" : ""}
+              aria-required="true"
+              aria-invalid={errors.password ? "true" : "false"}
+              aria-describedby={errors.password ? "password-error" : undefined}
               required
             />
             {errors.password && (
-              <span className="error-message">{errors.password}</span>
+              <span className="error-message" id="password-error" role="alert">
+                {errors.password}
+              </span>
             )}
           </div>
 

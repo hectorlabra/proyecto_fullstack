@@ -13,6 +13,7 @@
  * @see {@link Navbar} for the navigation bar component.
  */
 import "./App.css";
+import "./styles/accessibility.css";
 import Home from "./views/Home";
 import MisTurnos from "./views/MisTurnos";
 import Register from "./views/Register";
@@ -26,14 +27,19 @@ function App() {
   return (
     <UserProvider>
       <div className="App">
+        <a href="#main-content" className="skip-link">
+          Saltar al contenido principal
+        </a>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/mis-turnos" element={<MisTurnos />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/agendar-cita" element={<CreateAppointment />} />
-        </Routes>
+        <main id="main-content" role="main">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/mis-turnos" element={<MisTurnos />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/agendar-cita" element={<CreateAppointment />} />
+          </Routes>
+        </main>
       </div>
     </UserProvider>
   );
