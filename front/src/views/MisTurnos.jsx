@@ -49,7 +49,7 @@ const MisTurnos = () => {
         <h1 className="mis-turnos-title">Mis Turnos</h1>
         <div className="user-welcome">
           <p>
-            Hola, {user.user.firstName} {user.user.lastName}
+            Hola, {user.firstName} {user.lastName}
           </p>
         </div>
         <div className="loading">

@@ -170,7 +170,7 @@ const CreateAppointment = () => {
 
     // Preparar datos para enviar
     const appointmentData = {
-      userId: user.user.id,
+      userId: user.id,
       date: formData.date,
       time: formData.time,
       notes: formData.notes.trim() || undefined,
