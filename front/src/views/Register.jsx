@@ -10,7 +10,6 @@
  * <Register />
  */
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "../styles/Register.css";
 import API_URL from "../config/api";
 

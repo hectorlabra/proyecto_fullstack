@@ -1,5 +1,4 @@
 import { Component } from "react";
-import PropTypes from "prop-types";
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -7,7 +6,8 @@ class ErrorBoundary extends Component {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
+    // Este método captura errores en componentes hijos
     return { hasError: true };
   }
 
@@ -92,7 +92,7 @@ class ErrorBoundary extends Component {
               recargar la página o volver al inicio.
             </p>
 
-            {process.env.NODE_ENV === "development" && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details
                 style={{
                   marginBottom: "1.5rem",
@@ -193,9 +193,5 @@ class ErrorBoundary extends Component {
     return this.props.children;
   }
 }
-
-ErrorBoundary.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default ErrorBoundary;

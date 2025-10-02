@@ -1,4 +1,5 @@
 import React, { createContext, useReducer, useEffect } from "react";
+import API_URL from "../config/api";
 
 const ACTION_TYPES = {
   LOGIN_USER: "LOGIN_USER",
