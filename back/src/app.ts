@@ -1,5 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
+import helmet from "helmet";
+import compression from "compression";
 import rateLimit from "express-rate-limit";
 import pinoHttp from "pino-http";
 import { config } from "./config/envs";
@@ -9,6 +11,36 @@ import { errorHandler, notFoundHandler } from "./middlewares/error.middleware";
 
 export const createApp = (): Application => {
   const app = express();
+
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'"],
+          imgSrc: ["'self'", "data:", "https:"],
+        },
+      },
+      hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true,
+      },
+    })
+  );
+
+  app.use(
+    compression({
+      filter: (req, res) => {
+        if (req.headers["x-no-compression"]) {
+          return false;
+        }
+        return compression.filter(req, res);
+      },
+      level: 6,
+    })
+  );
 
   const allowedOrigins = config.ALLOWED_ORIGINS.split(",").map((origin) =>
     origin.trim()
