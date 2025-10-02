@@ -27,7 +27,11 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
   };
 
   const canCancel = () => {
-    if (status === "cancelled" || status === "completed") {
+    if (
+      status === "canceled" ||
+      status === "cancelled" ||
+      status === "completed"
+    ) {
       return false;
     }
 
@@ -111,7 +115,7 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
             </button>
           )}
 
-          {!canCancel() && status !== "cancelled" && (
+          {!canCancel() && status !== "canceled" && status !== "cancelled" && (
             <p className="cancel-info">
               {status === "completed"
                 ? "Esta cita ya fue completada"
@@ -119,7 +123,7 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
             </p>
           )}
 
-          {status === "cancelled" && (
+          {(status === "canceled" || status === "cancelled") && (
             <p className="cancel-info cancelled-text">
               Esta cita fue cancelada
             </p>

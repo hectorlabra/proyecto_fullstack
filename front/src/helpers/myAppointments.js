@@ -88,24 +88,19 @@ export const myAppointments = [
 
 export const AppointmentStatus = {
   SCHEDULED: "scheduled",
-  CANCELLED: "cancelled",
+  CANCELED: "canceled",
   COMPLETED: "completed",
-  ACTIVE: "active",
 };
 
 export const getStatusLabel = (status) => {
   switch (status) {
     case AppointmentStatus.SCHEDULED:
-    case AppointmentStatus.ACTIVE:
       return "Programado";
-    case AppointmentStatus.CANCELLED:
+    case AppointmentStatus.CANCELED:
+    case "cancelled":
       return "Cancelado";
     case AppointmentStatus.COMPLETED:
       return "Completado";
-    case "active":
-      return "Programado";
-    case "cancelled":
-      return "Cancelado";
     default:
       return "Estado desconocido";
   }
@@ -114,12 +109,10 @@ export const getStatusLabel = (status) => {
 export const getStatusClass = (status) => {
   switch (status) {
     case AppointmentStatus.SCHEDULED:
-    case AppointmentStatus.ACTIVE:
-    case "active":
-      return "status-active";
-    case AppointmentStatus.CANCELLED:
+      return "status-scheduled";
+    case AppointmentStatus.CANCELED:
     case "cancelled":
-      return "status-cancelled";
+      return "status-canceled";
     case AppointmentStatus.COMPLETED:
       return "status-completed";
     default:

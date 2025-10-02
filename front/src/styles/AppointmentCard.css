@@ -42,12 +42,12 @@
 }
 
 /* Estados de citas actualizados */
-.appointment-status.status-active {
+.appointment-status.status-scheduled {
   background: linear-gradient(45deg, #28a745, #20c997);
   box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
 }
 
-.appointment-status.status-cancelled {
+.appointment-status.status-canceled {
   background: linear-gradient(45deg, #dc3545, #e74c3c);
   box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
 }
