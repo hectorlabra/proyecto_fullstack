@@ -8,9 +8,21 @@ import { config } from "./config/envs";
 import { logger } from "./config/logger";
 import router from "./routes/index";
 import { errorHandler, notFoundHandler } from "./middlewares/error.middleware";
+import { requestIdMiddleware } from "./middlewares/request-id.middleware";
 
 export const createApp = (): Application => {
   const app = express();
+
+  app.use(requestIdMiddleware);
+
+  app.use(
+    pinoHttp({
+      logger,
+      customProps: (req) => ({
+        requestId: req.headers["x-request-id"],
+      }),
+    })
+  );
 
   app.use(
     helmet({
@@ -65,7 +77,6 @@ export const createApp = (): Application => {
     optionsSuccessStatus: 200,
   };
 
-  app.use(pinoHttp({ logger }));
   app.use(cors(corsOptions));
 
   if (config.ENABLE_RATE_LIMIT) {
