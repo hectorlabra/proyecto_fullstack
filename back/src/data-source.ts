@@ -31,7 +31,9 @@ const dataSourceConfig = config.DATABASE_URL
   ? {
       type: "postgres" as const,
       url: config.DATABASE_URL,
-      synchronize: config.NODE_ENV === "development",
+      // TEMPORAL: synchronize en true para primer deploy y crear tablas
+      // TODO: Cambiar a false después del primer deploy exitoso y usar migraciones
+      synchronize: true,
       logging: config.NODE_ENV === "development",
       entities: [User, Credential, Appointment],
       migrations: ["src/migrations/*.ts"],
@@ -47,7 +49,9 @@ const dataSourceConfig = config.DATABASE_URL
       username: config.DB_USERNAME,
       password: config.DB_PASSWORD,
       database: config.DB_DATABASE,
-      synchronize: config.NODE_ENV === "development",
+      // TEMPORAL: synchronize en true para primer deploy y crear tablas
+      // TODO: Cambiar a false después del primer deploy exitoso y usar migraciones
+      synchronize: true,
       logging: config.NODE_ENV === "development",
       entities: [User, Credential, Appointment],
       migrations: ["src/migrations/*.ts"],
