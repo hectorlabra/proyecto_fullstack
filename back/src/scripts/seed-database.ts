@@ -4,12 +4,21 @@ import { User } from "../entities/User.entity";
 import { Credential } from "../entities/Credential.entity";
 import { Appointment, AppointmentStatus } from "../entities/Appointment.entity";
 import { hash } from "bcrypt";
+import { config } from "../config/envs";
 
 /**
  * Script para poblar la base de datos con datos de prueba.
  * Crea usuarios, credenciales y citas de ejemplo para testing.
+ *
+ * ⚠️ SOLO PARA DESARROLLO - NO EJECUTAR EN PRODUCCIÓN
  */
 async function seedDatabase() {
+  if (config.NODE_ENV === "production") {
+    console.error("❌ ERROR: No se puede ejecutar seed en producción");
+    console.error("ℹ️  Este script es solo para desarrollo y testing");
+    process.exit(1);
+  }
+
   try {
     console.log("🔄 Inicializando conexión a la base de datos...");
     await AppDataSource.initialize();
