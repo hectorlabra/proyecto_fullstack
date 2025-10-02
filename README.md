@@ -167,13 +167,25 @@ Para diagramas detallados de arquitectura y modelo de datos, ver [Documentación
 
 Ver guía de despliegue en [Quickstart](./citas_fullstack/specs/001-profesionalizacion-proyecto/quickstart.md).
 
-**URLs de Demo** _(se actualizarán después del despliegue)_:
+**URLs de Demo** _(Deployed en Render)_:
 
-- Frontend: `https://[tu-app].onrender.com`
-- API Backend: `https://[tu-api].onrender.com`
-- Health Check: `https://[tu-api].onrender.com/health`
+- **Frontend**: https://medical-appointments-frontend.onrender.com
+- **API Backend**: https://medical-appointments-api-hlpv.onrender.com
+- **Health Check**: https://medical-appointments-api-hlpv.onrender.com/health
+- **Base de Datos**: PostgreSQL administrada por Render
 
----
+### Funcionalidades Principales ✅
+
+- [x] **Registro de Usuario** - Formulario con validación completa
+- [x] **Inicio de Sesión** - Autenticación segura con bcrypt
+- [x] **Panel de Turnos** - Lista de citas con filtros por estado
+- [x] **Crear Turno** - Formulario con validación de horarios y fechas
+- [x] **Cancelar Turno** - Solo citas programadas, con reglas de negocio
+- [x] **SPA Routing** - Navegación sin recargas de página
+- [x] **Responsive Design** - Funciona en móvil y desktop
+- [x] **Error Boundaries** - Manejo de errores en producción
+- [x] **Rate Limiting** - Protección contra abuso de API (habilitado en prod)
+- [x] **Migraciones DB** - Control de versiones del esquema de BD---
 
 ## 🔐 Variables de Entorno
 
@@ -248,15 +260,19 @@ _Las capturas se agregarán aquí después de la implementación de UI_
 - [x] Base de datos PostgreSQL con TypeORM
 - [x] SPA React con enrutamiento
 
-### Fase 2: Profesionalización 🚧 _(En Progreso)_
+### Fase 2: Profesionalización ✅ _(Completado)_
 
 - [x] Documentación del proyecto (arquitectura, ejemplos API)
 - [x] Licencia y guías de contribución
-- [ ] Endpoints de health y version
-- [ ] Configuración CORS con lista blanca
-- [ ] Logging estructurado
-- [ ] Despliegue a Render
-- [ ] README con capturas de pantalla
+- [x] Endpoints de health y version
+- [x] Configuración CORS con lista blanca
+- [x] Logging estructurado (Pino)
+- [x] Despliegue a Render (Backend + Frontend + PostgreSQL)
+- [x] README con capturas de pantalla y URLs en vivo
+- [x] Migraciones de base de datos implementadas
+- [x] Rate limiting configurado
+- [x] SPA routing con \_redirects
+- [x] Sistema E2E funcionando en producción
 
 ### Fase 3: Mejoras 📋 _(Planificado)_
 
