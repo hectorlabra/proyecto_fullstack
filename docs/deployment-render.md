@@ -81,7 +81,29 @@ Crear archivo `specs/001-profesionalizacion-proyecto/quickstart.md` con:
 
 ### Paso 2: Configurar Variables de Entorno
 
-En la sección **"Environment Variables"**, agregar:
+En la sección **"Environment Variables"**, tienes **dos opciones**:
+
+#### Opción A: URL completa (Recomendado - Más simple)
+
+```bash
+# Servidor
+PORT=3000
+APP_VERSION=1.0.0
+NODE_ENV=production
+
+# Base de Datos (copiar Internal Database URL de Render)
+DATABASE_URL=postgresql://user:password@host:5432/database
+
+# CORS (actualizar después de deploy frontend)
+ALLOWED_ORIGINS=http://localhost:5173
+
+# Rate Limiting
+ENABLE_RATE_LIMIT=true
+```
+
+> 💡 **Ventaja**: Solo una variable, Render la proporciona automáticamente
+
+#### Opción B: Variables individuales
 
 ```bash
 # Servidor
@@ -104,7 +126,7 @@ ALLOWED_ORIGINS=http://localhost:5173
 ENABLE_RATE_LIMIT=true
 ```
 
-> 💡 **Tip**: Render permite usar la "Internal Database URL" completa como variable única si configuras TypeORM para parsearla.
+> � **Nota**: Si usas `DATABASE_URL`, TypeORM debe estar configurado para parsearla. Si usas variables individuales, asegúrate de incluir `DB_SSL=true`
 
 ### Paso 3: Deploy
 
