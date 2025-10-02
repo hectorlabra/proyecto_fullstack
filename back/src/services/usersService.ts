@@ -4,6 +4,7 @@ import { Credential } from "../entities/Credential.entity";
 import { CreateUserDto } from "../dtos/users/create-user.dto";
 import { hash } from "bcrypt";
 import { Repository } from "typeorm";
+import { logger } from "../config/logger";
 
 export const getAllUsers = async (): Promise<User[]> => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
@@ -84,7 +85,10 @@ export const createUser = async (userData: CreateUserDto): Promise<User> => {
     });
 
     await manager.save(Credential, newCredential);
-    console.log(`User ${savedUser.id} created successfully.`);
+    logger.info(
+      { userId: savedUser.id, username: userData.username },
+      "Usuario creado exitosamente"
+    );
 
     return manager.findOneOrFail(User, {
       where: { id: savedUser.id },

@@ -3,6 +3,7 @@ import * as usersService from "../services/usersService";
 import * as credentialsService from "../services/credentialsService";
 import { CreateUserDto } from "../dtos/users/create-user.dto";
 import { LoginDto } from "../dtos/credentials/login.dto";
+import { logger } from "../config/logger";
 
 export const getAllUsers = async (
   _req: Request,
@@ -12,7 +13,7 @@ export const getAllUsers = async (
     const users = await usersService.getAllUsers();
     res.status(200).json(users);
   } catch (error) {
-    console.error("Error al obtener usuarios:", error);
+    logger.error({ err: error }, "Error al obtener usuarios");
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
@@ -38,7 +39,10 @@ export const getUserById = async (
 
     res.status(200).json(user);
   } catch (error) {
-    console.error("Error al obtener usuario:", error);
+    logger.error(
+      { err: error, userId: req.params.id },
+      "Error al obtener usuario"
+    );
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
@@ -63,7 +67,10 @@ export const registerUser = async (
 
     res.status(201).json(userResponse);
   } catch (error: any) {
-    console.error("Error al registrar usuario:", error);
+    logger.error(
+      { err: error, email: req.body.email },
+      "Error al registrar usuario"
+    );
 
     if (
       error.message === "El email ya está registrado" ||
@@ -113,7 +120,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       user: userResponse,
     });
   } catch (error) {
-    console.error("Error al realizar login:", error);
+    logger.error(
+      { err: error, username: req.body.username },
+      "Error al realizar login"
+    );
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
