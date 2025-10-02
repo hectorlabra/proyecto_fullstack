@@ -1,20 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import "../styles/Navbar.css";
 
 function Navbar() {
   const { user, logout } = useUser();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
-    window.location.href = "/";
+    navigate("/");
   };
 
   return (
     <nav className="navbar" role="navigation" aria-label="Navegación principal">
       <div className="logo">
-        <h2>MediCitas</h2>
+        <Link to="/" aria-label="Ir a inicio">
+          <h2>MediCitas</h2>
+        </Link>
       </div>
       <ul className="nav-links" role="list">
         <li>

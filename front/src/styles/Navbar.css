@@ -9,11 +9,22 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.logo a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
 .logo h2 {
   margin: 0;
   font-size: 1.5rem;
   font-weight: bold;
   color: #3498db;
+  transition: color 0.3s ease;
+}
+
+.logo a:hover h2 {
+  color: #5dade2;
 }
 
 .nav-links {

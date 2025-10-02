@@ -38,6 +38,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/agendar-cita" element={<CreateAppointment />} />
+            <Route path="*" element={<Home />} />
           </Routes>
         </main>
       </div>
