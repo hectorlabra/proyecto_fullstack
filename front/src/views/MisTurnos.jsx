@@ -26,7 +26,12 @@ const MisTurnos = () => {
       return;
     }
 
-    // Cargar turnos solo una vez al montar el componente
+    // Solo refrescar si realmente no hay citas cargadas
+    // Esto evita sobrescribir citas recién creadas
+    console.log("MisTurnos mounted, userAppointments:", userAppointments);
+    console.log("User ID:", user.id || user.user?.id);
+
+    // Siempre refrescar para obtener el estado más reciente del servidor
     refreshAppointments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Solo ejecutar al montar, user ya está verificado arriba

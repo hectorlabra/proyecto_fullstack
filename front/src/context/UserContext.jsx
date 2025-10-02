@@ -148,9 +148,14 @@ export const UserProvider = ({ children }) => {
       }
 
       const allAppointments = await response.json();
+      console.log("All appointments from server:", allAppointments);
+      console.log("Filtering by userId:", userId);
+
       const userAppointments = allAppointments.filter(
         (appointment) => appointment.userId === userId
       );
+
+      console.log("Filtered user appointments:", userAppointments);
 
       dispatch({
         type: ACTION_TYPES.SET_USER_APPOINTMENTS,
