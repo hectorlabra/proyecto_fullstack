@@ -75,7 +75,7 @@ Crear archivo `specs/001-profesionalizacion-proyecto/quickstart.md` con:
    - **Branch**: `main`
    - **Root Directory**: `back`
    - **Runtime**: Node
-   - **Build Command**: `npm install && npm run build`
+   - **Build Command**: `npm install --include=dev && npm run build`
    - **Start Command**: `node dist/server.js`
    - **Plan**: Free (o Starter)
 
@@ -238,6 +238,21 @@ from origin 'https://tu-frontend.onrender.com' has been blocked by CORS policy
 2. Confirmar que `Start Command` sea `node dist/server.js`
 3. Verificar que `PORT` esté en variables de entorno
 4. Confirmar que `DB_SSL=true` para Render
+
+### Error de compilación TypeScript (TS7016)
+
+**Síntoma**: Build falla con errores como `Could not find a declaration file for module 'express'`
+
+**Causa**: Render no instala `devDependencies` por defecto (donde están los `@types/*`)
+
+**Solución**:
+
+1. Ir a Web Service → **Settings** → **Build & Deploy**
+2. Cambiar **Build Command** a: `npm install --include=dev && npm run build`
+3. Click en **Save Changes**
+4. Hacer **Manual Deploy** → **Deploy latest commit**
+
+> 💡 El flag `--include=dev` instala también las devDependencies necesarias para compilar TypeScript
 
 ### Frontend no conecta con Backend
 

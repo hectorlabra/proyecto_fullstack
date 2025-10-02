@@ -45,7 +45,7 @@ Este documento guía el proceso manual de deployment paso a paso.
   - Branch: `main`
   - Root Directory: `back`
   - Runtime: Node
-  - Build Command: `npm install && npm run build`
+  - Build Command: `npm install --include=dev && npm run build`
   - Start Command: `node dist/server.js`
   - Plan: Free
 
@@ -96,7 +96,7 @@ Este documento guía el proceso manual de deployment paso a paso.
   - Name: `medical-appointments-web`
   - Branch: `main`
   - Root Directory: `front`
-  - Build Command: `npm install && npm run build`
+  - Build Command: `npm install --include=dev && npm run build`
   - Publish Directory: `dist`
 
 - [ ] Agregar Environment Variable:
@@ -234,7 +234,7 @@ Al completar todos los pasos, deberías tener:
 
 ### Build falla en backend
 
-**Solución**: Verificar que `Build Command` sea `npm install && npm run build`
+**Solución**: Verificar que `Build Command` sea `npm install --include=dev && npm run build`
 
 ### Build falla en frontend
 
