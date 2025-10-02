@@ -49,21 +49,18 @@ Este documento guía el proceso manual de deployment paso a paso.
   - Start Command: `node dist/server.js`
   - Plan: Free
 
-- [ ] Agregar Environment Variables:
+- [ ] Agregar Environment Variables (copiar "Internal Database URL" de PostgreSQL):
 
   ```bash
   PORT=3000
   APP_VERSION=1.0.0
   NODE_ENV=production
-  DB_HOST=[de Render PostgreSQL]
-  DB_PORT=5432
-  DB_USERNAME=[de Render PostgreSQL]
-  DB_PASSWORD=[de Render PostgreSQL]
-  DB_DATABASE=medical_appointments
-  DB_SSL=true
+  DATABASE_URL=[copiar Internal Database URL completa de Render]
   ALLOWED_ORIGINS=http://localhost:5173
   ENABLE_RATE_LIMIT=true
   ```
+
+  > 💡 **Importante**: Usar DATABASE_URL completa, no variables separadas. El nombre de DB que crea Render es diferente.
 
 - [ ] Click "Create Web Service"
 - [ ] Esperar build (3-5 minutos)

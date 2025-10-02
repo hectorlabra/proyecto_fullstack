@@ -81,9 +81,9 @@ Crear archivo `specs/001-profesionalizacion-proyecto/quickstart.md` con:
 
 ### Paso 2: Configurar Variables de Entorno
 
-En la sección **"Environment Variables"**, tienes **dos opciones**:
+En la sección **"Environment Variables"**, agrega las siguientes variables.
 
-#### Opción A: URL completa (Recomendado - Más simple)
+**✅ Usar DATABASE_URL (más simple y recomendado):**
 
 ```bash
 # Servidor
@@ -91,19 +91,25 @@ PORT=3000
 APP_VERSION=1.0.0
 NODE_ENV=production
 
-# Base de Datos (copiar Internal Database URL de Render)
-DATABASE_URL=postgresql://user:password@host:5432/database
+# Base de Datos - Copiar "Internal Database URL" de tu PostgreSQL en Render
+# ⚠️ Reemplazar con tu URL real (ejemplo mostrado abajo)
+DATABASE_URL=postgresql://medical_appointments_qivi_user:PASSWORD@dpg-XXXXX-a/medical_appointments_qivi
 
-# CORS (actualizar después de deploy frontend)
+# CORS (actualizar después de deploy frontend con tu URL real)
 ALLOWED_ORIGINS=http://localhost:5173
 
 # Rate Limiting
 ENABLE_RATE_LIMIT=true
 ```
 
-> 💡 **Ventaja**: Solo una variable, Render la proporciona automáticamente
+> 💡 **Cómo obtener DATABASE_URL**: En tu PostgreSQL service en Render → **Info** → **Internal Database URL**. Cópiala completa.
 
-#### Opción B: Variables individuales
+> ⚠️ **MUY IMPORTANTE**: El nombre de la base de datos que crea Render es diferente a `medical_appointments`. Usa la URL completa exacta que Render te proporciona.
+
+<details>
+<summary>📝 Alternativa: Variables individuales (click para expandir)</summary>
+
+Si prefieres no usar DATABASE_URL:
 
 ```bash
 # Servidor
@@ -111,22 +117,24 @@ PORT=3000
 APP_VERSION=1.0.0
 NODE_ENV=production
 
-# Base de Datos (copiar de PostgreSQL creado)
-DB_HOST=[host de Render]
+# Base de Datos (copiar cada valor de PostgreSQL Info en Render)
+DB_HOST=[tu-host].render.com
 DB_PORT=5432
-DB_USERNAME=[user de Render]
-DB_PASSWORD=[password de Render]
-DB_DATABASE=medical_appointments
+DB_USERNAME=[tu-username]
+DB_PASSWORD=[tu-password]
+DB_DATABASE=[tu-database]
 DB_SSL=true
 
-# CORS (actualizar después de deploy frontend)
+# CORS
 ALLOWED_ORIGINS=http://localhost:5173
 
 # Rate Limiting
 ENABLE_RATE_LIMIT=true
 ```
 
-> � **Nota**: Si usas `DATABASE_URL`, TypeORM debe estar configurado para parsearla. Si usas variables individuales, asegúrate de incluir `DB_SSL=true`
+> 📝 **Nota**: DATABASE_URL tiene prioridad. Si ambas existen, se usa DATABASE_URL.
+
+</details>
 
 ### Paso 3: Deploy
 

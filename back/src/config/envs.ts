@@ -5,17 +5,13 @@ dotenv.config();
 
 const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3000),
-  DB_HOST: z.string().min(1, "DB_HOST es requerido").default("localhost"),
+  // DATABASE_URL tiene prioridad si existe (formato Render)
+  DATABASE_URL: z.string().optional(),
+  DB_HOST: z.string().default("localhost"),
   DB_PORT: z.coerce.number().int().min(1).max(65535).default(5432),
-  DB_USERNAME: z
-    .string()
-    .min(1, "DB_USERNAME es requerido")
-    .default("postgres"),
+  DB_USERNAME: z.string().default("postgres"),
   DB_PASSWORD: z.string().default(""),
-  DB_DATABASE: z
-    .string()
-    .min(1, "DB_DATABASE es requerido")
-    .default("medical_appointments"),
+  DB_DATABASE: z.string().default("medical_appointments"),
   DB_SSL: z
     .string()
     .default("false")
@@ -38,6 +34,7 @@ const parseEnv = () => {
   try {
     return envSchema.parse({
       PORT: process.env.PORT,
+      DATABASE_URL: process.env.DATABASE_URL,
       DB_HOST: process.env.DB_HOST,
       DB_PORT: process.env.DB_PORT,
       DB_USERNAME: process.env.DB_USERNAME,

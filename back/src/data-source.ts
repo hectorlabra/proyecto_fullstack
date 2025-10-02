@@ -19,22 +19,44 @@ import { Appointment } from "./entities/Appointment.entity";
  * - Revertir: npm run typeorm migration:revert
  *
  * Las migraciones aseguran cambios controlados y versionados en el esquema de base de datos.
+ *
+ * DATABASE_URL vs variables individuales:
+ * - Si DATABASE_URL existe, se usa (formato: postgresql://user:pass@host:port/db)
+ * - Si no, se usan DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE
+ * - Render proporciona DATABASE_URL automáticamente (recomendado)
  */
-export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: config.DB_HOST,
-  port: config.DB_PORT,
-  username: config.DB_USERNAME,
-  password: config.DB_PASSWORD,
-  database: config.DB_DATABASE,
-  synchronize: config.NODE_ENV === "development",
-  logging: config.NODE_ENV === "development",
-  entities: [User, Credential, Appointment],
-  migrations: ["src/migrations/*.ts"],
-  subscribers: [],
-  ssl: config.DB_SSL
-    ? {
+
+// Si DATABASE_URL existe, úsala; si no, construye la configuración con variables individuales
+const dataSourceConfig = config.DATABASE_URL
+  ? {
+      type: "postgres" as const,
+      url: config.DATABASE_URL,
+      synchronize: config.NODE_ENV === "development",
+      logging: config.NODE_ENV === "development",
+      entities: [User, Credential, Appointment],
+      migrations: ["src/migrations/*.ts"],
+      subscribers: [],
+      ssl: {
         rejectUnauthorized: false,
-      }
-    : false,
-});
+      },
+    }
+  : {
+      type: "postgres" as const,
+      host: config.DB_HOST,
+      port: config.DB_PORT,
+      username: config.DB_USERNAME,
+      password: config.DB_PASSWORD,
+      database: config.DB_DATABASE,
+      synchronize: config.NODE_ENV === "development",
+      logging: config.NODE_ENV === "development",
+      entities: [User, Credential, Appointment],
+      migrations: ["src/migrations/*.ts"],
+      subscribers: [],
+      ssl: config.DB_SSL
+        ? {
+            rejectUnauthorized: false,
+          }
+        : false,
+    };
+
+export const AppDataSource = new DataSource(dataSourceConfig);
