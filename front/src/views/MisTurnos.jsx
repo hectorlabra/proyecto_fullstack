@@ -18,7 +18,7 @@ const MisTurnos = () => {
   const { user, userAppointments, isLoading, error, refreshAppointments } =
     useUser();
 
-  // useEffect para verificar autenticación al montar el componente
+  // useEffect para verificar autenticación y cargar turnos al montar
   useEffect(() => {
     if (!user) {
       // No hay usuario logueado, redirigir a Home
@@ -26,11 +26,10 @@ const MisTurnos = () => {
       return;
     }
 
-    // Si hay usuario pero no tenemos turnos cargados, cargarlos
-    if (user && userAppointments.length === 0) {
-      refreshAppointments();
-    }
-  }, [user, navigate, userAppointments.length, refreshAppointments]);
+    // Cargar turnos solo una vez al montar el componente
+    refreshAppointments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Solo ejecutar al montar, user ya está verificado arriba
 
   // Si no hay usuario, mostrar loading mientras redirige
   if (!user) {
