@@ -15,7 +15,3 @@ if (import.meta.env.DEV) {
 }
 
 export default API_URL;
-
-// Ejemplo de uso en componentes:
-// import API_URL from './config/api';
-// axios.get(`${API_URL}/appointments`);

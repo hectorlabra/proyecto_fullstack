@@ -12,7 +12,12 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("ErrorBoundary capturó un error:", error, errorInfo);
+    // SIEMPRE loggear en consola para debugging (producción y desarrollo)
+    console.error("❌ ErrorBoundary capturó un error:");
+    console.error("Error:", error);
+    console.error("Error message:", error?.message);
+    console.error("Error stack:", error?.stack);
+    console.error("Component stack:", errorInfo?.componentStack);
 
     this.setState({
       error,
@@ -92,7 +97,7 @@ class ErrorBoundary extends Component {
               recargar la página o volver al inicio.
             </p>
 
-            {import.meta.env.DEV && this.state.error && (
+            {this.state.error && (
               <details
                 style={{
                   marginBottom: "1.5rem",
@@ -110,7 +115,7 @@ class ErrorBoundary extends Component {
                     color: "#495057",
                   }}
                 >
-                  Detalles del error (solo en desarrollo)
+                  Detalles del error
                 </summary>
                 <pre
                   style={{
