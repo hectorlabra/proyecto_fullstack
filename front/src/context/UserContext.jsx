@@ -178,6 +178,10 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
+      console.log("Enviando cita con datos:", appointmentData);
+      console.log("API_URL:", API_URL);
+      console.log("Endpoint completo:", `${API_URL}/appointments/schedule`);
+
       const response = await fetch(`${API_URL}/appointments/schedule`, {
         method: "POST",
         headers: {
@@ -186,7 +190,11 @@ export const UserProvider = ({ children }) => {
         body: JSON.stringify(appointmentData),
       });
 
+      console.log("Response status:", response.status);
+      console.log("Response ok:", response.ok);
+
       const data = await response.json();
+      console.log("Response data:", data);
 
       if (!response.ok) {
         let errorMessage = data.error || "Error al crear la cita";
