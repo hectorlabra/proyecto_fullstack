@@ -158,24 +158,13 @@ const CreateAppointment = () => {
       return;
     }
 
-    // Debug: verificar estructura de user
-    console.log("User object:", user);
-    console.log("User ID:", user.id, "Type:", typeof user.id);
-    console.log("User.user:", user.user);
-
-    // Obtener userId de forma robusta
-    const userId = user.user?.id || user.id;
-
     // Preparar datos para enviar
     const appointmentData = {
-      userId: parseInt(userId, 10), // Asegurar que sea número
+      userId: parseInt(user.user?.id || user.id, 10), // Asegurar que sea número
       date: formData.date,
       time: formData.time,
       notes: formData.notes.trim() || undefined,
     };
-
-    console.log("Appointment data to send:", appointmentData);
-
     try {
       // Usar la función del context para crear la cita
       const result = await createAppointment(appointmentData);

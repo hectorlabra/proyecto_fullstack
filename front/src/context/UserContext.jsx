@@ -148,15 +148,9 @@ export const UserProvider = ({ children }) => {
       }
 
       const allAppointments = await response.json();
-      console.log("All appointments from server:", allAppointments);
-      console.log("Filtering by userId:", userId);
-
       const userAppointments = allAppointments.filter(
         (appointment) => appointment.userId === userId
       );
-
-      console.log("Filtered user appointments:", userAppointments);
-
       dispatch({
         type: ACTION_TYPES.SET_USER_APPOINTMENTS,
         payload: userAppointments,
@@ -183,10 +177,6 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
-      console.log("Enviando cita con datos:", appointmentData);
-      console.log("API_URL:", API_URL);
-      console.log("Endpoint completo:", `${API_URL}/appointments/schedule`);
-
       const response = await fetch(`${API_URL}/appointments/schedule`, {
         method: "POST",
         headers: {
@@ -195,11 +185,7 @@ export const UserProvider = ({ children }) => {
         body: JSON.stringify(appointmentData),
       });
 
-      console.log("Response status:", response.status);
-      console.log("Response ok:", response.ok);
-
       const data = await response.json();
-      console.log("Response data:", data);
 
       if (!response.ok) {
         let errorMessage = data.error || "Error al crear la cita";
@@ -292,8 +278,6 @@ export const UserProvider = ({ children }) => {
       // Manejar estructura anidada: state.user puede ser {user: {...}, token, loginTime}
       // o puede ser directamente el objeto user {id, firstName, ...}
       const userId = state.user.user?.id || state.user.id;
-      console.log("refreshAppointments - state.user:", state.user);
-      console.log("refreshAppointments - userId extracted:", userId);
 
       if (!userId) {
         console.error("No se pudo extraer userId de state.user");
@@ -303,7 +287,6 @@ export const UserProvider = ({ children }) => {
       return await fetchUserAppointments(userId);
     }
   };
-
   useEffect(() => {
     const initializeAuth = () => {
       try {
