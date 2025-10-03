@@ -84,27 +84,22 @@ export const registerUser = async (
   }
 };
 
-// Login de usuario
-// POST /users/login
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const loginData: LoginDto = req.body;
 
-    // Validar credenciales
     const credential = await credentialsService.validateCredential(loginData);
     if (!credential) {
       res.status(401).json({ error: "Credenciales inválidas" });
       return;
     }
 
-    // Obtener el usuario por credentialId
     const user = await usersService.getUserByCredentialsId(credential.id);
     if (!user) {
       res.status(401).json({ error: "Credenciales inválidas" });
       return;
     }
 
-    // Retornar información del login exitoso sin información sensible
     const userResponse = {
       id: user.id,
       firstName: user.firstName,

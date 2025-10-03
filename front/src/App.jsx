@@ -1,17 +1,3 @@
-/**
- * Main application component that sets up routing and navigation.
- *
- * @component
- * @returns {JSX.Element} The rendered application with navigation and route handling.
- *
- * @example
- * // Renders the App component with navigation and routes for Home and MisTurnos views.
- * <App />
- *
- * @see {@link Home} for the home page component.
- * @see {@link MisTurnos} for the user's appointments page.
- * @see {@link Navbar} for the navigation bar component.
- */
 import "./App.css";
 import "./styles/accessibility.css";
 import Home from "./views/Home";

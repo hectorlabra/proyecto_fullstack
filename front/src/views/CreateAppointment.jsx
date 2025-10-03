@@ -7,56 +7,47 @@ const CreateAppointment = () => {
   const navigate = useNavigate();
   const { user, createAppointment, isLoading } = useUser();
 
-  // Estado del formulario
   const [formData, setFormData] = useState({
     date: "",
     time: "",
     notes: "",
   });
 
-  // Estado de errores de validación
   const [errors, setErrors] = useState({});
 
-  // Estado para el manejo del proceso de envío
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
-  // Verificar autenticación al cargar el componente
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
   }, [user, navigate]);
 
-  // Función para generar fecha mínima (hoy)
   const getMinDate = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   };
 
-  // Función para generar fecha máxima (3 meses después)
   const getMaxDate = () => {
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 3);
     return maxDate.toISOString().split("T")[0];
   };
 
-  // Función para validar día de la semana (lunes a viernes)
   const isWeekday = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDay();
-    return day >= 1 && day <= 5; // 1 = lunes, 5 = viernes
+    return day >= 1 && day <= 5;
   };
 
-  // Función para validar horario de atención (8:00 AM - 6:00 PM)
   const isValidTime = (timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
     const timeInMinutes = hours * 60 + minutes;
-    const startTime = 8 * 60; // 8:00 AM
-    const endTime = 18 * 60; // 6:00 PM
+    const startTime = 8 * 60;
+    const endTime = 18 * 60;
     return timeInMinutes >= startTime && timeInMinutes <= endTime;
   };
 
-  // Función para validar un campo específico
   const validateField = (name, value) => {
     let error = "";
 
@@ -84,7 +75,6 @@ const CreateAppointment = () => {
         break;
 
       case "notes":
-        // Las notas son opcionales, solo validar longitud si hay contenido
         if (value && value.length > 500) {
           error = "Las notas no pueden exceder 500 caracteres";
         }
@@ -97,17 +87,14 @@ const CreateAppointment = () => {
     return error;
   };
 
-  // Handler para cambios en los inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Actualizar el estado del formulario
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-    // Validar el campo y actualizar errores
     const error = validateField(name, value);
     setErrors((prev) => ({
       ...prev,
@@ -115,26 +102,20 @@ const CreateAppointment = () => {
     }));
   };
 
-  // Función para verificar si el formulario es válido
   const isFormValid = () => {
-    // Verificar que los campos obligatorios estén llenos
     const requiredFieldsFilled =
       formData.date.trim() !== "" && formData.time.trim() !== "";
 
-    // Verificar que no haya errores en campos obligatorios
     const noErrors = !errors.date && !errors.time && !errors.notes;
 
     return requiredFieldsFilled && noErrors;
   };
 
-  // Handler para el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Limpiar mensajes previos
     setSubmitMessage({ type: "", text: "" });
 
-    // Validar todos los campos antes del envío
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key]);
@@ -143,7 +124,6 @@ const CreateAppointment = () => {
 
     setErrors(newErrors);
 
-    // Si hay errores, no proceder
     if (Object.keys(newErrors).length > 0) {
       setSubmitMessage({
         type: "error",
@@ -152,31 +132,26 @@ const CreateAppointment = () => {
       return;
     }
 
-    // Verificar que hay usuario
     if (!user) {
       navigate("/login");
       return;
     }
 
-    // Preparar datos para enviar
     const appointmentData = {
-      userId: parseInt(user.user?.id || user.id, 10), // Asegurar que sea número
+      userId: parseInt(user.user?.id || user.id, 10),
       date: formData.date,
       time: formData.time,
       notes: formData.notes.trim() || undefined,
     };
     try {
-      // Usar la función del context para crear la cita
       const result = await createAppointment(appointmentData);
 
       if (result.success) {
-        // Cita creada exitosamente
         setSubmitMessage({
           type: "success",
           text: "¡Cita agendada exitosamente! Redirigiendo a tus turnos...",
         });
 
-        // Limpiar el formulario
         setFormData({
           date: "",
           time: "",
@@ -184,19 +159,16 @@ const CreateAppointment = () => {
         });
         setErrors({});
 
-        // Redirigir después de un breve delay
         setTimeout(() => {
           navigate("/mis-turnos");
         }, 2000);
       } else {
-        // Error al crear la cita
         setSubmitMessage({
           type: "error",
           text: result.error || "Error al agendar la cita. Intenta nuevamente.",
         });
       }
     } catch (error) {
-      // Error inesperado
       setSubmitMessage({
         type: "error",
         text:
@@ -212,7 +184,6 @@ const CreateAppointment = () => {
         <h2>Agendar Nueva Cita</h2>
         <p>Programa tu cita médica</p>
 
-        {/* Mensajes de feedback */}
         {submitMessage.text && (
           <div
             className={`${
@@ -257,7 +228,7 @@ const CreateAppointment = () => {
               onChange={handleInputChange}
               min="08:00"
               max="18:00"
-              step="900" // Intervalos de 15 minutos
+              step="900"
               className={errors.time ? "error" : ""}
               required
             />

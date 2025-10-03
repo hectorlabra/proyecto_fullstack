@@ -1,14 +1,3 @@
-/**
- * EmptyAppointments Component
- *
- * Componente que se muestra cuando el usuario no tiene turnos programados.
- * Incluye una llamada a la acción para agendar la primera cita.
- *
- * @component
- * @param {Object} props - Props del componente
- * @param {Function} props.onScheduleClick - Función que se ejecuta al hacer click en "Agendar Cita"
- * @returns {JSX.Element} Componente de estado vacío
- */
 import React from "react";
 import "../styles/EmptyAppointments.css";
 

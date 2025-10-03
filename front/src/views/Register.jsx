@@ -1,21 +1,9 @@
-/**
- * Register component for user registration.
- * Provides a form interface for users to create new accounts.
- *
- * @component
- * @returns {JSX.Element} The rendered registration form.
- *
- * @example
- * // Renders the registration form with all required fields
- * <Register />
- */
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/Register.css";
 import API_URL from "../config/api";
 
 function Register() {
-  // Estado del formulario
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,39 +15,31 @@ function Register() {
     password: "",
   });
 
-  // Estado de errores de validación
   const [errors, setErrors] = useState({});
 
-  // Estado para el manejo del proceso de envío
   const [isLoading, setIsLoading] = useState(false);
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
 
-  // Función para validar email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Función para validar contraseña
   const validatePassword = (password) => {
-    // Al menos 6 caracteres, una mayúscula, una minúscula y un número
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     return passwordRegex.test(password);
   };
 
-  // Función para validar DNI (solo números, 7-8 dígitos)
   const validateDNI = (dni) => {
     const dniRegex = /^\d{7,8}$/;
     return dniRegex.test(dni);
   };
 
-  // Función para validar teléfono
   const validatePhone = (phone) => {
     const phoneRegex = /^\+?[\d\s\-()]{8,15}$/;
     return phoneRegex.test(phone);
   };
 
-  // Función para validar fecha de nacimiento (mayor de 18 años)
   const validateDateOfBirth = (date) => {
     if (!date) return false;
     const today = new Date();
@@ -76,11 +56,9 @@ function Register() {
     return age >= 18;
   };
 
-  // Función para validar un campo específico
   const validateField = (name, value) => {
     let error = "";
 
-    // Verificar que value esté definido
     if (value === undefined || value === null) {
       value = "";
     }
@@ -152,17 +130,14 @@ function Register() {
     return error;
   };
 
-  // Handler para cambios en los inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // Actualizar el estado del formulario
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-    // Validar el campo y actualizar errores
     const error = validateField(name, value);
     setErrors((prev) => ({
       ...prev,
@@ -170,19 +145,15 @@ function Register() {
     }));
   };
 
-  // Función para verificar si el formulario es válido
   const isFormValid = () => {
-    // Verificar que formData y errors estén definidos
     if (!formData || !errors) {
       return false;
     }
 
-    // Verificar que todos los campos estén llenos
     const allFieldsFilled = Object.values(formData).every(
       (value) => value && value.trim() !== ""
     );
 
-    // Verificar que no haya errores
     const noErrors = Object.values(errors).every(
       (error) => !error || error === ""
     );
@@ -190,7 +161,6 @@ function Register() {
     return allFieldsFilled && noErrors;
   };
 
-  // Función para registrar usuario en la API
   const registerUserAPI = async (userData) => {
     try {
       const response = await fetch(`${API_URL}/users/register`, {
@@ -213,14 +183,11 @@ function Register() {
     }
   };
 
-  // Handler para el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Limpiar mensajes previos
     setSubmitMessage({ type: "", text: "" });
 
-    // Validar todos los campos antes del envío
     const newErrors = {};
     Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key]);
@@ -229,7 +196,6 @@ function Register() {
 
     setErrors(newErrors);
 
-    // Si hay errores, no proceder
     if (Object.keys(newErrors).length > 0) {
       setSubmitMessage({
         type: "error",
@@ -238,21 +204,17 @@ function Register() {
       return;
     }
 
-    // Iniciar proceso de carga
     setIsLoading(true);
 
     try {
-      // Hacer la petición a la API
       const result = await registerUserAPI(formData);
 
       if (result.success) {
-        // Registro exitoso
         setSubmitMessage({
           type: "success",
           text: "¡Registro exitoso! Ya puedes iniciar sesión con tu cuenta.",
         });
 
-        // Limpiar el formulario
         setFormData({
           firstName: "",
           lastName: "",
@@ -265,7 +227,6 @@ function Register() {
         });
         setErrors({});
       } else {
-        // Error en el registro
         setSubmitMessage({
           type: "error",
           text:
@@ -273,7 +234,6 @@ function Register() {
         });
       }
     } catch (error) {
-      // Error inesperado
       setSubmitMessage({
         type: "error",
         text:
@@ -281,7 +241,6 @@ function Register() {
           "Error de conexión. Verifica tu conexión a internet.",
       });
     } finally {
-      // Finalizar proceso de carga
       setIsLoading(false);
     }
   };

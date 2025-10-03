@@ -7,23 +7,8 @@ import { Appointment } from "./entities/Appointment.entity";
 
 /**
  * Configuración de la conexión a la base de datos PostgreSQL usando TypeORM.
- * Este DataSource se utiliza para inicializar la conexión y gestionar las entidades.
- *
- * IMPORTANTE - synchronize:
- * - DESARROLLO: true - TypeORM sincroniza automáticamente el esquema con las entidades
- * - PRODUCCIÓN: false - NUNCA usar auto-sincronización en producción
- *
- * Para cambios en producción, usar migraciones:
- * - Generar: npm run typeorm migration:generate -- -n NombreMigracion
- * - Ejecutar: npm run typeorm migration:run
- * - Revertir: npm run typeorm migration:revert
- *
- * Las migraciones aseguran cambios controlados y versionados en el esquema de base de datos.
- *
- * DATABASE_URL vs variables individuales:
- * - Si DATABASE_URL existe, se usa (formato: postgresql://user:pass@host:port/db)
- * - Si no, se usan DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_DATABASE
- * - Render proporciona DATABASE_URL automáticamente (recomendado)
+ * IMPORTANTE: synchronize debe ser false en producción; usar migraciones para cambios.
+ * DATABASE_URL se usa si existe; de lo contrario, variables individuales.
  */
 
 const migrationsPath =
@@ -31,12 +16,10 @@ const migrationsPath =
     ? ["src/migrations/*.ts"]
     : ["dist/migrations/*.js"];
 
-// Si DATABASE_URL existe, úsala; si no, construye la configuración con variables individuales
 const dataSourceConfig = config.DATABASE_URL
   ? {
       type: "postgres" as const,
       url: config.DATABASE_URL,
-      // ✅ PRODUCCIÓN: synchronize DESHABILITADO - usar migraciones
       synchronize: false,
       logging: config.NODE_ENV === "development",
       entities: [User, Credential, Appointment],
@@ -53,7 +36,6 @@ const dataSourceConfig = config.DATABASE_URL
       username: config.DB_USERNAME,
       password: config.DB_PASSWORD,
       database: config.DB_DATABASE,
-      // ✅ PRODUCCIÓN: synchronize DESHABILITADO - usar migraciones
       synchronize: false,
       logging: config.NODE_ENV === "development",
       entities: [User, Credential, Appointment],

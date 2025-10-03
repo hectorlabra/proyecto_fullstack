@@ -1,11 +1,3 @@
-/**
- * MisTurnos Component
- *
- * Displays the user's appointments using Context API. Handles loading and error states,
- * and renders appointments using `AppointmentCard`. Requires user authentication.
- *
- * @returns {JSX.Element}
- */
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
@@ -18,25 +10,19 @@ const MisTurnos = () => {
   const { user, userAppointments, isLoading, error, refreshAppointments } =
     useUser();
 
-  // useEffect para verificar autenticación y cargar turnos al montar
   useEffect(() => {
     if (!user) {
-      // No hay usuario logueado, redirigir a Home
       navigate("/");
       return;
     }
 
-    // Solo refrescar si realmente no hay citas cargadas
-    // Esto evita sobrescribir citas recién creadas
     console.log("MisTurnos mounted, userAppointments:", userAppointments);
     console.log("User ID:", user.id || user.user?.id);
 
-    // Siempre refrescar para obtener el estado más reciente del servidor
     refreshAppointments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Solo ejecutar al montar, user ya está verificado arriba
+  }, []);
 
-  // Si no hay usuario, mostrar loading mientras redirige
   if (!user) {
     return (
       <div className="mis-turnos-container">
@@ -47,7 +33,6 @@ const MisTurnos = () => {
     );
   }
 
-  // Mostrar loading
   if (isLoading) {
     return (
       <div className="mis-turnos-container">
@@ -65,7 +50,6 @@ const MisTurnos = () => {
     );
   }
 
-  // Mostrar error
   if (error) {
     return (
       <div className="mis-turnos-container">
