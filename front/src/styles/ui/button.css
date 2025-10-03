@@ -1,0 +1,127 @@
+.btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: var(--font-medium);
+  line-height: var(--line-height-tight);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+  user-select: none;
+  transition: all var(--transition-fast);
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(0.98);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+}
+
+/* Variants */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-color: transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  background: var(--color-primary-active);
+}
+
+.btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-surface-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-surface);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: #fff;
+  border-color: transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+/* Sizes */
+.btn-sm {
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.btn-md {
+  font-size: var(--text-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.btn-lg {
+  font-size: var(--text-lg);
+  padding: var(--space-4) var(--space-6);
+}
+
+/* Block */
+.btn-block {
+  width: 100%;
+}
+
+/* Icons */
+.btn-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.btn-label {
+  display: inline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn * {
+    transition: none !important;
+  }
+}
