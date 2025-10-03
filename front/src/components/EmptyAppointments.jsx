@@ -1,58 +1,119 @@
-import React from "react";
+import { Card, CardContent, CardFooter, Button } from "./ui";
+import {
+  CalendarIcon,
+  PlusCircleIcon,
+  ShieldCheckIcon,
+  ClockIcon,
+  PhoneIcon,
+  MessageCircleIcon,
+} from "./icons";
 import "../styles/EmptyAppointments.css";
 
 const EmptyAppointments = ({ onScheduleClick }) => {
+  const assistanceItems = [
+    {
+      icon: PhoneIcon,
+      label: "Línea directa",
+      value: "(11) 5555-0020",
+    },
+    {
+      icon: MessageCircleIcon,
+      label: "Soporte",
+      value: "ayuda@medicitas.com",
+    },
+  ];
+
+  const featureItems = [
+    {
+      icon: ShieldCheckIcon,
+      title: "Profesionales verificados",
+      description:
+        "Más de 800 especialistas certificados en múltiples especialidades.",
+    },
+    {
+      icon: ClockIcon,
+      title: "Horarios flexibles",
+      description:
+        "Agenda turnos en la franja de 8:00 a 18:00 según tu disponibilidad.",
+    },
+    {
+      icon: CalendarIcon,
+      title: "Confirmación inmediata",
+      description:
+        "Recibe recordatorios automáticos y seguimiento en tiempo real.",
+    },
+  ];
+
   return (
-    <div className="empty-appointments-container">
-      <div className="empty-appointments-content">
-        <div className="empty-appointments-icon">
-          <span className="calendar-icon">📅</span>
-          <span className="plus-icon">➕</span>
-        </div>
-
-        <h3 className="empty-appointments-title">
-          No tienes turnos programados
-        </h3>
-
-        <p className="empty-appointments-description">
-          Aún no has agendado ninguna cita médica. Programa tu primera consulta
-          para comenzar a cuidar tu salud.
-        </p>
-
-        <div className="empty-appointments-features">
-          <div className="feature-item">
-            <span className="feature-icon">⏰</span>
-            <span className="feature-text">Horarios flexibles</span>
+    <div className="empty-appointments-wrapper">
+      <Card className="empty-appointments-card">
+        <CardContent>
+          <div className="empty-appointments-hero">
+            <span className="empty-appointments-badge">
+              Bienvenido a MediCitas
+            </span>
+            <h2 className="empty-appointments-title">
+              Agenda tu primera cita médica
+            </h2>
+            <p className="empty-appointments-description">
+              Todavía no tienes citas programadas. Reserva tu primer turno y
+              recibe recordatorios, seguimiento y asistencia personalizada en un
+              único lugar.
+            </p>
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={onScheduleClick}
+              leadingIcon={<PlusCircleIcon size={20} />}
+            >
+              Agendar primera cita
+            </Button>
           </div>
-          <div className="feature-item">
-            <span className="feature-icon">👨‍⚕️</span>
-            <span className="feature-text">Profesionales calificados</span>
-          </div>
-          <div className="feature-item">
-            <span className="feature-icon">📍</span>
-            <span className="feature-text">Ubicación conveniente</span>
-          </div>
-        </div>
 
-        <button
-          className="schedule-first-appointment-btn"
-          onClick={onScheduleClick}
-        >
-          <span className="btn-icon">📅</span>
-          Agendar Primera Cita
-        </button>
-
-        <div className="empty-appointments-help">
-          <p className="help-text">
-            <strong>¿Necesitas ayuda?</strong> Nuestro equipo está disponible
-            para asistirte en el proceso de agendamiento.
-          </p>
-          <div className="help-contacts">
-            <span className="help-contact">📞 (555) 123-4567</span>
-            <span className="help-contact">✉️ ayuda@medicitas.com</span>
+          <div className="empty-appointments-grid">
+            {featureItems.map(({ icon, title, description }) => {
+              const IconComponent = icon;
+              return (
+                <div className="empty-feature-card" key={title}>
+                  <span className="empty-feature-icon" aria-hidden="true">
+                    <IconComponent size={20} />
+                  </span>
+                  <div>
+                    <h3 className="empty-feature-title">{title}</h3>
+                    <p className="empty-feature-description">{description}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </div>
-      </div>
+        </CardContent>
+
+        <CardFooter className="empty-appointments-footer">
+          <div className="empty-assistance">
+            <p className="empty-assistance-title">¿Necesitas ayuda?</p>
+            <p className="empty-assistance-subtitle">
+              Nuestro equipo de soporte puede guiarte en cada paso del proceso
+              de agendamiento.
+            </p>
+            <div className="empty-assistance-list">
+              {assistanceItems.map(({ icon, label, value }) => {
+                const IconComponent = icon;
+                return (
+                  <div className="empty-assistance-item" key={label}>
+                    <span className="empty-assistance-icon" aria-hidden="true">
+                      <IconComponent size={18} />
+                    </span>
+                    <div>
+                      <p className="empty-assistance-label">{label}</p>
+                      <p className="empty-assistance-value">{value}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

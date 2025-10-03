@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useUser } from "../hooks/useUser";
 import { Card, CardHeader, CardContent, CardActions } from "./ui/Card";
 import { StatusBadge } from "./ui/Badge";
 import { Button } from "./ui/Button";
 import { ConfirmModal } from "./ui/Modal";
+import { CalendarIcon, ClockIcon, UserIcon, MailIcon } from "./icons";
 import "../styles/ui/appointment-card.css";
 
 const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
@@ -11,26 +12,31 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
   const { cancelAppointment: cancelAppointmentContext, isLoading } = useUser();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-  const formatDate = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      weekday: "long",
-    };
-    return new Date(dateString).toLocaleDateString("es-ES", options);
-  };
+  const formattedDate = useMemo(() => {
+    if (!date) return "--";
+    try {
+      return new Intl.DateTimeFormat("es-ES", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(new Date(date));
+    } catch {
+      return date;
+    }
+  }, [date]);
 
-  const formatTime24h = (timeString) => {
-    const [hours, minutes] = timeString.split(":");
-    return `${hours}:${minutes}`;
-  };
+  const formattedTime = useMemo(() => {
+    if (!time) return "--";
+    return time.slice(0, 5);
+  }, [time]);
 
-  const canCancel = () => {
+  const canCancel = useMemo(() => {
+    if (!date) return false;
     if (
-      status === "canceled" ||
-      status === "cancelled" ||
-      status === "completed"
+      ["canceled", "cancelled", "completed"].includes(
+        (status || "").toLowerCase()
+      )
     ) {
       return false;
     }
@@ -39,14 +45,46 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
 
     return appointmentDate >= tomorrow;
-  };
+  }, [date, status]);
 
-  const cancelAppointment = async () => {
+  const detailItems = useMemo(() => {
+    const base = [
+      {
+        icon: CalendarIcon,
+        label: "Fecha",
+        value: formattedDate,
+      },
+      {
+        icon: ClockIcon,
+        label: "Hora",
+        value: formattedTime,
+      },
+    ];
+
+    if (user) {
+      base.push(
+        {
+          icon: UserIcon,
+          label: "Paciente",
+          value: `${user.firstName} ${user.lastName}`.trim(),
+        },
+        {
+          icon: MailIcon,
+          label: "Email",
+          value: user.email,
+        }
+      );
+    }
+
+    return base;
+  }, [formattedDate, formattedTime, user]);
+
+  const handleCancel = async () => {
     try {
       const result = await cancelAppointmentContext(id);
-
       if (result.success) {
         if (onAppointmentUpdate) {
           onAppointmentUpdate();
@@ -61,92 +99,65 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     }
   };
 
-  const handleCancelClick = () => {
-    setShowConfirmDialog(true);
-  };
+  const normalizedStatus = (status || "").toLowerCase();
+  const blockedMessage = useMemo(() => {
+    if (normalizedStatus === "completed") {
+      return "Esta cita ya fue completada";
+    }
+
+    if (["canceled", "cancelled"].includes(normalizedStatus)) {
+      return "Esta cita fue cancelada";
+    }
+
+    return "Las citas solo pueden cancelarse hasta el día anterior";
+  }, [normalizedStatus]);
 
   return (
     <>
       <Card className="appointment-card-container">
         <CardHeader className="appointment-card-header">
-          <h3 className="appointment-card-title">Cita #{id}</h3>
+          <div>
+            <p className="appointment-card-subtitle">Cita #{id}</p>
+            <h3 className="appointment-card-title">Gestión de consulta</h3>
+          </div>
           <StatusBadge status={status} />
         </CardHeader>
 
         <CardContent>
           <div className="appointment-card-info">
-            <div className="appointment-card-row">
-              <span className="appointment-card-icon" aria-hidden="true">
-                📅
-              </span>
-              <span className="appointment-card-label">Fecha:</span>
-              <span className="appointment-card-value">
-                {formatDate(date)}
-              </span>
-            </div>
-
-            <div className="appointment-card-row">
-              <span className="appointment-card-icon" aria-hidden="true">
-                🕐
-              </span>
-              <span className="appointment-card-label">Hora:</span>
-              <span className="appointment-card-value">
-                {formatTime24h(time)}
-              </span>
-            </div>
-
-            {user && (
-              <>
-                <div className="appointment-card-row">
+            {detailItems.map(({ icon, label, value }) => {
+              const IconComponent = icon;
+              return (
+                <div className="appointment-card-row" key={label}>
                   <span className="appointment-card-icon" aria-hidden="true">
-                    👤
+                    <IconComponent size={18} />
                   </span>
-                  <span className="appointment-card-label">Paciente:</span>
-                  <span className="appointment-card-value">
-                    {user.firstName} {user.lastName}
-                  </span>
+                  <span className="appointment-card-label">{label}</span>
+                  <span className="appointment-card-value">{value}</span>
                 </div>
-
-                <div className="appointment-card-row">
-                  <span className="appointment-card-icon" aria-hidden="true">
-                    📧
-                  </span>
-                  <span className="appointment-card-label">Email:</span>
-                  <span className="appointment-card-value">{user.email}</span>
-                </div>
-              </>
-            )}
+              );
+            })}
           </div>
 
           {notes && (
             <div className="appointment-card-notes">
-              <p className="appointment-card-notes-title">Notas</p>
+              <p className="appointment-card-notes-title">Notas del paciente</p>
               <p className="appointment-card-notes-text">{notes}</p>
             </div>
           )}
         </CardContent>
 
         <CardActions className="appointment-card-actions">
-          {canCancel() && (
+          {canCancel ? (
             <Button
               variant="danger"
-              onClick={handleCancelClick}
+              onClick={() => setShowConfirmDialog(true)}
               disabled={isLoading}
             >
-              {isLoading ? "Cancelando..." : "Cancelar Cita"}
+              {isLoading ? "Cancelando..." : "Cancelar cita"}
             </Button>
-          )}
-
-          {!canCancel() && status !== "canceled" && status !== "cancelled" && (
-            <p className="appointment-card-info-text">
-              {status === "completed"
-                ? "Esta cita ya fue completada"
-                : "Las citas solo pueden cancelarse hasta el día anterior"}
-            </p>
-          )}
-
-          {(status === "canceled" || status === "cancelled") && (
-            <p className="appointment-card-info-text">Esta cita fue cancelada</p>
+          ) : (
+            <p className="appointment-card-info-text">{blockedMessage}</p>
           )}
         </CardActions>
       </Card>
@@ -154,11 +165,11 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
       <ConfirmModal
         isOpen={showConfirmDialog}
         onClose={() => setShowConfirmDialog(false)}
-        onConfirm={cancelAppointment}
-        title="Confirmar Cancelación"
-        message={`¿Estás seguro de que deseas cancelar tu cita del ${formatDate(date)} a las ${formatTime24h(time)}? Esta acción no se puede deshacer.`}
+        onConfirm={handleCancel}
+        title="Confirmar cancelación"
+        message={`¿Deseas cancelar la cita del ${formattedDate} a las ${formattedTime}? Esta acción no se puede deshacer.`}
         confirmText="Sí, cancelar cita"
-        cancelText="No, mantener cita"
+        cancelText="Mantener cita"
         variant="danger"
         isLoading={isLoading}
       />

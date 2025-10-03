@@ -1,26 +1,118 @@
 /* MisTurnos - Healthcare Theme */
 .mis-turnos-container {
-  padding: var(--space-6);
-  max-width: 1200px;
+  padding: var(--space-8) var(--space-6);
+  max-width: var(--container-xl);
   margin: 0 auto;
   min-height: calc(100vh - 80px);
 }
 
-.page-header {
+.mis-turnos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-8);
   margin-bottom: var(--space-8);
 }
 
-.page-title {
+.mis-turnos-eyebrow {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mis-turnos-title {
+  margin: 0;
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
+  line-height: var(--line-height-tight);
+}
+
+.mis-turnos-subtitle {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  max-width: 560px;
+  line-height: var(--line-height-relaxed);
+}
+
+.mis-turnos-actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.mis-turnos-summary {
+  margin-bottom: var(--space-8);
+}
+
+.summary-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-md);
+}
+
+.summary-card .card-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-6);
+  padding: var(--space-6);
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.summary-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.summary-icon-primary {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.summary-icon-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.summary-icon-danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.summary-label {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.summary-value {
+  margin: 0;
   font-size: var(--text-3xl);
   font-weight: var(--font-semibold);
   color: var(--color-text);
-  margin: 0 0 var(--space-2) 0;
 }
 
-.page-subtitle {
-  font-size: var(--text-lg);
-  color: var(--color-text-muted);
-  margin: 0;
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
 }
 
 .error-container {
@@ -28,235 +120,71 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-4);
-  padding: var(--space-12);
+  padding: var(--space-10);
+  border-radius: var(--radius-xl);
   background: var(--color-danger-bg);
-  border: 1px solid var(--color-danger);
-  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-danger-border);
   text-align: center;
 }
 
 .error-message {
+  margin: 0;
+  font-size: var(--text-md);
   color: var(--color-danger-text);
-  font-size: var(--text-md);
-  margin: 0;
 }
 
-.appointments-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-6);
-  gap: var(--space-4);
-  flex-wrap: wrap;
-}
-
-.appointments-info {
-  font-size: var(--text-md);
+.mis-turnos-loading {
+  display: grid;
+  place-items: center;
+  padding: var(--space-16) 0;
   color: var(--color-text-muted);
-  margin: 0;
-  font-weight: var(--font-medium);
 }
 
-.appointments-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .mis-turnos-container {
-    padding: var(--space-4);
+    padding: var(--space-6) var(--space-4);
   }
 
-  .page-title {
-    font-size: var(--text-2xl);
-  }
-
-  .appointments-header {
+  .mis-turnos-header {
     flex-direction: column;
-    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .mis-turnos-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .mis-turnos-actions .btn {
+    flex: 1;
+    min-width: 160px;
   }
 }
 
-  margin: 0.5rem 0;
-  font-size: 1rem;
-  color: #721c24;
-}
-
-.retry-btn {
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.retry-btn:hover {
-  background-color: #c82333;
-}
-
-/* Sección sin turnos */
-.no-appointments {
-  text-align: center;
-  padding: 60px 40px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 12px;
-  border: 1px solid #dee2e6;
-}
-
-.no-appointments-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.no-appointments-title {
-  color: #495057;
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.no-appointments-text {
-  font-size: 1.1rem;
-  color: #6c757d;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-}
-
-.schedule-appointment-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.schedule-appointment-btn:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-/* Header de turnos con información y botón de actualizar */
-.appointments-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-}
-
-.appointments-info {
-  font-size: 1.1rem;
-  color: #495057;
-  margin: 0;
-  font-weight: 500;
-}
-
-.refresh-btn {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.refresh-btn:hover {
-  background-color: #218838;
-  transform: translateY(-1px);
-}
-
-/* Lista de turnos */
-.appointments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .mis-turnos-container {
-    padding: 15px;
-  }
-
+@media (max-width: 600px) {
   .mis-turnos-title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: var(--text-3xl);
   }
 
-  .user-welcome {
-    padding: 1rem;
+  .summary-card .card-content {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 
-  .user-welcome p {
-    font-size: 1.1rem;
+  .summary-item {
+    padding: var(--space-3);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-xl);
+    background: var(--color-bg-soft);
   }
 
-  .no-appointments {
-    padding: 40px 20px;
-  }
-
-  .no-appointments-icon {
-    font-size: 3rem;
-  }
-
-  .no-appointments-title {
-    font-size: 1.3rem;
-  }
-
-  .appointments-header {
+  .mis-turnos-actions {
     flex-direction: column;
-    gap: 1rem;
     align-items: stretch;
   }
 
-  .refresh-btn {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .mis-turnos-title {
-    font-size: 1.75rem;
-  }
-
-  .schedule-appointment-btn {
-    padding: 0.7rem 1.5rem;
-    font-size: 0.9rem;
+  .mis-turnos-actions .btn {
     width: 100%;
-  }
-
-  .appointments-list {
-    gap: 15px;
-  }
-
-  .loading,
-  .error {
-    padding: 40px 20px;
-    min-height: 200px;
-  }
-
-  .loading p {
-    font-size: 1rem;
-  }
-
-  .error h3 {
-    font-size: 1.3rem;
   }
 }
