@@ -26,6 +26,11 @@ import { Appointment } from "./entities/Appointment.entity";
  * - Render proporciona DATABASE_URL automáticamente (recomendado)
  */
 
+const migrationsPath =
+  config.NODE_ENV === "development"
+    ? ["src/migrations/*.ts"]
+    : ["dist/migrations/*.js"];
+
 // Si DATABASE_URL existe, úsala; si no, construye la configuración con variables individuales
 const dataSourceConfig = config.DATABASE_URL
   ? {
@@ -35,7 +40,7 @@ const dataSourceConfig = config.DATABASE_URL
       synchronize: false,
       logging: config.NODE_ENV === "development",
       entities: [User, Credential, Appointment],
-      migrations: ["src/migrations/*.ts"],
+      migrations: migrationsPath,
       subscribers: [],
       ssl: {
         rejectUnauthorized: false,
@@ -52,7 +57,7 @@ const dataSourceConfig = config.DATABASE_URL
       synchronize: false,
       logging: config.NODE_ENV === "development",
       entities: [User, Credential, Appointment],
-      migrations: ["src/migrations/*.ts"],
+      migrations: migrationsPath,
       subscribers: [],
       ssl: config.DB_SSL
         ? {
