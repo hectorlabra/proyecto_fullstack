@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
-import "../styles/CreateAppointment.css";
+import { Input, Button, Breadcrumbs } from "../components/ui";
+import { useToast } from "../components/ui/toast-context";
+import "../styles/Auth.css";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
   const { user, createAppointment, isLoading } = useUser();
+  const toast = useToast();
 
   const [formData, setFormData] = useState({
     date: "",
@@ -15,18 +18,11 @@ const CreateAppointment = () => {
 
   const [errors, setErrors] = useState({});
 
-  const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
-
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
+    if (!user) navigate("/login");
   }, [user, navigate]);
 
-  const getMinDate = () => {
-    const today = new Date();
-    return today.toISOString().split("T")[0];
-  };
+  const getMinDate = () => new Date().toISOString().split("T")[0];
 
   const getMaxDate = () => {
     const maxDate = new Date();
@@ -43,81 +39,48 @@ const CreateAppointment = () => {
   const isValidTime = (timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
     const timeInMinutes = hours * 60 + minutes;
-    const startTime = 8 * 60;
-    const endTime = 18 * 60;
-    return timeInMinutes >= startTime && timeInMinutes <= endTime;
+    return timeInMinutes >= 8 * 60 && timeInMinutes <= 18 * 60;
   };
 
   const validateField = (name, value) => {
     let error = "";
-
-    if (value === undefined || value === null) {
-      value = "";
-    }
+    if (value === undefined || value === null) value = "";
 
     switch (name) {
       case "date":
-        if (!value.trim()) {
-          error = "La fecha es obligatoria";
-        } else if (!isWeekday(value)) {
-          error = "Solo se pueden agendar citas de lunes a viernes";
-        } else if (new Date(value) < new Date(getMinDate())) {
-          error = "No se pueden agendar citas en fechas pasadas";
-        }
+        if (!value.trim()) error = "La fecha es obligatoria";
+        else if (!isWeekday(value)) error = "Solo se pueden agendar citas de lunes a viernes";
+        else if (new Date(value) < new Date(getMinDate())) error = "No se pueden agendar citas en fechas pasadas";
         break;
-
       case "time":
-        if (!value.trim()) {
-          error = "La hora es obligatoria";
-        } else if (!isValidTime(value)) {
-          error = "Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM";
-        }
+        if (!value.trim()) error = "La hora es obligatoria";
+        else if (!isValidTime(value)) error = "Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM";
         break;
-
       case "notes":
-        if (value && value.length > 500) {
-          error = "Las notas no pueden exceder 500 caracteres";
-        }
-        break;
-
-      default:
+        if (value && value.length > 500) error = "Las notas no pueden exceder 500 caracteres";
         break;
     }
-
     return error;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
+    setFormData((prev) => ({ ...prev, [name]: value }));
     const error = validateField(name, value);
-    setErrors((prev) => ({
-      ...prev,
-      [name]: error,
-    }));
+    setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
   const isFormValid = () => {
-    const requiredFieldsFilled =
-      formData.date.trim() !== "" && formData.time.trim() !== "";
-
-    const noErrors = !errors.date && !errors.time && !errors.notes;
-
+    const requiredFieldsFilled = formData.date && formData.time;
+    const noErrors = Object.values(errors).every((error) => !error || error === "");
     return requiredFieldsFilled && noErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setSubmitMessage({ type: "", text: "" });
-
     const newErrors = {};
-    Object.keys(formData).forEach((key) => {
+    ["date", "time", "notes"].forEach((key) => {
       const error = validateField(key, formData[key]);
       if (error) newErrors[key] = error;
     });
@@ -125,176 +88,117 @@ const CreateAppointment = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
-      setSubmitMessage({
-        type: "error",
-        text: "Por favor, corrige los errores en el formulario",
-      });
+      toast.error("Por favor, corrige los errores en el formulario");
       return;
     }
 
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    const success = await createAppointment(formData);
 
-    const appointmentData = {
-      userId: parseInt(user.user?.id || user.id, 10),
-      date: formData.date,
-      time: formData.time,
-      notes: formData.notes.trim() || undefined,
-    };
-    try {
-      const result = await createAppointment(appointmentData);
-
-      if (result.success) {
-        setSubmitMessage({
-          type: "success",
-          text: "¡Cita agendada exitosamente! Redirigiendo a tus turnos...",
-        });
-
-        setFormData({
-          date: "",
-          time: "",
-          notes: "",
-        });
-        setErrors({});
-
-        setTimeout(() => {
-          navigate("/mis-turnos");
-        }, 2000);
-      } else {
-        setSubmitMessage({
-          type: "error",
-          text: result.error || "Error al agendar la cita. Intenta nuevamente.",
-        });
-      }
-    } catch (error) {
-      setSubmitMessage({
-        type: "error",
-        text:
-          error.message ||
-          "Error de conexión. Verifica tu conexión a internet.",
-      });
+    if (success) {
+      toast.success("¡Cita agendada exitosamente!");
+      setFormData({ date: "", time: "", notes: "" });
+      setErrors({});
+      setTimeout(() => navigate("/mis-turnos"), 1500);
+    } else {
+      toast.error("Error al agendar la cita. Intenta nuevamente.");
     }
   };
 
+  if (!user) return null;
+
   return (
-    <div className="create-appointment-container">
-      <div className="create-appointment-form">
-        <h2>Agendar Nueva Cita</h2>
-        <p>Programa tu cita médica</p>
+    <div className="auth-container">
+      <Breadcrumbs />
+      <div className="auth-card">
+        <div className="auth-header">
+          <h1 className="auth-title">Agendar nueva cita</h1>
+          <p className="auth-subtitle">Selecciona fecha, hora y agrega notas</p>
+        </div>
 
-        {submitMessage.text && (
-          <div
-            className={`${
-              submitMessage.type === "success"
-                ? "success-message"
-                : "error-message-general"
-            }`}
-          >
-            {submitMessage.text}
-          </div>
-        )}
+        <form onSubmit={handleSubmit} className="auth-form">
+          <Input
+            label="Fecha"
+            name="date"
+            type="date"
+            value={formData.date}
+            onChange={handleInputChange}
+            error={errors.date}
+            min={getMinDate()}
+            max={getMaxDate()}
+            required
+            helpText="Disponible de lunes a viernes"
+          />
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="date">Fecha de la Cita *</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-              min={getMinDate()}
-              max={getMaxDate()}
-              className={errors.date ? "error" : ""}
-              required
-            />
-            {errors.date && (
-              <span className="error-message">{errors.date}</span>
-            )}
-            <small className="field-hint">
-              Solo se pueden agendar citas de lunes a viernes
-            </small>
-          </div>
+          <Input
+            label="Hora"
+            name="time"
+            type="time"
+            value={formData.time}
+            onChange={handleInputChange}
+            error={errors.time}
+            required
+            helpText="Horario de atención: 8:00 AM - 6:00 PM"
+          />
 
-          <div className="form-group">
-            <label htmlFor="time">Hora de la Cita *</label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              value={formData.time}
-              onChange={handleInputChange}
-              min="08:00"
-              max="18:00"
-              step="900"
-              className={errors.time ? "error" : ""}
-              required
-            />
-            {errors.time && (
-              <span className="error-message">{errors.time}</span>
-            )}
-            <small className="field-hint">
-              Horario de atención: 8:00 AM - 6:00 PM
-            </small>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="notes">Notas (Opcional)</label>
+          <div>
+            <label htmlFor="notes" style={{ 
+              display: "block", 
+              fontSize: "var(--text-sm)", 
+              fontWeight: "var(--font-medium)", 
+              color: "var(--color-text)", 
+              marginBottom: "var(--space-2)" 
+            }}>
+              Notas (Opcional)
+            </label>
             <textarea
               id="notes"
               name="notes"
               value={formData.notes}
               onChange={handleInputChange}
-              placeholder="Describe brevemente el motivo de tu consulta o información adicional..."
-              className={errors.notes ? "error" : ""}
-              rows="4"
-              maxLength="500"
+              placeholder="Describe tus síntomas o motivo de la consulta..."
+              rows={4}
+              maxLength={500}
+              style={{
+                width: "100%",
+                padding: "var(--space-3)",
+                border: `1px solid ${errors.notes ? "var(--color-danger)" : "var(--color-border)"}`,
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-base)",
+                fontFamily: "var(--font-sans)",
+                resize: "vertical",
+                transition: "border-color var(--transition-fast)",
+              }}
             />
             {errors.notes && (
-              <span className="error-message">{errors.notes}</span>
+              <span style={{ 
+                display: "block", 
+                color: "var(--color-danger)", 
+                fontSize: "var(--text-sm)", 
+                marginTop: "var(--space-2)" 
+              }}>
+                {errors.notes}
+              </span>
             )}
-            <small className="field-hint">
-              {(formData.notes || "").length}/500 caracteres
-            </small>
+            <span style={{ 
+              display: "block", 
+              color: "var(--color-text-muted)", 
+              fontSize: "var(--text-xs)", 
+              marginTop: "var(--space-1)" 
+            }}>
+              {formData.notes.length}/500 caracteres
+            </span>
           </div>
 
-          <div className="form-actions">
-            <button
-              type="button"
-              className="cancel-btn"
-              onClick={() => navigate("/mis-turnos")}
-              disabled={isLoading}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              className={`submit-btn ${isLoading ? "loading" : ""}`}
-              disabled={!isFormValid() || isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <span className="loading-spinner"></span>
-                  Agendando...
-                </>
-              ) : (
-                "Agendar Cita"
-              )}
-            </button>
-          </div>
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            disabled={!isFormValid() || isLoading}
+            fullWidth
+          >
+            {isLoading ? "Agendando..." : "Confirmar cita"}
+          </Button>
         </form>
-
-        <div className="form-info">
-          <h4>Información importante:</h4>
-          <ul>
-            <li>Las citas solo pueden agendarse de lunes a viernes</li>
-            <li>Horario de atención: 8:00 AM a 6:00 PM</li>
-            <li>Las citas pueden cancelarse hasta el día anterior</li>
-            <li>Recibirás una confirmación por email</li>
-          </ul>
-        </div>
       </div>
     </div>
   );
