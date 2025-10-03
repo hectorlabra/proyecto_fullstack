@@ -1,62 +1,62 @@
 :root {
-  /* Brand - Paleta médica moderna y confiable */
-  --color-primary: #1366d9;
-  --color-primary-hover: #0d52b0;
-  --color-primary-active: #0a4088;
-  --color-primary-dark: #0b476b;
-  --color-primary-soft: #e3f2fd;
+  /* Brand Salud */
+  --color-primary: #0ea5a8;
+  --color-primary-hover: #0c8e90;
+  --color-primary-active: #0a7476;
+  --color-primary-dark: #0a5d60;
+  --color-primary-soft: #d5f4f5;
   --color-primary-contrast: #ffffff;
 
-  --color-accent: #00c896;
-  --color-accent-hover: #00a67d;
-  --color-accent-soft: #d8fff4;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-soft: #dbeafe;
 
-  /* Backgrounds - Diseño aireado */
-  --color-bg: #f5f7fb;
-  --color-bg-soft: #eef2f8;
-  --color-bg-muted: #f1f4f9;
-  --color-surface: #ffffff;
-  --color-surface-alt: #f4f6f8;
-  --color-surface-neutral: #f7f9fb;
+  /* Backgrounds y superficies */
+  --color-bg: #ffffff;
+  --color-bg-soft: #f8fafc;
+  --color-bg-muted: #f1f5f9;
+  --color-surface: #f8fafc;
+  --color-surface-alt: #f1f5f9;
+  --color-surface-neutral: #e2e8f0;
   --color-surface-elevated: #ffffff;
-  --color-surface-hover: #ebeff3;
+  --color-surface-hover: #e2e8f0;
 
   /* Text - Jerarquía clara */
-  --color-text: #15213b;
-  --color-text-secondary: #4d5b78;
-  --color-text-muted: #74829a;
-  --color-text-light: #9aa6bf;
+  --color-text: #0f172a;
+  --color-text-secondary: #1e293b;
+  --color-text-muted: #475569;
+  --color-text-light: #94a3b8;
 
   /* Borders */
-  --color-border: #d7dce7;
-  --color-border-light: #e5e9f2;
-  --color-border-extra-light: #edf1f8;
-  --color-border-dark: #b8c1d3;
+  --color-border: #cbd5e1;
+  --color-border-light: #e2e8f0;
+  --color-border-extra-light: #f1f5f9;
+  --color-border-dark: #94a3b8;
 
   /* Estados semánticos - Médicos */
-  --color-success: #0b8a6a;
-  --color-success-bg: #dff8f1;
-  --color-success-text: #03634b;
-  --color-success-border: #92e0c7;
+  --color-success: #16a34a;
+  --color-success-bg: #dcfce7;
+  --color-success-text: #166534;
+  --color-success-border: #86efac;
 
-  --color-warning: #ff8b00;
-  --color-warning-bg: #fff3d6;
-  --color-warning-text: #8c4b05;
-  --color-warning-border: #ffd699;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fef3c7;
+  --color-warning-text: #b45309;
+  --color-warning-border: #fcd34d;
 
-  --color-danger: #de350b;
-  --color-danger-bg: #ffe4de;
-  --color-danger-text: #a32705;
-  --color-danger-border: #ff9b82;
+  --color-danger: #ef4444;
+  --color-danger-bg: #fee2e2;
+  --color-danger-text: #b91c1c;
+  --color-danger-border: #fca5a5;
 
-  --color-info: #0d66f5;
-  --color-info-bg: #e0ecff;
-  --color-info-text: #0a49b6;
-  --color-info-border: #96b8ff;
+  --color-info: #0891b2;
+  --color-info-bg: #cffafe;
+  --color-info-text: #0e7490;
+  --color-info-border: #67e8f9;
 
   /* Focus */
-  --focus-ring: 0 0 0 3px rgba(19, 102, 217, 0.25);
-  --focus-outline: 2px solid #4c9aff;
+  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.35);
+  --focus-outline: 2px solid #2563eb;
   --focus-ring-offset: 2px;
 
   /* Spacing - Escala 4px */
@@ -146,21 +146,22 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0d1117;
-    --color-bg-soft: #0b0f14;
-    --color-bg-muted: #10151c;
-    --color-surface: #161b22;
-    --color-surface-alt: #1c2128;
-    --color-surface-neutral: #161c24;
-    --color-surface-elevated: #1f2631;
-    --color-surface-hover: #242b34;
-    --color-text: #f0f6fc;
-    --color-text-secondary: #8b949e;
-    --color-text-muted: #6e7681;
-    --color-border: #30363d;
-    --color-border-light: #21262d;
-    --color-border-extra-light: #1a1f27;
-    --color-primary-dark: #7bb8ff;
+    --color-bg: #0f172a;
+    --color-bg-soft: #111c32;
+    --color-bg-muted: #16213f;
+    --color-surface: #1e293b;
+    --color-surface-alt: #253349;
+    --color-surface-neutral: #1c2a3d;
+    --color-surface-elevated: #2a3b54;
+    --color-surface-hover: #31435b;
+    --color-text: #f8fafc;
+    --color-text-secondary: #cbd5f5;
+    --color-text-muted: #94a3c0;
+    --color-border: #334155;
+    --color-border-light: #273449;
+    --color-border-extra-light: #1f2a3d;
+    --color-primary-dark: #31c5c8;
+    --color-accent-soft: rgba(37, 99, 235, 0.18);
   }
 }
 
