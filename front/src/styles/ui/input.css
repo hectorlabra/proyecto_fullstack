@@ -1,0 +1,115 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.input-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text);
+  display: block;
+}
+
+.input-label.required::after {
+  content: " *";
+  color: var(--color-danger);
+}
+
+.input-field {
+  appearance: none;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: var(--line-height-normal);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+}
+
+.input-field::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+.input-field:hover:not(:disabled) {
+  border-color: var(--color-border-dark);
+}
+
+.input-field:focus {
+  outline: var(--focus-ring);
+  outline-offset: 0;
+  border-color: var(--color-accent);
+}
+
+.input-field:disabled {
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Error state */
+.input-field[aria-invalid="true"],
+.input-field.error {
+  border-color: var(--color-danger);
+}
+
+.input-field[aria-invalid="true"]:focus,
+.input-field.error:focus {
+  outline-color: var(--color-danger);
+}
+
+/* Success state */
+.input-field.success {
+  border-color: var(--color-success);
+}
+
+/* Helper/Error text */
+.input-helper {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--line-height-normal);
+}
+
+.input-error {
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+  line-height: var(--line-height-normal);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.input-error::before {
+  content: "⚠";
+  flex-shrink: 0;
+}
+
+/* Sizes */
+.input-field.input-sm {
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-3);
+}
+
+.input-field.input-lg {
+  font-size: var(--text-lg);
+  padding: var(--space-4) var(--space-5);
+}
+
+/* Textarea */
+.input-field.textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input-field {
+    transition: none !important;
+  }
+}
