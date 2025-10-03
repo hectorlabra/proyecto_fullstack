@@ -13,7 +13,7 @@ import "../../styles/ui/button.css";
  * @param {React.ReactNode} props.children - Button content
  */
 export function Button({
-  as: As = "button",
+  as = "button",
   variant = "primary",
   size = "md",
   fullWidth = false,
@@ -24,6 +24,7 @@ export function Button({
   className = "",
   ...props
 }) {
+  const Component = as;
   const classes = [
     "btn",
     `btn-${variant}`,
@@ -35,7 +36,7 @@ export function Button({
     .join(" ");
 
   return (
-    <As className={classes} disabled={disabled} {...props}>
+    <Component className={classes} disabled={disabled} {...props}>
       {leadingIcon && (
         <span className="btn-icon" aria-hidden="true">
           {leadingIcon}
@@ -47,7 +48,7 @@ export function Button({
           {trailingIcon}
         </span>
       )}
-    </As>
+    </Component>
   );
 }
 
