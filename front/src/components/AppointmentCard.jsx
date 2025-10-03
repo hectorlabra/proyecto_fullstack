@@ -3,6 +3,7 @@ import { useUser } from "../hooks/useUser";
 import { Card, CardHeader, CardContent, CardActions } from "./ui/Card";
 import { StatusBadge } from "./ui/Badge";
 import { Button } from "./ui/Button";
+import { ConfirmModal } from "./ui/Modal";
 import "../styles/ui/appointment-card.css";
 
 const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
@@ -62,10 +63,6 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
 
   const handleCancelClick = () => {
     setShowConfirmDialog(true);
-  };
-
-  const handleCancelDialog = () => {
-    setShowConfirmDialog(false);
   };
 
   return (
@@ -154,40 +151,17 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
         </CardActions>
       </Card>
 
-      {showConfirmDialog && (
-        <div className="dialog-overlay" onClick={handleCancelDialog}>
-          <div
-            className="dialog-content"
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="dialog-title"
-          >
-            <h3 id="dialog-title">Confirmar Cancelación</h3>
-            <p>
-              ¿Estás seguro de que deseas cancelar tu cita del{" "}
-              {formatDate(date)} a las {formatTime24h(time)}?
-            </p>
-            <p className="dialog-warning">Esta acción no se puede deshacer.</p>
-            <div className="dialog-actions">
-              <Button
-                variant="secondary"
-                onClick={handleCancelDialog}
-                disabled={isLoading}
-              >
-                No, mantener cita
-              </Button>
-              <Button
-                variant="danger"
-                onClick={cancelAppointment}
-                disabled={isLoading}
-              >
-                {isLoading ? "Cancelando..." : "Sí, cancelar cita"}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmModal
+        isOpen={showConfirmDialog}
+        onClose={() => setShowConfirmDialog(false)}
+        onConfirm={cancelAppointment}
+        title="Confirmar Cancelación"
+        message={`¿Estás seguro de que deseas cancelar tu cita del ${formatDate(date)} a las ${formatTime24h(time)}? Esta acción no se puede deshacer.`}
+        confirmText="Sí, cancelar cita"
+        cancelText="No, mantener cita"
+        variant="danger"
+        isLoading={isLoading}
+      />
     </>
   );
 };

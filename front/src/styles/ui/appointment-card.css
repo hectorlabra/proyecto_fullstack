@@ -88,56 +88,6 @@
   font-style: italic;
 }
 
-/* Dialog overlay */
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: var(--space-4);
-}
-
-.dialog-content {
-  background: var(--color-surface);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  max-width: 500px;
-  width: 100%;
-  box-shadow: var(--shadow-lg);
-}
-
-.dialog-content h3 {
-  margin: 0 0 var(--space-4) 0;
-  font-size: var(--text-xl);
-  font-weight: var(--font-semibold);
-  color: var(--color-text);
-}
-
-.dialog-content p {
-  margin: 0 0 var(--space-3) 0;
-  color: var(--color-text);
-  line-height: var(--line-height-relaxed);
-}
-
-.dialog-warning {
-  color: var(--color-danger);
-  font-weight: var(--font-medium);
-  font-size: var(--text-sm);
-}
-
-.dialog-actions {
-  display: flex;
-  gap: var(--space-3);
-  margin-top: var(--space-6);
-  justify-content: flex-end;
-}
-
 @media (max-width: 768px) {
   .appointment-card-actions {
     flex-direction: column;
@@ -145,19 +95,5 @@
 
   .appointment-card-actions .btn {
     width: 100%;
-  }
-
-  .dialog-actions {
-    flex-direction: column-reverse;
-  }
-
-  .dialog-actions .btn {
-    width: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dialog-overlay {
-    animation: none !important;
   }
 }
