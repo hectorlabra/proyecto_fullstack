@@ -6,14 +6,9 @@
 .hero-section {
   position: relative;
   padding: var(--space-16) var(--space-4) var(--space-20);
-  background: radial-gradient(
-      circle at 15% 20%,
-      rgba(110, 92, 255, 0.38),
-      transparent 55%
-    ),
-    radial-gradient(circle at 80% 8%, rgba(57, 169, 200, 0.34), transparent 60%),
-    linear-gradient(135deg, #080320 0%, #110a36 55%, #05041a 100%);
-  color: rgba(240, 238, 255, 0.9);
+  background: var(--gradient-hero-sheen-left), var(--gradient-hero-sheen-right),
+    var(--gradient-hero-base);
+  color: var(--color-ink-inverted);
   overflow: hidden;
 }
 
@@ -63,14 +58,10 @@
   gap: var(--space-4);
   padding: var(--space-4);
   border-radius: var(--radius-2xl);
-  background: linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.12),
-      rgba(134, 116, 255, 0.08)
-    )
-    border-box;
-  box-shadow: 0 32px 60px rgba(8, 10, 30, 0.32);
-  border: 1px solid rgba(148, 132, 255, 0.22);
+  background: var(--surface-hero-card);
+  box-shadow: var(--shadow-card-floating);
+  border: 1px solid var(--border-glass);
+  color: var(--color-ink-primary);
   max-width: 420px;
   width: 100%;
 }
@@ -79,9 +70,10 @@
   position: relative;
   padding: var(--space-5);
   border-radius: var(--radius-2xl);
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(138, 118, 246, 0.25);
-  box-shadow: 0 10px 26px rgba(17, 16, 44, 0.12);
+  background: var(--surface-glass-light);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card-soft);
+  color: var(--color-ink-primary);
   backdrop-filter: blur(14px);
 }
 
@@ -91,6 +83,7 @@
     rgba(252, 250, 255, 0.96),
     rgba(233, 229, 255, 0.88)
   );
+  color: var(--color-ink-primary);
 }
 
 .hero-dashboard__header {
@@ -126,12 +119,12 @@
 .hero-dashboard__name {
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
-  color: var(--color-text);
+  color: var(--color-ink-primary);
 }
 
 .hero-dashboard__role {
   font-size: var(--text-sm);
-  color: #5c5a84;
+  color: var(--color-ink-muted);
 }
 
 .hero-dashboard__schedule {
@@ -147,8 +140,10 @@
   align-items: center;
   padding: var(--space-4);
   border-radius: var(--radius-xl);
-  background: rgba(88, 68, 191, 0.12);
-  color: var(--color-text);
+  background: var(--surface-appointment);
+  color: var(--color-ink-primary);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card-soft);
 }
 
 .hero-appointment__time {
@@ -167,13 +162,13 @@
 .hero-appointment__patient {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
-  color: var(--color-text);
+  color: var(--color-ink-primary);
 }
 
 .hero-appointment__type {
   grid-column: 2 / -1;
   font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  color: var(--color-ink-subtle);
 }
 
 .hero-analytics {
@@ -187,39 +182,37 @@
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-full);
-  background: rgba(64, 207, 230, 0.16);
-  color: #9ae0f7;
+  background: var(--surface-chip-cool);
+  color: var(--color-chip-text-cool);
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
 }
 
 .hero-analytics__chip--accent {
-  background: rgba(132, 114, 255, 0.26);
-  color: #d9d4ff;
+  background: var(--surface-chip-accent);
+  color: var(--color-chip-text-accent);
 }
 
 .hero-device__card--floating {
   max-width: 280px;
   margin-left: auto;
-  color: #201940;
-  background: linear-gradient(
-    160deg,
-    rgba(244, 239, 255, 0.96),
-    rgba(255, 255, 255, 0.98)
-  );
-  border: 1px solid rgba(132, 114, 255, 0.24);
+  color: var(--color-ink-primary);
+  background: var(--surface-glass-muted);
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-card-soft);
+  backdrop-filter: blur(14px);
 }
 
 .hero-device__card--floating h3 {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
-  color: #1f1844;
+  color: var(--color-ink-primary);
   margin-bottom: var(--space-2);
 }
 
 .hero-device__card--floating p {
   font-size: var(--text-sm);
-  color: #4a4573;
+  color: var(--color-ink-muted);
   margin-bottom: var(--space-4);
 }
 
@@ -255,8 +248,8 @@
   border-radius: var(--radius-full);
   font-size: var(--text-sm);
   font-weight: var(--font-medium);
-  background: rgba(132, 114, 255, 0.18);
-  color: rgba(142, 236, 255, 0.92);
+  background: var(--surface-eyebrow);
+  color: var(--color-eyebrow-text);
   letter-spacing: 0.02em;
 }
 
@@ -264,14 +257,14 @@
   font-size: var(--text-4xl);
   font-weight: var(--font-bold);
   line-height: var(--line-tight);
-  color: #f6f4ff;
+  color: var(--color-ink-inverted);
   margin: 0 0 var(--space-4) 0;
 }
 
 .hero-subtitle {
   font-size: var(--text-lg);
   line-height: var(--line-relaxed);
-  color: rgba(224, 221, 255, 0.78);
+  color: var(--color-ink-inverted-muted);
   margin: 0 0 var(--space-8) 0;
   max-width: 600px;
   margin-left: auto;
@@ -296,13 +289,9 @@
   gap: var(--space-4);
   padding: var(--space-5);
   border-radius: var(--radius-2xl);
-  background: linear-gradient(
-    135deg,
-    rgba(126, 108, 255, 0.32),
-    rgba(32, 21, 71, 0.92)
-  );
-  border: 1px solid rgba(164, 150, 255, 0.42);
-  box-shadow: 0 24px 48px rgba(6, 7, 26, 0.28);
+  background: var(--gradient-metrics-card);
+  border: 1px solid var(--border-glass-strong);
+  box-shadow: var(--shadow-card-elevated);
 }
 
 .hero-metric {
@@ -315,21 +304,22 @@
 .hero-metric__value {
   font-size: calc(var(--text-2xl) + 2px);
   font-weight: var(--font-bold);
-  color: #ffffff;
+  color: var(--color-ink-inverted);
 }
 
 .hero-metric__label {
   font-size: var(--text-sm);
-  color: rgba(224, 221, 255, 0.78);
+  color: var(--color-ink-inverted-soft);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
 }
 
 /* Benefits Section */
 .benefits-section {
   position: relative;
   padding: var(--space-20) var(--space-4);
-  background: linear-gradient(180deg, #0d0827 0%, #120f33 32%, #faf8ff 100%);
+  background: var(--gradient-benefits-surface);
 }
 
 .section-header {
@@ -344,7 +334,8 @@
   font-size: var(--text-3xl);
   font-weight: var(--font-semibold);
   line-height: var(--line-tight);
-  color: #1a1639;
+  color: var(--color-ink-inverted);
+  text-shadow: 0 6px 18px rgba(8, 4, 26, 0.35);
   margin: 0;
 }
 
@@ -358,15 +349,12 @@
 
 .benefit-card {
   padding: var(--space-6);
-  background: linear-gradient(
-    150deg,
-    rgba(138, 124, 255, 0.22),
-    rgba(255, 255, 255, 0.94)
-  );
+  background: var(--gradient-benefit-card);
   border-radius: var(--radius-2xl);
-  border: 1px solid rgba(138, 118, 246, 0.28);
+  border: 1px solid var(--border-glass);
   text-align: left;
-  box-shadow: 0 18px 40px rgba(16, 14, 48, 0.16);
+  box-shadow: var(--shadow-card-soft);
+  backdrop-filter: blur(16px);
   transition: transform var(--transition-base),
     box-shadow var(--transition-base), border-color var(--transition-base),
     background var(--transition-base);
@@ -374,13 +362,9 @@
 
 .benefit-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 24px 52px rgba(16, 14, 48, 0.24);
-  border-color: rgba(138, 118, 246, 0.48);
-  background: linear-gradient(
-    155deg,
-    rgba(132, 114, 255, 0.32),
-    rgba(255, 255, 255, 0.98)
-  );
+  box-shadow: var(--shadow-card-elevated);
+  border-color: var(--border-glass-strong);
+  background: var(--gradient-benefit-card-hover);
 }
 
 .benefit-icon {
@@ -398,28 +382,28 @@
 .benefit-title {
   font-size: var(--text-xl);
   font-weight: var(--font-semibold);
-  color: #221c47;
+  color: var(--color-ink-primary);
   margin: 0 0 var(--space-2) 0;
 }
 
 .benefit-description {
   font-size: var(--text-base);
   line-height: var(--line-relaxed);
-  color: #4b476d;
+  color: var(--color-ink-muted);
   margin: 0;
 }
 
 /* CTA Section */
 .cta-section {
   padding: var(--space-20) var(--space-4);
-  background: linear-gradient(135deg, #120f33 0%, #1a4061 100%);
+  background: var(--gradient-cta);
 }
 
 .cta-content {
   max-width: var(--container-md);
   margin: 0 auto;
   text-align: center;
-  color: #f4f3ff;
+  color: var(--color-ink-inverted);
 }
 
 .cta-title {
@@ -432,7 +416,7 @@
 .cta-subtitle {
   font-size: var(--text-lg);
   line-height: var(--line-relaxed);
-  color: rgba(233, 232, 255, 0.8);
+  color: var(--color-ink-inverted-soft);
   margin: 0 0 var(--space-8) 0;
 }
 
@@ -501,6 +485,12 @@
   .benefits-section,
   .cta-section {
     padding: var(--space-24) var(--space-8);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-metric__label {
+    white-space: normal;
   }
 }
 
