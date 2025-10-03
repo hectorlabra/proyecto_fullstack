@@ -165,6 +165,13 @@
   font-size: var(--text-lg);
 }
 
+/* Ensure the time pill is always bright and legible even when parent sets dark color */
+.hero-appointment__time {
+  box-shadow: 0 8px 18px rgba(88, 68, 191, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  color: var(--color-primary-contrast) !important;
+}
+
 .hero-appointment__patient {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
