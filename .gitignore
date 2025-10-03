@@ -9,3 +9,5 @@ AGENTS.md
 .vscode/
 citas_fullstack
 docs
+refactor_speckit/
+ui_speckit/specs/002-frontend-ux-ui/
