@@ -1,49 +1,36 @@
-/* Home - Enterprise Healthcare Design */
+/* Home - Modern Health App Design */
 .home-container {
   min-height: calc(100vh - 80px);
   background: var(--color-bg);
 }
 
-/* Hero Section - Sobrio y profesional */
+/* Hero - Grande e impactante */
 .hero-section {
-  padding: var(--space-20) var(--space-6) var(--space-16);
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.hero-content {
-  max-width: 720px;
-  margin: 0 auto;
+  padding: var(--space-24) var(--space-6) var(--space-20);
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
   text-align: center;
 }
 
-.hero-badge {
-  display: inline-block;
-  padding: var(--space-2) var(--space-4);
-  background: var(--color-info-bg);
-  color: var(--color-info-text);
-  border-radius: var(--radius-full);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  margin-bottom: var(--space-6);
-  letter-spacing: 0.3px;
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .hero-title {
-  font-size: var(--text-4xl);
+  font-size: var(--text-5xl);
   font-weight: var(--font-bold);
   color: var(--color-text);
   margin: 0 0 var(--space-6) 0;
-  line-height: var(--line-height-tight);
-  letter-spacing: -0.02em;
+  line-height: var(--line-tight);
+  letter-spacing: -0.03em;
 }
 
 .hero-subtitle {
-  font-size: var(--text-lg);
-  line-height: var(--line-height-relaxed);
-  color: var(--color-text-muted);
-  margin: 0 0 var(--space-10) 0;
-  max-width: 640px;
+  font-size: var(--text-xl);
+  line-height: var(--line-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-12) 0;
+  max-width: 680px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -53,41 +40,12 @@
   gap: var(--space-4);
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: var(--space-12);
 }
 
-/* Stats - Credibilidad */
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-8);
-  max-width: 720px;
-  margin: 0 auto;
-  padding-top: var(--space-12);
-  border-top: 1px solid var(--color-border);
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-value {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-bold);
-  color: var(--color-primary);
-  line-height: var(--line-height-tight);
-}
-
-.stat-label {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin-top: var(--space-2);
-}
-
-/* Features Section */
+/* Features - Cards modernas con iconos */
 .features-section {
   padding: var(--space-20) var(--space-6);
-  max-width: 1200px;
+  max-width: var(--container-xl);
   margin: 0 auto;
 }
 
@@ -97,19 +55,26 @@
   text-align: center;
 }
 
-.section-title {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-bold);
-  color: var(--color-text);
-  margin: 0 0 var(--space-4) 0;
-  letter-spacing: -0.01em;
+.section-badge {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-6);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
-.section-description {
-  font-size: var(--text-lg);
-  color: var(--color-text-muted);
-  line-height: var(--line-height-relaxed);
+.section-title {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-text);
   margin: 0;
+  letter-spacing: -0.02em;
+  line-height: var(--line-tight);
 }
 
 .features-grid {
@@ -120,82 +85,120 @@
 
 .feature-card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-light);
   border-radius: var(--radius-lg);
-  padding: var(--space-8);
+  padding: var(--space-10);
   transition: all var(--transition-base);
 }
 
 .feature-card:hover {
-  border-color: var(--color-border-dark);
-  box-shadow: var(--shadow-md);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
 }
 
-.feature-header {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-4);
-  margin-bottom: var(--space-4);
-}
-
-.feature-icon-wrapper {
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
+.feature-icon-box {
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-primary);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+}
+
+.feature-icon-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+}
+
+.feature-icon-accent {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #00e0a0 100%);
+}
+
+.feature-icon-info {
+  background: linear-gradient(135deg, var(--color-info) 0%, #4c9aff 100%);
 }
 
 .feature-icon {
-  width: 24px;
-  height: 24px;
-  color: var(--color-primary-contrast);
+  width: 32px;
+  height: 32px;
+  color: white;
 }
 
 .feature-title {
-  font-size: var(--text-xl);
+  font-size: var(--text-2xl);
   font-weight: var(--font-semibold);
   color: var(--color-text);
-  margin: 0;
-  line-height: var(--line-height-tight);
-  padding-top: var(--space-2);
+  margin: 0 0 var(--space-3) 0;
+  line-height: var(--line-tight);
 }
 
 .feature-description {
-  font-size: var(--text-md);
-  color: var(--color-text-muted);
-  line-height: var(--line-height-relaxed);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-relaxed);
   margin: 0;
 }
 
-/* CTA Section */
-.cta-section {
+/* Stats - Sección de confianza */
+.stats-section {
   padding: var(--space-20) var(--space-6);
   background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.stats-grid {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-12);
+}
+
+.stat-card {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-primary);
+  line-height: var(--line-tight);
+  margin-bottom: var(--space-2);
+}
+
+.stat-label {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-normal);
+}
+
+/* CTA - Llamado a la acción */
+.cta-section {
+  padding: var(--space-24) var(--space-6);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  text-align: center;
 }
 
 .cta-content {
   max-width: 640px;
   margin: 0 auto;
-  text-align: center;
 }
 
 .cta-title {
-  font-size: var(--text-3xl);
+  font-size: var(--text-4xl);
   font-weight: var(--font-bold);
-  color: var(--color-text);
+  color: white;
   margin: 0 0 var(--space-4) 0;
+  letter-spacing: -0.02em;
 }
 
 .cta-description {
-  font-size: var(--text-lg);
-  color: var(--color-text-muted);
-  line-height: var(--line-height-relaxed);
-  margin: 0 0 var(--space-8) 0;
+  font-size: var(--text-xl);
+  color: rgba(255, 255, 255, 0.95);
+  line-height: var(--line-relaxed);
+  margin: 0 0 var(--space-10) 0;
 }
 
 /* Responsive */
@@ -205,11 +208,11 @@
   }
 
   .hero-title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-4xl);
   }
 
   .hero-subtitle {
-    font-size: var(--text-md);
+    font-size: var(--text-lg);
   }
 
   .hero-actions {
@@ -220,17 +223,12 @@
     width: 100%;
   }
 
-  .hero-stats {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
-
   .features-section {
     padding: var(--space-16) var(--space-4);
   }
 
   .section-title {
-    font-size: var(--text-2xl);
+    font-size: var(--text-3xl);
   }
 
   .features-grid {
@@ -238,11 +236,30 @@
     gap: var(--space-6);
   }
 
+  .stats-section {
+    padding: var(--space-16) var(--space-4);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+
   .cta-section {
     padding: var(--space-16) var(--space-4);
   }
 
   .cta-title {
-    font-size: var(--text-2xl);
+    font-size: var(--text-3xl);
+  }
+
+  .cta-description {
+    font-size: var(--text-lg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feature-card:hover {
+    transform: none;
   }
 }
