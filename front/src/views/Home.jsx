@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import McButton from "../components/ui/McButton";
 import McBadge from "../components/ui/McBadge";
-import heroIllustration from "../assets/hero-ui.webp";
 import {
   CalendarIcon,
   ShieldCheckIcon,
@@ -47,20 +46,58 @@ function Home() {
     <div className="home-container">
       <section className="hero-section">
         <div className="hero-grid">
-          <div className="hero-visual">
+          <div className="hero-visual" aria-hidden="true">
             <div className="hero-device">
-              <img
-                src={heroIllustration}
-                alt="Panel de control de Medi Citas"
-                className="hero-device__image"
-                loading="lazy"
-              />
-              <div className="hero-device__glow" />
-              <div className="hero-device__badge">
-                <McBadge variant="info" size="sm">
-                  Experiencia premium
-                </McBadge>
+              <div className="hero-device__card hero-device__card--primary">
+                <header className="hero-dashboard__header">
+                  <div className="hero-avatar">LM</div>
+                  <div className="hero-dashboard__info">
+                    <p className="hero-dashboard__name">Dra. Laura Méndez</p>
+                    <span className="hero-dashboard__role">
+                      Cardiología integral
+                    </span>
+                  </div>
+                  <McBadge variant="info" size="sm">
+                    Turno confirmado
+                  </McBadge>
+                </header>
+                <div className="hero-dashboard__schedule">
+                  <div className="hero-appointment">
+                    <span className="hero-appointment__time">09:30</span>
+                    <p className="hero-appointment__patient">Juan Pérez</p>
+                    <span className="hero-appointment__type">
+                      Control anual
+                    </span>
+                  </div>
+                  <div className="hero-analytics" role="list">
+                    <div className="hero-analytics__chip" role="listitem">
+                      <CalendarIcon size={16} />
+                      <span>2 citas hoy</span>
+                    </div>
+                    <div
+                      className="hero-analytics__chip hero-analytics__chip--accent"
+                      role="listitem"
+                    >
+                      <ClockIcon size={16} />
+                      <span>Tiempo espera 05m</span>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <div className="hero-device__card hero-device__card--floating">
+                <h3>Panel clínico en tiempo real</h3>
+                <p>
+                  Monitorea agendas, cancelaciones y adherencia desde un solo
+                  panel.
+                </p>
+                <div className="hero-floating__cta">
+                  Explorar panel
+                  <ArrowRightIcon size={16} />
+                </div>
+              </div>
+
+              <div className="hero-device__glow" />
             </div>
           </div>
 
