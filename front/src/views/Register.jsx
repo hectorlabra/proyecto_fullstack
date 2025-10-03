@@ -24,7 +24,8 @@ function Register() {
   const [isLoading, setIsLoading] = useState(false);
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(password);
+  const validatePassword = (password) =>
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/.test(password);
   const validateDNI = (dni) => /^\d{7,8}$/.test(dni);
   const validatePhone = (phone) => /^\+?[\d\s\-()]{8,15}$/.test(phone);
 
@@ -34,7 +35,10 @@ function Register() {
     const birthDate = new Date(date);
     const age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       return age - 1 >= 18;
     }
     return age >= 18;
@@ -48,7 +52,8 @@ function Register() {
       case "firstName":
       case "lastName":
         if (!value.trim()) error = "Este campo es obligatorio";
-        else if (value.trim().length < 2) error = "Debe tener al menos 2 caracteres";
+        else if (value.trim().length < 2)
+          error = "Debe tener al menos 2 caracteres";
         break;
       case "email":
         if (!value.trim()) error = "El email es obligatorio";
@@ -60,7 +65,8 @@ function Register() {
         break;
       case "dateOfBirth":
         if (!value) error = "La fecha de nacimiento es obligatoria";
-        else if (!validateDateOfBirth(value)) error = "Debe ser mayor de 18 años";
+        else if (!validateDateOfBirth(value))
+          error = "Debe ser mayor de 18 años";
         break;
       case "nDni":
         if (!value.trim()) error = "El DNI es obligatorio";
@@ -68,12 +74,15 @@ function Register() {
         break;
       case "username":
         if (!value.trim()) error = "El nombre de usuario es obligatorio";
-        else if (value.trim().length < 3) error = "Debe tener al menos 3 caracteres";
-        else if (!/^[a-zA-Z0-9_]+$/.test(value)) error = "Solo letras, números y guión bajo";
+        else if (value.trim().length < 3)
+          error = "Debe tener al menos 3 caracteres";
+        else if (!/^[a-zA-Z0-9_]+$/.test(value))
+          error = "Solo letras, números y guión bajo";
         break;
       case "password":
         if (!value) error = "La contraseña es obligatoria";
-        else if (!validatePassword(value)) error = "Mín. 6 caracteres, 1 mayúscula, 1 minúscula y 1 número";
+        else if (!validatePassword(value))
+          error = "Mín. 6 caracteres, 1 mayúscula, 1 minúscula y 1 número";
         break;
     }
     return error;
@@ -87,8 +96,12 @@ function Register() {
   };
 
   const isFormValid = () => {
-    const allFieldsFilled = Object.values(formData).every((value) => value && value.toString().trim() !== "");
-    const noErrors = Object.values(errors).every((error) => !error || error === "");
+    const allFieldsFilled = Object.values(formData).every(
+      (value) => value && value.toString().trim() !== ""
+    );
+    const noErrors = Object.values(errors).every(
+      (error) => !error || error === ""
+    );
     return allFieldsFilled && noErrors;
   };
 
@@ -136,7 +149,7 @@ function Register() {
       } else {
         toast.error(data.error || "Error en el registro");
       }
-    } catch (error) {
+    } catch {
       toast.error("Error de conexión. Verifica tu internet.");
     } finally {
       setIsLoading(false);
@@ -153,7 +166,13 @@ function Register() {
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "var(--space-4)",
+            }}
+          >
             <Input
               label="Nombre"
               name="firstName"
@@ -187,7 +206,13 @@ function Register() {
             required
           />
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "var(--space-4)",
+            }}
+          >
             <Input
               label="Teléfono"
               name="phone"
