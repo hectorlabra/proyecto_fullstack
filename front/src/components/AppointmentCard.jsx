@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useUser } from "../hooks/useUser";
-import { getStatusLabel, getStatusClass } from "../helpers/myAppointments";
-import "../styles/AppointmentCard.css";
+import { Card, CardHeader, CardContent, CardActions } from "./ui/Card";
+import { StatusBadge } from "./ui/Badge";
+import { Button } from "./ui/Button";
+import "../styles/ui/appointment-card.css";
 
 const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
   const { id, date, time, status, notes, user } = appointment;
@@ -18,12 +20,9 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     return new Date(dateString).toLocaleDateString("es-ES", options);
   };
 
-  const formatTime = (timeString) => {
+  const formatTime24h = (timeString) => {
     const [hours, minutes] = timeString.split(":");
-    const hour24 = parseInt(hours);
-    const hour12 = hour24 > 12 ? hour24 - 12 : hour24 === 0 ? 12 : hour24;
-    const ampm = hour24 >= 12 ? "PM" : "AM";
-    return `${hour12}:${minutes} ${ampm}`;
+    return `${hours}:${minutes}`;
   };
 
   const canCancel = () => {
@@ -69,54 +68,80 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     setShowConfirmDialog(false);
   };
 
-  const statusLabel = getStatusLabel(status);
-  const statusClass = getStatusClass(status);
-
   return (
     <>
-      <div className="appointment-card">
-        <div className="appointment-header">
-          <h3 className="appointment-id">Turno #{id}</h3>
-          <div className={`appointment-status ${statusClass}`}>
-            {statusLabel}
+      <Card className="appointment-card-container">
+        <CardHeader className="appointment-card-header">
+          <h3 className="appointment-card-title">Cita #{id}</h3>
+          <StatusBadge status={status} />
+        </CardHeader>
+
+        <CardContent>
+          <div className="appointment-card-info">
+            <div className="appointment-card-row">
+              <span className="appointment-card-icon" aria-hidden="true">
+                📅
+              </span>
+              <span className="appointment-card-label">Fecha:</span>
+              <span className="appointment-card-value">
+                {formatDate(date)}
+              </span>
+            </div>
+
+            <div className="appointment-card-row">
+              <span className="appointment-card-icon" aria-hidden="true">
+                🕐
+              </span>
+              <span className="appointment-card-label">Hora:</span>
+              <span className="appointment-card-value">
+                {formatTime24h(time)}
+              </span>
+            </div>
+
+            {user && (
+              <>
+                <div className="appointment-card-row">
+                  <span className="appointment-card-icon" aria-hidden="true">
+                    👤
+                  </span>
+                  <span className="appointment-card-label">Paciente:</span>
+                  <span className="appointment-card-value">
+                    {user.firstName} {user.lastName}
+                  </span>
+                </div>
+
+                <div className="appointment-card-row">
+                  <span className="appointment-card-icon" aria-hidden="true">
+                    📧
+                  </span>
+                  <span className="appointment-card-label">Email:</span>
+                  <span className="appointment-card-value">{user.email}</span>
+                </div>
+              </>
+            )}
           </div>
-        </div>
 
-        <div className="appointment-datetime">
-          <p className="appointment-date">📅 {formatDate(date)}</p>
-          <p className="appointment-time">🕐 {formatTime(time)}</p>
-        </div>
+          {notes && (
+            <div className="appointment-card-notes">
+              <p className="appointment-card-notes-title">Notas</p>
+              <p className="appointment-card-notes-text">{notes}</p>
+            </div>
+          )}
+        </CardContent>
 
-        {user && (
-          <div className="appointment-user-info">
-            <p className="appointment-patient">
-              👤 Paciente: {user.firstName} {user.lastName}
-            </p>
-            <p className="appointment-email">📧 {user.email}</p>
-          </div>
-        )}
-
-        {notes && (
-          <div className="appointment-notes">
-            <p className="appointment-notes-text">
-              💬 <strong>Notas:</strong> {notes}
-            </p>
-          </div>
-        )}
-
-        <div className="appointment-actions">
+        <CardActions className="appointment-card-actions">
           {canCancel() && (
-            <button
-              className="cancel-btn"
+            <Button
+              variant="danger"
               onClick={handleCancelClick}
               disabled={isLoading}
             >
               {isLoading ? "Cancelando..." : "Cancelar Cita"}
-            </button>
+            </Button>
           )}
 
           {!canCancel() && status !== "canceled" && status !== "cancelled" && (
-            <p className="cancel-info">
+            <p className="appointment-card-info-text">
               {status === "completed"
                 ? "Esta cita ya fue completada"
                 : "Las citas solo pueden cancelarse hasta el día anterior"}
@@ -124,37 +149,41 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
           )}
 
           {(status === "canceled" || status === "cancelled") && (
-            <p className="cancel-info cancelled-text">
-              Esta cita fue cancelada
-            </p>
+            <p className="appointment-card-info-text">Esta cita fue cancelada</p>
           )}
-        </div>
-      </div>
+        </CardActions>
+      </Card>
 
       {showConfirmDialog && (
-        <div className="dialog-overlay">
-          <div className="dialog-content">
-            <h3>Confirmar Cancelación</h3>
+        <div className="dialog-overlay" onClick={handleCancelDialog}>
+          <div
+            className="dialog-content"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dialog-title"
+          >
+            <h3 id="dialog-title">Confirmar Cancelación</h3>
             <p>
               ¿Estás seguro de que deseas cancelar tu cita del{" "}
-              {formatDate(date)} a las {formatTime(time)}?
+              {formatDate(date)} a las {formatTime24h(time)}?
             </p>
             <p className="dialog-warning">Esta acción no se puede deshacer.</p>
             <div className="dialog-actions">
-              <button
-                className="dialog-cancel-btn"
+              <Button
+                variant="secondary"
                 onClick={handleCancelDialog}
                 disabled={isLoading}
               >
                 No, mantener cita
-              </button>
-              <button
-                className="dialog-confirm-btn"
+              </Button>
+              <Button
+                variant="danger"
                 onClick={cancelAppointment}
                 disabled={isLoading}
               >
                 {isLoading ? "Cancelando..." : "Sí, cancelar cita"}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

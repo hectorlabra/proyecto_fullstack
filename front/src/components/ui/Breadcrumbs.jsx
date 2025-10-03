@@ -83,7 +83,7 @@ function generateBreadcrumbs(pathname) {
   const breadcrumbs = [{ label: "Inicio", path: "/" }];
 
   let currentPath = "";
-  segments.forEach((segment, index) => {
+  segments.forEach((segment) => {
     currentPath += `/${segment}`;
     
     // Check if it's a dynamic route (ID)
