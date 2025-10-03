@@ -61,7 +61,7 @@
   background: var(--surface-hero-card);
   box-shadow: var(--shadow-card-floating);
   border: 1px solid var(--border-glass);
-  color: var(--color-ink-strong);
+  color: #191138;
   max-width: 420px;
   width: 100%;
 }
@@ -73,7 +73,7 @@
   background: var(--surface-glass-light);
   border: 1px solid var(--border-glass);
   box-shadow: var(--shadow-card-soft);
-  color: var(--color-ink-strong);
+  color: #1b1540;
   backdrop-filter: blur(14px);
 }
 
@@ -89,7 +89,7 @@
     rgba(252, 250, 255, 0.96),
     rgba(233, 229, 255, 0.88)
   );
-  color: var(--color-ink-strong);
+  color: #1b1540;
 }
 
 .hero-dashboard__header {
@@ -125,12 +125,12 @@
 .hero-dashboard__name {
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
-  color: var(--color-ink-strong);
+  color: #181237;
 }
 
 .hero-dashboard__role {
   font-size: var(--text-sm);
-  color: var(--color-ink-primary);
+  color: rgba(36, 30, 80, 0.78);
 }
 
 .hero-dashboard__schedule {
@@ -147,7 +147,7 @@
   padding: var(--space-4);
   border-radius: var(--radius-xl);
   background: var(--surface-appointment);
-  color: var(--color-ink-strong);
+  color: #181237;
   border: 1px solid var(--border-glass);
   box-shadow: var(--shadow-card-soft);
 }
@@ -168,13 +168,13 @@
 .hero-appointment__patient {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
-  color: var(--color-ink-strong);
+  color: #181237;
 }
 
 .hero-appointment__type {
   grid-column: 2 / -1;
   font-size: var(--text-sm);
-  color: var(--color-ink-primary);
+  color: rgba(36, 30, 80, 0.76);
 }
 
 .hero-analytics {
@@ -202,7 +202,7 @@
 .hero-device__card--floating {
   max-width: 280px;
   margin-left: auto;
-  color: var(--color-ink-strong);
+  color: #181237;
   background: var(--surface-glass-muted);
   border: 1px solid var(--border-glass);
   box-shadow: var(--shadow-card-soft);
@@ -212,13 +212,13 @@
 .hero-device__card--floating h3 {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
-  color: var(--color-ink-primary);
+  color: #181237;
   margin-bottom: var(--space-2);
 }
 
 .hero-device__card--floating p {
   font-size: var(--text-sm);
-  color: var(--color-ink-primary);
+  color: rgba(36, 30, 80, 0.78);
   margin-bottom: var(--space-4);
 }
 
