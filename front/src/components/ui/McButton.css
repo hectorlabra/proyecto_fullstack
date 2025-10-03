@@ -36,39 +36,65 @@
 
 /* Variant: Primary */
 .mc-button--primary {
-  background-color: var(--color-primary);
+  background-image: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-primary-bright)
+  );
   color: var(--color-text-inverse);
-  border-color: var(--color-primary);
+  border-color: transparent;
+  box-shadow: 0 12px 24px rgba(88, 68, 191, 0.22);
 }
 
 .mc-button--primary:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
+  background-image: linear-gradient(
+    135deg,
+    var(--color-primary-hover),
+    var(--color-primary-bright)
+  );
+  border-color: transparent;
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
 }
 
 .mc-button--primary:active:not(:disabled) {
-  background-color: var(--color-primary-active);
+  background-image: linear-gradient(
+    135deg,
+    var(--color-primary-active),
+    var(--color-primary)
+  );
   transform: translateY(0);
 }
 
 /* Variant: Accent */
 .mc-button--accent {
-  background-color: var(--color-accent);
+  background-image: linear-gradient(
+    140deg,
+    var(--color-accent),
+    var(--color-accent-bright)
+  );
   color: var(--color-text-inverse);
-  border-color: var(--color-accent);
+  border-color: transparent;
+  box-shadow: 0 10px 20px rgba(28, 64, 77, 0.18);
 }
 
 .mc-button--accent:hover:not(:disabled) {
-  background-color: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
+  background-image: linear-gradient(
+    140deg,
+    var(--color-accent-hover),
+    var(--color-accent-bright)
+  );
+  border-color: transparent;
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
 }
 
 .mc-button--accent:active:not(:disabled) {
-  background-color: var(--color-accent-hover);
+  background-image: linear-gradient(
+    140deg,
+    var(--color-accent),
+    var(--color-accent-hover)
+  );
   transform: translateY(0);
 }
 

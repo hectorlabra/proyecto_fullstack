@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import McButton from "../components/ui/McButton";
+import McBadge from "../components/ui/McBadge";
+import heroIllustration from "../assets/hero-ui.webp";
 import {
   CalendarIcon,
   ShieldCheckIcon,
@@ -19,98 +21,55 @@ function Home() {
       icon: ShieldCheckIcon,
       title: "Seguro",
       description:
-        "Datos protegidos y cifrados bajo estándares médicos internacionales.",
+        "Capa de seguridad multicapa con doble factor y encriptación de extremo a extremo.",
     },
     {
       icon: ClockIcon,
       title: "Eficiente",
-      description: "Reserva tus citas en segundos, con confirmación inmediata.",
+      description:
+        "Agenda inteligente que sincroniza equipos, salas y disponibilidad en tiempo real.",
     },
     {
       icon: AlertCircleIcon,
       title: "Recordatorios",
       description:
-        "Notificaciones claras para no olvidar ninguna consulta importante.",
+        "Recordatorios humanizados por correo, SMS y WhatsApp con seguimiento automático.",
     },
+  ];
+
+  const metrics = [
+    { label: "Médicos activos", value: "+120" },
+    { label: "Pacientes felices", value: "35k" },
+    { label: "Tiempo promedio de reserva", value: "45s" },
   ];
 
   return (
     <div className="home-container">
       <section className="hero-section">
         <div className="hero-grid">
-          <div className="hero-visual" aria-hidden="true">
-            <div className="hero-illustration">
-              <svg
-                viewBox="0 0 400 300"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect
-                  x="50"
-                  y="60"
-                  width="300"
-                  height="180"
-                  rx="12"
-                  fill="var(--color-surface)"
-                  stroke="var(--color-border)"
-                  strokeWidth="2"
-                />
-                <circle
-                  cx="100"
-                  cy="110"
-                  r="20"
-                  fill="var(--color-primary-soft)"
-                />
-                <rect
-                  x="135"
-                  y="95"
-                  width="180"
-                  height="12"
-                  rx="6"
-                  fill="var(--color-surface-alt)"
-                />
-                <rect
-                  x="135"
-                  y="115"
-                  width="120"
-                  height="8"
-                  rx="4"
-                  fill="var(--color-surface-neutral)"
-                />
-                <rect
-                  x="65"
-                  y="160"
-                  width="270"
-                  height="60"
-                  rx="8"
-                  fill="var(--color-accent-soft)"
-                />
-                <circle cx="90" cy="190" r="12" fill="var(--color-accent)" />
-                <rect
-                  x="115"
-                  y="180"
-                  width="200"
-                  height="8"
-                  rx="4"
-                  fill="var(--color-accent)"
-                />
-                <rect
-                  x="115"
-                  y="195"
-                  width="140"
-                  height="6"
-                  rx="3"
-                  fill="var(--color-accent-hover)"
-                />
-              </svg>
+          <div className="hero-visual">
+            <div className="hero-device">
+              <img
+                src={heroIllustration}
+                alt="Panel de control de Medi Citas"
+                className="hero-device__image"
+                loading="lazy"
+              />
+              <div className="hero-device__glow" />
+              <div className="hero-device__badge">
+                <McBadge variant="info" size="sm">
+                  Experiencia premium
+                </McBadge>
+              </div>
             </div>
           </div>
 
           <div className="hero-content">
+            <div className="hero-eyebrow">Medi Citas 2025</div>
             <h1 className="hero-title">Gestiona tus citas médicas con calma</h1>
             <p className="hero-subtitle">
               Reserva, organiza y sigue tus consultas médicas desde un solo
-              lugar. Experiencia simple, humana y confiable.
+              lugar. Diseñado para clínicas modernas con experiencia premium.
             </p>
             <div className="hero-actions">
               {currentUser ? (
@@ -148,6 +107,14 @@ function Home() {
                   </Link>
                 </>
               )}
+            </div>
+            <div className="hero-metrics" role="list">
+              {metrics.map(({ label, value }) => (
+                <div className="hero-metric" key={label} role="listitem">
+                  <strong className="hero-metric__value">{value}</strong>
+                  <span className="hero-metric__label">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

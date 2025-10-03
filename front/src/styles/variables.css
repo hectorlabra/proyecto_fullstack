@@ -1,40 +1,42 @@
 :root {
-  /* Brand Salud */
-  --color-primary: #0ea5a8;
-  --color-primary-hover: #0c8e90;
-  --color-primary-active: #0a7476;
-  --color-primary-dark: #0a5d60;
-  --color-primary-soft: #d5f4f5;
+  /* Brand Palette - Inspiración assets */
+  --color-primary: #5844bf;
+  --color-primary-hover: #4936af;
+  --color-primary-active: #3a2a9d;
+  --color-primary-dark: #2c1f86;
+  --color-primary-soft: #ebe8ff;
+  --color-primary-bright: #7260ff;
   --color-primary-contrast: #ffffff;
 
-  --color-accent: #2563eb;
-  --color-accent-hover: #1d4ed8;
-  --color-accent-soft: #dbeafe;
+  --color-accent: #1c404d;
+  --color-accent-hover: #16323c;
+  --color-accent-soft: #e6f3f6;
+  --color-accent-bright: #2f778a;
 
   /* Backgrounds y superficies */
-  --color-bg: #ffffff;
-  --color-bg-soft: #f8fafc;
-  --color-bg-muted: #f1f5f9;
-  --color-surface: #f8fafc;
-  --color-surface-alt: #f1f5f9;
-  --color-surface-neutral: #e2e8f0;
+  --color-bg: #fdfdfd;
+  --color-bg-soft: #f7f5f2;
+  --color-bg-muted: #efecea;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f4effa;
+  --color-surface-neutral: #e6e3f3;
   --color-surface-elevated: #ffffff;
-  --color-surface-hover: #e2e8f0;
+  --color-surface-hover: #ede8ff;
 
   /* Text - Jerarquía clara */
-  --color-text: #0f172a;
-  --color-text-secondary: #1e293b;
-  --color-text-muted: #475569;
-  --color-text-light: #94a3b8;
+  --color-text: #121124;
+  --color-text-secondary: #3c3a53;
+  --color-text-muted: #5e5c73;
+  --color-text-light: #8c8aa3;
   --color-text-inverse: #ffffff;
-  --color-text-link: #2563eb;
-  --color-text-link-hover: #1d4ed8;
+  --color-text-link: #5844bf;
+  --color-text-link-hover: #3a2a9d;
 
   /* Borders */
-  --color-border: #cbd5e1;
-  --color-border-light: #e2e8f0;
-  --color-border-extra-light: #f1f5f9;
-  --color-border-dark: #94a3b8;
+  --color-border: #d8d4ed;
+  --color-border-light: #e8e5f6;
+  --color-border-extra-light: #f2f0fb;
+  --color-border-dark: #afa8ce;
 
   /* Estados semánticos - Médicos */
   --color-success: #16a34a;
@@ -52,19 +54,19 @@
   --color-danger-text: #b91c1c;
   --color-danger-border: #fca5a5;
 
-  --color-info: #0891b2;
-  --color-info-bg: #cffafe;
-  --color-info-text: #0e7490;
-  --color-info-border: #67e8f9;
+  --color-info: #1a7990;
+  --color-info-bg: #d9f4f9;
+  --color-info-text: #135c6d;
+  --color-info-border: #8ed4e2;
 
   /* Focus */
-  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.35);
-  --focus-outline: 2px solid #2563eb;
+  --focus-ring: 0 0 0 3px rgba(88, 68, 191, 0.4);
+  --focus-outline: 2px solid #5844bf;
   --focus-ring-offset: 2px;
 
   /* Overlays */
-  --color-overlay-scrim: rgba(15, 23, 42, 0.5);
-  --color-overlay-focus-ring: rgba(37, 99, 235, 0.35);
+  --color-overlay-scrim: rgba(12, 9, 31, 0.55);
+  --color-overlay-focus-ring: rgba(88, 68, 191, 0.4);
 
   /* Spacing - Escala 4px */
   --space-1: 4px;
@@ -161,22 +163,22 @@
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: #0f172a;
-    --color-bg-soft: #111c32;
-    --color-bg-muted: #16213f;
-    --color-surface: #1e293b;
-    --color-surface-alt: #253349;
-    --color-surface-neutral: #1c2a3d;
-    --color-surface-elevated: #2a3b54;
-    --color-surface-hover: #31435b;
-    --color-text: #f8fafc;
-    --color-text-secondary: #cbd5f5;
-    --color-text-muted: #94a3c0;
-    --color-border: #334155;
-    --color-border-light: #273449;
-    --color-border-extra-light: #1f2a3d;
-    --color-primary-dark: #31c5c8;
-    --color-accent-soft: rgba(37, 99, 235, 0.18);
+    --color-bg: #0d091f;
+    --color-bg-soft: #12112b;
+    --color-bg-muted: #191838;
+    --color-surface: #211f45;
+    --color-surface-alt: #29275a;
+    --color-surface-neutral: #322f69;
+    --color-surface-elevated: #27255d;
+    --color-surface-hover: #312f73;
+    --color-text: #f3f2ff;
+    --color-text-secondary: #cbc7f7;
+    --color-text-muted: #9d99d4;
+    --color-border: #37326a;
+    --color-border-light: #2c2858;
+    --color-border-extra-light: #242046;
+    --color-primary-dark: #8674ff;
+    --color-accent-soft: rgba(28, 64, 77, 0.32);
   }
 }
 
