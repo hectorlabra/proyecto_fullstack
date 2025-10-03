@@ -1,0 +1,127 @@
+.mc-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-overlay-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: var(--z-modal);
+  animation: mc-modal-fade-in var(--transition-base);
+}
+
+.mc-modal {
+  position: relative;
+  background-color: var(--color-surface-elevated);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 100%;
+  animation: mc-modal-slide-up var(--transition-base);
+}
+
+/* Sizes */
+.mc-modal--sm {
+  max-width: 400px;
+}
+
+.mc-modal--md {
+  max-width: 560px;
+}
+
+.mc-modal--lg {
+  max-width: 720px;
+}
+
+.mc-modal--xl {
+  max-width: 960px;
+}
+
+.mc-modal__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  z-index: 1;
+}
+
+.mc-modal__close:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+.mc-modal__close:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+.mc-modal__header {
+  padding: var(--space-8);
+  padding-bottom: var(--space-4);
+}
+
+.mc-modal__title {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  line-height: var(--line-tight);
+  padding-right: var(--space-12); /* Space for close button */
+}
+
+.mc-modal__body {
+  padding: 0 var(--space-8);
+  padding-bottom: var(--space-6);
+  color: var(--color-text-secondary);
+  line-height: var(--line-relaxed);
+}
+
+.mc-modal__footer {
+  padding: var(--space-4) var(--space-8) var(--space-8);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+  border-top: 1px solid var(--color-border-light);
+  margin-top: var(--space-4);
+}
+
+@keyframes mc-modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mc-modal-slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-modal-overlay,
+  .mc-modal {
+    animation: none;
+  }
+}

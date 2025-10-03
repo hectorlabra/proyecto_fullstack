@@ -8,7 +8,7 @@ import CreateAppointment from "./views/CreateAppointment";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { UserProvider } from "./context/UserContext";
-import { ToastProvider } from "./components/ui/Toast";
+import { ToastProvider } from "./context/ToastContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {

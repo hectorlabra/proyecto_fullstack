@@ -1,0 +1,91 @@
+.mc-input-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.mc-input-field__label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+  line-height: var(--line-tight);
+}
+
+.mc-input-field__required {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.mc-input-field__wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.mc-input-field__input {
+  width: 100%;
+  min-height: 44px;
+  padding-inline: 14px;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--line-normal);
+  color: var(--color-text);
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.mc-input-field__input::placeholder {
+  color: var(--color-text-light);
+}
+
+.mc-input-field__input:hover:not(:disabled) {
+  border-color: var(--color-border-dark);
+}
+
+.mc-input-field__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-overlay-focus-ring);
+}
+
+.mc-input-field__input:disabled {
+  background-color: var(--color-bg-muted);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Error state */
+.mc-input-field--error .mc-input-field__input {
+  border-color: var(--color-danger);
+}
+
+.mc-input-field--error .mc-input-field__input:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.mc-input-field__error {
+  font-size: var(--text-sm);
+  color: var(--color-danger-text);
+  margin: 0;
+  line-height: var(--line-normal);
+}
+
+.mc-input-field__helper {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: var(--line-normal);
+}
+
+/* Textarea variant */
+.mc-input-field__input[type="textarea"],
+.mc-input-field__input.mc-textarea {
+  min-height: 96px;
+  padding-block: 12px;
+  resize: vertical;
+  line-height: var(--line-relaxed);
+}

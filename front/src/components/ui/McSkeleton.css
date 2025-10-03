@@ -1,0 +1,80 @@
+.mc-skeleton {
+  background-color: var(--color-surface-alt);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+  animation: mc-skeleton-pulse 1600ms ease-in-out infinite;
+}
+
+.mc-skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.45),
+    transparent
+  );
+  animation: mc-skeleton-shimmer 1600ms ease-in-out infinite;
+}
+
+/* Variants */
+.mc-skeleton--text {
+  height: 16px;
+  border-radius: var(--radius-sm);
+}
+
+.mc-skeleton--title {
+  height: 24px;
+  border-radius: var(--radius-sm);
+}
+
+.mc-skeleton--circular {
+  border-radius: var(--radius-full);
+  width: 48px;
+  height: 48px;
+}
+
+.mc-skeleton--rectangular {
+  height: 120px;
+  border-radius: var(--radius-md);
+}
+
+/* Group spacing */
+.mc-skeleton-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@keyframes mc-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes mc-skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-skeleton {
+    animation: none;
+  }
+  .mc-skeleton::after {
+    animation: none;
+  }
+}
