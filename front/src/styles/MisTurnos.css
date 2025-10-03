@@ -1,103 +1,83 @@
-/* Estilos para el componente MisTurnos */
+/* MisTurnos - Healthcare Theme */
 .mis-turnos-container {
-  padding: 20px;
-  max-width: 900px;
+  padding: var(--space-6);
+  max-width: 1200px;
   margin: 0 auto;
-  min-height: 80vh;
+  min-height: calc(100vh - 80px);
 }
 
-.mis-turnos-title {
-  text-align: center;
-  color: #333;
-  margin-bottom: 30px;
-  font-size: 2.5rem;
-  font-weight: 300;
+.page-header {
+  margin-bottom: var(--space-8);
 }
 
-/* Sección de bienvenida del usuario */
-.user-welcome {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  text-align: center;
+.page-title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-text);
+  margin: 0 0 var(--space-2) 0;
 }
 
-.user-welcome p {
+.page-subtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
   margin: 0;
-  font-size: 1.2rem;
-  font-weight: 500;
 }
 
-.user-email {
-  font-size: 1rem !important;
-  opacity: 0.9;
-  margin-top: 0.5rem !important;
-}
-
-/* Estados de carga y error */
-.loading {
-  text-align: center;
-  padding: 60px 40px;
-  color: #666;
+.error-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 12px;
-  min-height: 300px;
-  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-12);
+  background: var(--color-danger-bg);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-lg);
+  text-align: center;
 }
 
-.loading p {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #495057;
+.error-message {
+  color: var(--color-danger-text);
+  font-size: var(--text-md);
   margin: 0;
 }
 
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #e9ecef;
-  border-top: 5px solid #667eea;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.appointments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.appointments-info {
+  font-size: var(--text-md);
+  color: var(--color-text-muted);
+  margin: 0;
+  font-weight: var(--font-medium);
 }
 
-.error {
-  text-align: center;
-  padding: 60px 40px;
-  background-color: #f8d7da;
-  color: #721c24;
-  border-radius: 12px;
-  border: 2px solid #f5c6cb;
-  min-height: 200px;
+.appointments-list {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
-.error h3 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #721c24;
+@media (max-width: 768px) {
+  .mis-turnos-container {
+    padding: var(--space-4);
+  }
+
+  .page-title {
+    font-size: var(--text-2xl);
+  }
+
+  .appointments-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
-.error p {
   margin: 0.5rem 0;
   font-size: 1rem;
   color: #721c24;
