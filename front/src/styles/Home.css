@@ -77,6 +77,12 @@
   backdrop-filter: blur(14px);
 }
 
+.hero-device__card p,
+.hero-device__card span,
+.hero-device__card strong {
+  color: inherit;
+}
+
 .hero-device__card--primary {
   background: linear-gradient(
     165deg,
@@ -119,7 +125,7 @@
 .hero-dashboard__name {
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
-  color: var(--color-ink-primary);
+  color: var(--color-ink-strong);
 }
 
 .hero-dashboard__role {
@@ -162,13 +168,13 @@
 .hero-appointment__patient {
   font-size: var(--text-lg);
   font-weight: var(--font-semibold);
-  color: var(--color-ink-primary);
+  color: var(--color-ink-strong);
 }
 
 .hero-appointment__type {
   grid-column: 2 / -1;
   font-size: var(--text-sm);
-  color: var(--color-ink-subtle);
+  color: var(--color-ink-muted);
 }
 
 .hero-analytics {
