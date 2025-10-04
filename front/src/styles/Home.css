@@ -1,15 +1,107 @@
 .home-container {
   min-height: calc(100vh - 64px);
+  /* No background here — background is applied at the page root. Keep
+     text color and sizing only. */
+  color: var(--color-ink-inverted);
+}
+
+/* Layered approach: put the hero gradient as an overlay inside the
+   `.home-container` so it cannot be occluded by other page backgrounds.
+   The overlay sits at z-index:0 and direct children are stacked above it. */
+.home-container {
+  position: relative;
+}
+
+/* removed .home-container::before to avoid duplicate gradient layers; the
+   root fixed pseudo-layer (#root::before) now provides a single continuous
+   background surface. */
+
+/* Instead of a fixed root pseudo-layer, render the hero gradient as an
+   overlay inside the `.home-container`. This way the gradient scrolls
+   with the page and positions exactly relative to the Home sections,
+   eliminating seams that can happen when using a viewport-fixed layer.
+   The overlay sits at z-index:0 while children render above it. */
+.home-container::before {
+  content: "";
+  position: absolute;
+  /* extend slightly above the container so the gradient continues
+     seamlessly under the sticky navbar (navbar height is 64px). This
+     only affects the pseudo-layer position, not layout or spacing. */
+  top: -64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--gradient-hero-sheen-left), var(--gradient-hero-sheen-right),
+    var(--gradient-hero-base);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+}
+
+/* Make sure the container establishes a stacking context so children
+   with z-index display above the gradient. */
+.home-container {
+  position: relative;
 }
 
 /* Hero Section */
 .hero-section {
   position: relative;
   padding: var(--space-16) var(--space-4) var(--space-20);
-  background: var(--gradient-hero-sheen-left), var(--gradient-hero-sheen-right),
-    var(--gradient-hero-base);
+  /* background removed so the parent .home-container gradient continues
+     seamlessly through this section (no padding/margin changes). */
   color: var(--color-ink-inverted);
   overflow: hidden;
+}
+
+/* Force transparency on the main Home sections to avoid any accidental
+   backgrounds defined elsewhere (or in compiled CSS). Using !important only
+   for background so we do not change layout or other visual rules. */
+.home-container > .hero-section,
+.home-container > .benefits-section,
+.home-container > .cta-section {
+  /* Strongly enforce transparency so no section draws its own background
+     and the parent's hero gradient is visible continuously. Only affects
+     background properties, no layout/padding changes. */
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+/* Aggressive override: force transparency on all direct children of the
+   home container so no child can draw its own background and create a
+   visible seam. This only affects background properties and does not
+   change layout, paddings, borders or text colors. Use this if any
+   remaining section still shows a band. */
+.home-container > * {
+  /* Keep children visually above the overlay so content like cards,
+     shadows and interactive elements render normally. Also force
+     transparency for their backgrounds. */
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+/* Extra targeted overrides: remove any background or background-image
+   coming from pseudo-elements or more specific rules on these sections.
+   This will not affect inner cards or children (they have their own
+   background rules), only the section containers and their pseudo layers. */
+.hero-section,
+.benefits-section,
+.cta-section,
+.hero-section::before,
+.hero-section::after,
+.benefits-section::before,
+.benefits-section::after,
+.cta-section::before,
+.cta-section::after {
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
 }
 
 .hero-section::before {
@@ -332,7 +424,8 @@
 .benefits-section {
   position: relative;
   padding: var(--space-20) var(--space-4);
-  background: var(--gradient-benefits-surface);
+  /* background removed so the hero gradient continues literally through
+     this section. */
 }
 
 .section-header {
@@ -448,7 +541,8 @@
 /* CTA Section */
 .cta-section {
   padding: var(--space-20) var(--space-4);
-  background: var(--gradient-cta);
+  /* background removed so the hero gradient continues literally through
+     the CTA section as well. */
 }
 
 .cta-content {
