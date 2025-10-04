@@ -39,7 +39,7 @@ function Home() {
   const metrics = [
     { label: "Médicos activos", value: "+120" },
     { label: "Pacientes felices", value: "35k" },
-    { label: "Tiempo promedio de reserva", value: "45s" },
+    { label: "Tiempo de reserva", value: "45s" },
   ];
 
   return (
