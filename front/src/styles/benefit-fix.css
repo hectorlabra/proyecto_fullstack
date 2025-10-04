@@ -1,0 +1,21 @@
+/* Small override file to ensure benefit cards have readable text.
+   Imported in Home.jsx so it's applied after other styles during bundling. */
+.benefit-card {
+  --card-text: #1b1538;
+  --card-muted: rgba(27, 21, 56, 0.78);
+}
+
+.benefit-card .benefit-title,
+.benefit-card h3.benefit-title {
+  color: var(--card-text) !important;
+}
+
+.benefit-card .benefit-description,
+.benefit-card p.benefit-description {
+  color: var(--card-muted) !important;
+}
+
+/* keep the icon white */
+.benefit-card .benefit-icon {
+  color: #ffffff !important;
+}

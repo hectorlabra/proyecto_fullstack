@@ -360,6 +360,12 @@
   gap: var(--space-6);
 }
 
+/* ===========================
+   Benefit cards — contraste robusto
+   =========================== */
+
+/* Definimos variables locales en la tarjeta para controlar el color del texto.
+   Esto hace que el control del color sea explícito y fácil de ajustar. */
 .benefit-card {
   padding: var(--space-6);
   background: var(--gradient-benefit-card);
@@ -371,16 +377,35 @@
   transition: transform var(--transition-base),
     box-shadow var(--transition-base), border-color var(--transition-base),
     background var(--transition-base);
+
+  /* variables locales con fallback seguro */
+  --card-text: #181237; /* título / texto principal (buena legibilidad) */
+  --card-muted: rgba(
+    24,
+    18,
+    55,
+    0.76
+  ); /* subtítulos / descripción (ligeramente atenuado) */
+  color: var(--card-text);
 }
 
-.benefit-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-card-elevated);
-  border-color: var(--border-glass-strong);
-  background: var(--gradient-benefit-card-hover);
+/* Selectores con suficiente especificidad para evitar herencias no deseadas. */
+.benefit-card .benefit-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--card-text);
+  margin: 0 0 var(--space-2) 0;
 }
 
-.benefit-icon {
+.benefit-card .benefit-description {
+  font-size: var(--text-base);
+  line-height: var(--line-relaxed);
+  color: var(--card-muted);
+  margin: 0;
+}
+
+/* El icono se mantiene brillante (blanco) para contraste con su propio fondo */
+.benefit-card .benefit-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -390,21 +415,35 @@
   background: linear-gradient(140deg, #7560ff 0%, #41b4d2 100%);
   color: #ffffff;
   margin-bottom: var(--space-4);
+  box-shadow: 0 6px 18px rgba(40, 20, 120, 0.12);
 }
 
-.benefit-title {
-  font-size: var(--text-xl);
-  font-weight: var(--font-semibold);
-  color: var(--color-ink-primary);
-  margin: 0 0 var(--space-2) 0;
+/* Hover: si el fondo cambia (por ejemplo más oscuro), mantenemos contraste,
+   ajustando variables locales en el hover para no tocar reglas globales. */
+.benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-card-elevated);
+  border-color: var(--border-glass-strong);
+  background: var(--gradient-benefit-card-hover);
 }
 
-.benefit-description {
-  font-size: var(--text-base);
-  line-height: var(--line-relaxed);
-  color: var(--color-ink-muted);
-  margin: 0;
+/* Dark mode — solo cambiamos las variables locales de la tarjeta */
+@media (prefers-color-scheme: dark) {
+  /* Keep card text dark because the card surface is light (glass effect). */
+  .benefit-card {
+    --card-text: #1b1538;
+    --card-muted: rgba(27, 21, 56, 0.78);
+  }
 }
+
+/* Si todavía hay reglas globales que siguen sobrescribiendo (último recurso),
+   puedes reemplazar las 2 reglas anteriores por estas versiones con !important:
+   (usa solo si es estrictamente necesario)
+.benefit-card .benefit-title { color: var(--card-text) !important; }
+.benefit-card .benefit-description { color: var(--card-muted) !important; }
+*/
+
+/* End of benefit card styles (no urgent !important overrides). */
 
 /* CTA Section */
 .cta-section {
