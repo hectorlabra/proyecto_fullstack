@@ -518,7 +518,13 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    padding-bottom: 0; /* CTA will provide its own safe-area padding */
+    /* take remaining space and scroll internally so CTA stays pinned */
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* keep only safe-area padding at the bottom so CTA can stick above it */
+    padding-bottom: calc(env(safe-area-inset-bottom, 0) + var(--space-2));
   }
 
   /* Keep CTA visually attached and reachable: sticky at end of scroll area */
@@ -535,7 +541,9 @@
      on devices with safe-area insets. Make the menu scrollable on iOS with momentum. */
   .navbar-menu {
     -webkit-overflow-scrolling: touch;
-    padding-bottom: calc(env(safe-area-inset-bottom, 0) + var(--space-4));
+    /* occupy full viewport so inner flex scroll works consistently */
+    height: 100vh;
+    padding-bottom: 0; /* inner body handles safe-area padding */
     overflow-x: hidden; /* ensure no horizontal scroll */
   }
 
