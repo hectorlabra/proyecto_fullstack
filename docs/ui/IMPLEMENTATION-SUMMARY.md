@@ -230,7 +230,7 @@ Guía completa de 500+ líneas con:
 - Testing preparado
 - Build & deploy
 
-**Ubicación:** `front/README-UI.md`
+**Ubicación:** `docs/ui/README-UI.md`
 
 ---
 
@@ -336,7 +336,7 @@ npm install
 
 Para dudas de implementación:
 
-- **Documentación:** `front/README-UI.md`
+- **Documentación:** `docs/ui/README-UI.md`
 - **Especificación completa:** JSON en raíz del proyecto
 - **Ejemplos:** Home.jsx, Navbar.jsx, componentes UI
 
