@@ -49,15 +49,19 @@ const CreateAppointment = () => {
     switch (name) {
       case "date":
         if (!value.trim()) error = "La fecha es obligatoria";
-        else if (!isWeekday(value)) error = "Solo se pueden agendar citas de lunes a viernes";
-        else if (new Date(value) < new Date(getMinDate())) error = "No se pueden agendar citas en fechas pasadas";
+        else if (!isWeekday(value))
+          error = "Solo se pueden agendar citas de lunes a viernes";
+        else if (new Date(value) < new Date(getMinDate()))
+          error = "No se pueden agendar citas en fechas pasadas";
         break;
       case "time":
         if (!value.trim()) error = "La hora es obligatoria";
-        else if (!isValidTime(value)) error = "Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM";
+        else if (!isValidTime(value))
+          error = "Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM";
         break;
       case "notes":
-        if (value && value.length > 500) error = "Las notas no pueden exceder 500 caracteres";
+        if (value && value.length > 500)
+          error = "Las notas no pueden exceder 500 caracteres";
         break;
     }
     return error;
@@ -72,7 +76,9 @@ const CreateAppointment = () => {
 
   const isFormValid = () => {
     const requiredFieldsFilled = formData.date && formData.time;
-    const noErrors = Object.values(errors).every((error) => !error || error === "");
+    const noErrors = Object.values(errors).every(
+      (error) => !error || error === ""
+    );
     return requiredFieldsFilled && noErrors;
   };
 
@@ -140,14 +146,8 @@ const CreateAppointment = () => {
             helpText="Horario de atención: 8:00 AM - 6:00 PM"
           />
 
-          <div>
-            <label htmlFor="notes" style={{ 
-              display: "block", 
-              fontSize: "var(--text-sm)", 
-              fontWeight: "var(--font-medium)", 
-              color: "var(--color-text)", 
-              marginBottom: "var(--space-2)" 
-            }}>
+          <div className="auth-field">
+            <label htmlFor="notes" className="auth-field-label">
               Notas (Opcional)
             </label>
             <textarea
@@ -158,35 +158,20 @@ const CreateAppointment = () => {
               placeholder="Describe tus síntomas o motivo de la consulta..."
               rows={4}
               maxLength={500}
-              style={{
-                width: "100%",
-                padding: "var(--space-3)",
-                border: `1px solid ${errors.notes ? "var(--color-danger)" : "var(--color-border)"}`,
-                borderRadius: "var(--radius-md)",
-                fontSize: "var(--text-base)",
-                fontFamily: "var(--font-sans)",
-                resize: "vertical",
-                transition: "border-color var(--transition-fast)",
-              }}
+              className={`auth-textarea ${errors.notes ? "has-error" : ""}`}
             />
-            {errors.notes && (
-              <span style={{ 
-                display: "block", 
-                color: "var(--color-danger)", 
-                fontSize: "var(--text-sm)", 
-                marginTop: "var(--space-2)" 
-              }}>
-                {errors.notes}
+            <div className="auth-field-meta">
+              {errors.notes ? (
+                <span className="auth-field-error">{errors.notes}</span>
+              ) : (
+                <span className="auth-field-helper">
+                  Puedes agregar detalles para el profesional.
+                </span>
+              )}
+              <span className="auth-field-counter">
+                {formData.notes.length}/500 caracteres
               </span>
-            )}
-            <span style={{ 
-              display: "block", 
-              color: "var(--color-text-muted)", 
-              fontSize: "var(--text-xs)", 
-              marginTop: "var(--space-1)" 
-            }}>
-              {formData.notes.length}/500 caracteres
-            </span>
+            </div>
           </div>
 
           <Button

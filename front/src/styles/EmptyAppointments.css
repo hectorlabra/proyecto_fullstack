@@ -186,6 +186,33 @@
   }
 }
 
+@media (max-width: 640px) {
+  .empty-appointments-wrapper {
+    padding: var(--space-6) var(--space-3);
+  }
+
+  .empty-appointments-card .card-content {
+    gap: var(--space-6);
+  }
+
+  .empty-appointments-badge {
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  .empty-appointments-title {
+    font-size: clamp(var(--text-2xl), 7vw, var(--text-3xl));
+  }
+
+  .empty-appointments-description {
+    font-size: var(--text-base);
+  }
+
+  .empty-assistance-subtitle {
+    font-size: var(--text-sm);
+  }
+}
+
 @media (max-width: 520px) {
   .empty-appointments-wrapper {
     padding: var(--space-6) var(--space-2);
@@ -206,146 +233,17 @@
   }
 }
 
-.schedule-first-appointment-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 1rem 2.5rem;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2.5rem;
-  text-transform: none;
-  letter-spacing: 0.3px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.schedule-first-appointment-btn:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-}
-
-.schedule-first-appointment-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.btn-icon {
-  font-size: 1.2rem;
-}
-
-.empty-appointments-help {
-  background: rgba(255, 255, 255, 0.8);
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid rgba(102, 126, 234, 0.1);
-  margin-top: 1rem;
-}
-
-.help-text {
-  color: #495057;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 1rem;
-}
-
-.help-contacts {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.help-contact {
-  color: #667eea;
-  font-size: 0.9rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .empty-appointments-container {
-    padding: 1rem;
-    min-height: 40vh;
+@media (max-width: 400px) {
+  .empty-feature-card,
+  .empty-assistance-item {
+    padding: var(--space-3);
   }
 
-  .empty-appointments-content {
-    padding: 2rem 1.5rem;
+  .empty-appointments-card .card-content {
+    padding: var(--space-4);
   }
 
-  .empty-appointments-icon {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .plus-icon {
-    font-size: 1.5rem;
-    top: -5px;
-    right: -5px;
-  }
-
-  .empty-appointments-title {
-    font-size: 1.5rem;
-  }
-
-  .empty-appointments-description {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .empty-appointments-features {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .feature-item {
-    flex-direction: row;
-    justify-content: center;
-    padding: 0.8rem;
-  }
-
-  .feature-icon {
-    font-size: 1.2rem;
-    margin-bottom: 0;
-  }
-
-  .schedule-first-appointment-btn {
-    padding: 0.8rem 2rem;
-    font-size: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .help-contacts {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .empty-appointments-content {
-    padding: 1.5rem 1rem;
-  }
-
-  .empty-appointments-title {
-    font-size: 1.3rem;
-  }
-
-  .empty-appointments-description {
-    font-size: 0.95rem;
-  }
-
-  .schedule-first-appointment-btn {
-    width: 100%;
-    justify-content: center;
+  .empty-appointments-footer {
+    padding: var(--space-4);
   }
 }

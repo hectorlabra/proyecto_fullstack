@@ -1,9 +1,9 @@
 /* MisTurnos - Healthcare Theme */
 .mis-turnos-container {
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-6) var(--space-6) var(--space-10);
   max-width: var(--container-xl);
   margin: 0 auto;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - var(--navbar-height));
 }
 
 .mis-turnos-header {
@@ -142,7 +142,7 @@
 
 @media (max-width: 960px) {
   .mis-turnos-container {
-    padding: var(--space-6) var(--space-4);
+    padding: var(--space-5) var(--space-4) var(--space-8);
   }
 
   .mis-turnos-header {
@@ -186,5 +186,31 @@
 
   .mis-turnos-actions .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .mis-turnos-container {
+    padding: var(--space-4) var(--space-3) var(--space-6);
+  }
+
+  .mis-turnos-title {
+    font-size: var(--text-2xl);
+  }
+
+  .mis-turnos-subtitle {
+    font-size: var(--text-base);
+  }
+
+  .mis-turnos-actions {
+    gap: var(--space-2);
+  }
+
+  .summary-card .card-content {
+    padding: var(--space-5);
+  }
+
+  .summary-value {
+    font-size: var(--text-2xl);
   }
 }

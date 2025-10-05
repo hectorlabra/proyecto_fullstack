@@ -159,20 +159,14 @@ function Register() {
   return (
     <div className="auth-container">
       <Breadcrumbs />
-      <div className="auth-card" style={{ maxWidth: "600px" }}>
+      <div className="auth-card auth-card--wide">
         <div className="auth-header">
           <h1 className="auth-title">Crear cuenta</h1>
           <p className="auth-subtitle">Completa tus datos para registrarte</p>
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "var(--space-4)",
-            }}
-          >
+          <div className="auth-grid auth-grid--two">
             <Input
               label="Nombre"
               name="firstName"
@@ -206,13 +200,7 @@ function Register() {
             required
           />
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "var(--space-4)",
-            }}
-          >
+          <div className="auth-grid auth-grid--two">
             <Input
               label="Teléfono"
               name="phone"

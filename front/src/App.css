@@ -2,3 +2,7 @@
 .App {
   min-height: 100vh;
 }
+
+main#main-content {
+  min-height: calc(100vh - var(--navbar-height));
+}
