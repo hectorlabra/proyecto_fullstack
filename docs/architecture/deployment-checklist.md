@@ -10,7 +10,7 @@ Este documento guía el proceso manual de deployment paso a paso.
 - [x] CORS configurado con variable ALLOWED_ORIGINS
 - [x] Logging estructurado con Pino
 - [x] ErrorBoundary en frontend
-- [x] Documentación completa en `docs/deployment-render.md`
+- [x] Documentación completa en `docs/architecture/deployment-render.md`
 
 ---
 
@@ -79,7 +79,7 @@ Este documento guía el proceso manual de deployment paso a paso.
 }
 ```
 
-**Si falla**: Ver sección Troubleshooting en `docs/deployment-render.md`
+**Si falla**: Ver sección Troubleshooting en `docs/architecture/deployment-render.md`
 
 ---
 

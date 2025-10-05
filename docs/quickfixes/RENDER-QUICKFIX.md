@@ -13,7 +13,7 @@ Acabas de experimentar **dos errores comunes** al hacer deploy en Render:
 **Solución aplicada**:
 
 - ✅ Actualizado Build Command a: `npm install --include=dev && npm run build`
-- ✅ Documentado en `docs/deployment-render.md`
+- ✅ Documentado en `docs/architecture/deployment-render.md`
 
 ### Error 2: Database no existe (3D000) ✅ RESUELTO
 
@@ -93,7 +93,7 @@ curl https://tu-backend.onrender.com/health
 ### Error: "CORS policy"
 
 - Actualizar `ALLOWED_ORIGINS` después de deploy del frontend
-- Ver sección 4️⃣ en `docs/deployment-render.md`
+- Ver sección 4️⃣ en `docs/architecture/deployment-render.md`
 
 ### Error: "Cold start" (15-30 segundos)
 
@@ -111,8 +111,8 @@ curl https://tu-backend.onrender.com/health
 
 ## 📚 Documentación Completa
 
-- **Guía completa**: `docs/deployment-render.md` (400+ líneas)
-- **Checklist paso a paso**: `docs/deployment-checklist.md` (270+ líneas)
+- **Guía completa**: `docs/architecture/deployment-render.md` (400+ líneas)
+- **Checklist paso a paso**: `docs/architecture/deployment-checklist.md` (270+ líneas)
 - **Variables de entorno**: `back/.env.example`
 
 ---

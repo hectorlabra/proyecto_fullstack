@@ -231,8 +231,8 @@ En su lugar, envía un email a: [tu-email@example.com] con:
 
 ## 📚 Recursos Adicionales
 
-- [Arquitectura del Proyecto](./docs/architecture.md)
-- [Ejemplos de API](./docs/api-examples.md)
+- [Arquitectura del Proyecto](./docs/architecture/architecture.md)
+- [Ejemplos de API](./docs/api/api-examples.md)
 - [Especificación OpenAPI](./citas_fullstack/specs/001-profesionalizacion-proyecto/contracts/openapi.yaml)
 
 ## 📄 Licencia

@@ -363,7 +363,7 @@ npm run migration:revert
 
 ## 🔌 Endpoints de la API
 
-Ver [📖 Ejemplos de API](./api-examples.md) para requests/responses completos con ejemplos de `curl`.
+Ver [📖 Ejemplos de API](../api/api-examples.md) para requests/responses completos con ejemplos de `curl`.
 
 ### 🏥 Health & Metadata
 

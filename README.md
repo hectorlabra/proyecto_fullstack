@@ -78,7 +78,7 @@ Este proyecto demuestra una **aplicación full-stack lista para producción** qu
 - **Servicios**: Lógica de negocio y operaciones de base de datos
 - **DTOs**: Validación de entrada con class-validator
 
-Para diagramas detallados de arquitectura y modelo de datos, ver [Documentación de Arquitectura](./docs/architecture.md).
+Para diagramas detallados de arquitectura y modelo de datos, ver [Documentación de Arquitectura](./docs/architecture/architecture.md).
 
 ---
 
@@ -331,8 +331,8 @@ _Screenshots profesionales coming soon en fase UI/UX_ 📷
    - Cancelar turno
 
 3. **Revisar documentación** (2 minutos)
-   - Arquitectura: [docs/architecture.md](./docs/architecture.md)
-   - Ejemplos API: [docs/api-examples.md](./docs/api-examples.md)
+   - Arquitectura: [docs/architecture/architecture.md](./docs/architecture/architecture.md)
+   - Ejemplos API: [docs/api/api-examples.md](./docs/api/api-examples.md)
    - OpenAPI Docs: https://medical-appointments-api-hlpv.onrender.com/docs
 
 **Opción 2: Local (más control)**
@@ -506,8 +506,8 @@ npm run seed
 
 ## 📚 Documentación
 
-- **[Visión General de Arquitectura](./docs/architecture.md)**: Diseño detallado del sistema, modelo de datos y decisiones técnicas
-- **[Ejemplos de API](./docs/api-examples.md)**: Ejemplos de request/response para todos los endpoints
+- **[Visión General de Arquitectura](./docs/architecture/architecture.md)**: Diseño detallado del sistema, modelo de datos y decisiones técnicas
+- **[Ejemplos de API](./docs/api/api-examples.md)**: Ejemplos de request/response para todos los endpoints
 - **[Guía de Contribución](./CONTRIBUTING.md)**: Cómo contribuir a este proyecto
 - **[Licencia](./LICENSE)**: Licencia MIT
 - **[Especificación OpenAPI](./citas_fullstack/specs/001-profesionalizacion-proyecto/contracts/openapi.yaml)**: Contrato de API _(próximamente)_
