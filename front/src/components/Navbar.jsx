@@ -133,7 +133,7 @@ function Navbar() {
       aria-modal={isMobileView ? true : undefined}
       aria-label={isMobileView ? "Menú de navegación" : undefined}
     >
-      {isMobileView && (
+      {isMobileView ? (
         <>
           <div className="navbar-menu__header">
             <Link to="/" className="navbar-menu__brand" onClick={closeMenu}>
@@ -174,91 +174,136 @@ function Navbar() {
               <p>Gestiona tus turnos y recordatorios desde cualquier lugar.</p>
             </div>
           )}
-        </>
-      )}
 
-      {/* Make the main menu body scrollable so the CTA can stay sticky at the bottom */}
-      <div className="navbar-menu__body">
-        {isMobileView && (
-          <p className="navbar-menu__section-label">Navegación</p>
-        )}
+          {/* Make the main menu body scrollable so the CTA can stay sticky at the bottom */}
+          <div className="navbar-menu__body">
+            <p className="navbar-menu__section-label">Navegación</p>
 
-        <ul className="navbar-links" role="list">
-          {navigationLinks.map(({ label, path, icon, emphasis }) => (
-            <li key={path}>
-              <Link
-                to={path}
-                className={`navbar-link ${
-                  isActive(path) ? "navbar-link--active" : ""
-                } ${emphasis ? "navbar-link--emphasis" : ""}`}
-                onClick={closeMenu}
-              >
-                {icon && (
-                  <span className="navbar-link-icon" aria-hidden="true">
-                    {icon}
-                  </span>
-                )}
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        {/* CTA area: keep inside scrollable body and pinned to the end via flex */}
-        {isMobileView && (
-          <>
+            <ul className="navbar-links" role="list">
+              {navigationLinks.map(({ label, path, icon, emphasis }) => (
+                <li key={path}>
+                  <Link
+                    to={path}
+                    className={`navbar-link ${
+                      isActive(path) ? "navbar-link--active" : ""
+                    } ${emphasis ? "navbar-link--emphasis" : ""}`}
+                    onClick={closeMenu}
+                  >
+                    {icon && (
+                      <span className="navbar-link-icon" aria-hidden="true">
+                        {icon}
+                      </span>
+                    )}
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
             <p className="navbar-menu__section-label navbar-menu__section-label--cta">
               {currentUser ? "Tu cuenta" : "Acceso rápido"}
             </p>
 
             <div className="navbar-cta">
               {currentUser ? (
-                <>
-                  {!isMobileView && (
-                    <div className="navbar-user">
-                      <UserIcon size={16} />
-                      <span>{currentUser.firstName}</span>
-                    </div>
-                  )}
-                  <McButton
-                    variant={isMobileView ? "outline" : "ghost"}
-                    /* use small size on mobile so the button appears more compact */
-                    size={isMobileView ? "sm" : "sm"}
-                    onClick={handleLogout}
-                    fullWidth={isMobileView}
-                  >
-                    Cerrar sesión
-                  </McButton>
-                </>
+                <McButton
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLogout}
+                  fullWidth
+                >
+                  Cerrar sesión
+                </McButton>
               ) : (
                 <>
                   <McButton
-                    variant={isMobileView ? "outline" : "ghost"}
-                    size={isMobileView ? "sm" : "sm"}
+                    variant="outline"
+                    size="sm"
                     onClick={() => {
                       closeMenu();
                       navigate("/login");
                     }}
-                    fullWidth={isMobileView}
+                    fullWidth
                   >
                     Ingresar
                   </McButton>
                   <McButton
                     variant="primary"
-                    size={isMobileView ? "sm" : "sm"}
+                    size="sm"
                     onClick={() => {
                       closeMenu();
                       navigate("/register");
                     }}
-                    fullWidth={isMobileView}
+                    fullWidth
                   >
                     Crear Cuenta
                   </McButton>
                 </>
               )}
             </div>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <ul className="navbar-links" role="list">
+            {navigationLinks.map(({ label, path, icon, emphasis }) => (
+              <li key={path}>
+                <Link
+                  to={path}
+                  className={`navbar-link ${
+                    isActive(path) ? "navbar-link--active" : ""
+                  } ${emphasis ? "navbar-link--emphasis" : ""}`}
+                  onClick={closeMenu}
+                >
+                  {icon && (
+                    <span className="navbar-link-icon" aria-hidden="true">
+                      {icon}
+                    </span>
+                  )}
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="navbar-cta">
+            {currentUser ? (
+              <>
+                <div className="navbar-user">
+                  <UserIcon size={16} />
+                  <span>{currentUser.firstName}</span>
+                </div>
+                <McButton variant="ghost" size="sm" onClick={handleLogout}>
+                  Cerrar sesión
+                </McButton>
+              </>
+            ) : (
+              <>
+                <McButton
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    closeMenu();
+                    navigate("/login");
+                  }}
+                >
+                  Ingresar
+                </McButton>
+                <McButton
+                  variant="primary"
+                  size="sm"
+                  onClick={() => {
+                    closeMenu();
+                    navigate("/register");
+                  }}
+                >
+                  Crear Cuenta
+                </McButton>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 
