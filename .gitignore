@@ -7,9 +7,7 @@ npm-debug.log*
 assets/
 !front/src/assets/
 !front/src/assets/**
-AGENTS.md
 .vscode/
 citas_fullstack
-docs
 refactor_speckit/
 ui_speckit/

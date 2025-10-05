@@ -1,32 +1,15 @@
 .home-container {
   min-height: calc(100vh - 64px);
-  /* No background here — background is applied at the page root. Keep
-     text color and sizing only. */
   color: var(--color-ink-inverted);
 }
 
-/* Layered approach: put the hero gradient as an overlay inside the
-   `.home-container` so it cannot be occluded by other page backgrounds.
-   The overlay sits at z-index:0 and direct children are stacked above it. */
 .home-container {
   position: relative;
 }
 
-/* removed .home-container::before to avoid duplicate gradient layers; the
-   root fixed pseudo-layer (#root::before) now provides a single continuous
-   background surface. */
-
-/* Instead of a fixed root pseudo-layer, render the hero gradient as an
-   overlay inside the `.home-container`. This way the gradient scrolls
-   with the page and positions exactly relative to the Home sections,
-   eliminating seams that can happen when using a viewport-fixed layer.
-   The overlay sits at z-index:0 while children render above it. */
 .home-container::before {
   content: "";
   position: absolute;
-  /* extend slightly above the container so the gradient continues
-     seamlessly under the sticky navbar (navbar height is 64px). This
-     only affects the pseudo-layer position, not layout or spacing. */
   top: -64px;
   left: 0;
   right: 0;
@@ -40,45 +23,26 @@
   background-position: top center;
 }
 
-/* Make sure the container establishes a stacking context so children
-   with z-index display above the gradient. */
 .home-container {
   position: relative;
 }
 
-/* Hero Section */
 .hero-section {
   position: relative;
   padding: var(--space-16) var(--space-4) var(--space-20);
-  /* background removed so the parent .home-container gradient continues
-     seamlessly through this section (no padding/margin changes). */
   color: var(--color-ink-inverted);
   overflow: hidden;
 }
 
-/* Force transparency on the main Home sections to avoid any accidental
-   backgrounds defined elsewhere (or in compiled CSS). Using !important only
-   for background so we do not change layout or other visual rules. */
 .home-container > .hero-section,
 .home-container > .benefits-section,
 .home-container > .cta-section {
-  /* Strongly enforce transparency so no section draws its own background
-     and the parent's hero gradient is visible continuously. Only affects
-     background properties, no layout/padding changes. */
   background: transparent !important;
   background-image: none !important;
   background-color: transparent !important;
 }
 
-/* Aggressive override: force transparency on all direct children of the
-   home container so no child can draw its own background and create a
-   visible seam. This only affects background properties and does not
-   change layout, paddings, borders or text colors. Use this if any
-   remaining section still shows a band. */
 .home-container > * {
-  /* Keep children visually above the overlay so content like cards,
-     shadows and interactive elements render normally. Also force
-     transparency for their backgrounds. */
   position: relative;
   z-index: 1;
   background: transparent !important;
@@ -86,10 +50,6 @@
   background-color: transparent !important;
 }
 
-/* Extra targeted overrides: remove any background or background-image
-   coming from pseudo-elements or more specific rules on these sections.
-   This will not affect inner cards or children (they have their own
-   background rules), only the section containers and their pseudo layers. */
 .hero-section,
 .benefits-section,
 .cta-section,
@@ -107,16 +67,16 @@
 .hero-section::before {
   content: "";
   position: absolute;
-  inset: 26% 18% auto auto;
-  width: 360px;
-  height: 360px;
+  inset: 22% 12% auto auto;
+  width: 520px;
+  height: 520px;
   background: radial-gradient(
     circle,
-    rgba(110, 92, 255, 0.32),
+    rgba(110, 92, 255, 0.22),
     transparent 72%
   );
-  filter: blur(48px);
-  opacity: 0.7;
+  filter: blur(80px);
+  opacity: 0.45;
   pointer-events: none;
 }
 
@@ -257,7 +217,6 @@
   font-size: var(--text-lg);
 }
 
-/* Ensure the time pill is always bright and legible even when parent sets dark color */
 .hero-appointment__time {
   box-shadow: 0 8px 18px rgba(88, 68, 191, 0.18);
   border: 2px solid rgba(255, 255, 255, 0.06);
@@ -420,12 +379,31 @@
   white-space: nowrap;
 }
 
-/* Benefits Section */
 .benefits-section {
   position: relative;
   padding: var(--space-20) var(--space-4);
-  /* background removed so the hero gradient continues literally through
-     this section. */
+}
+
+.benefits-section::before {
+  content: "";
+  position: absolute;
+  top: -220px;
+  left: -220px;
+  right: -220px;
+  height: 440px;
+  pointer-events: none;
+  z-index: 4;
+  background: var(--gradient-hero-sheen-left), var(--gradient-hero-sheen-right),
+    var(--gradient-hero-base);
+  background-repeat: no-repeat;
+  background-size: 140% auto;
+  background-position: top center;
+  filter: blur(6px);
+}
+
+.benefits-section > * {
+  position: relative;
+  z-index: 5;
 }
 
 .section-header {
@@ -453,12 +431,6 @@
   gap: var(--space-6);
 }
 
-/* ===========================
-   Benefit cards — contraste robusto
-   =========================== */
-
-/* Definimos variables locales en la tarjeta para controlar el color del texto.
-   Esto hace que el control del color sea explícito y fácil de ajustar. */
 .benefit-card {
   padding: var(--space-6);
   background: var(--gradient-benefit-card);
@@ -470,19 +442,11 @@
   transition: transform var(--transition-base),
     box-shadow var(--transition-base), border-color var(--transition-base),
     background var(--transition-base);
-
-  /* variables locales con fallback seguro */
-  --card-text: #181237; /* título / texto principal (buena legibilidad) */
-  --card-muted: rgba(
-    24,
-    18,
-    55,
-    0.76
-  ); /* subtítulos / descripción (ligeramente atenuado) */
+  --card-text: #181237;
+  --card-muted: rgba(24, 18, 55, 0.76);
   color: var(--card-text);
 }
 
-/* Selectores con suficiente especificidad para evitar herencias no deseadas. */
 .benefit-card .benefit-title {
   font-size: var(--text-xl);
   font-weight: var(--font-semibold);
@@ -497,7 +461,6 @@
   margin: 0;
 }
 
-/* El icono se mantiene brillante (blanco) para contraste con su propio fondo */
 .benefit-card .benefit-icon {
   display: inline-flex;
   align-items: center;
@@ -511,8 +474,6 @@
   box-shadow: 0 6px 18px rgba(40, 20, 120, 0.12);
 }
 
-/* Hover: si el fondo cambia (por ejemplo más oscuro), mantenemos contraste,
-   ajustando variables locales en el hover para no tocar reglas globales. */
 .benefit-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-card-elevated);
@@ -520,29 +481,15 @@
   background: var(--gradient-benefit-card-hover);
 }
 
-/* Dark mode — solo cambiamos las variables locales de la tarjeta */
 @media (prefers-color-scheme: dark) {
-  /* Keep card text dark because the card surface is light (glass effect). */
   .benefit-card {
     --card-text: #1b1538;
     --card-muted: rgba(27, 21, 56, 0.78);
   }
 }
 
-/* Si todavía hay reglas globales que siguen sobrescribiendo (último recurso),
-   puedes reemplazar las 2 reglas anteriores por estas versiones con !important:
-   (usa solo si es estrictamente necesario)
-.benefit-card .benefit-title { color: var(--card-text) !important; }
-.benefit-card .benefit-description { color: var(--card-muted) !important; }
-*/
-
-/* End of benefit card styles (no urgent !important overrides). */
-
-/* CTA Section */
 .cta-section {
   padding: var(--space-20) var(--space-4);
-  /* background removed so the hero gradient continues literally through
-     the CTA section as well. */
 }
 
 .cta-content {
@@ -577,7 +524,6 @@
   text-decoration: none;
 }
 
-/* Tablet */
 @media (min-width: 768px) {
   .hero-grid {
     grid-template-columns: 1fr 1fr;
@@ -622,7 +568,6 @@
   }
 }
 
-/* Desktop */
 @media (min-width: 1024px) {
   .hero-section {
     padding: var(--space-24) var(--space-8);
@@ -648,4 +593,29 @@
   .benefit-card:hover {
     transform: none;
   }
+}
+
+.home-debug .navbar {
+  outline: 2px dashed rgba(255, 192, 203, 0.9);
+  background-color: rgba(255, 0, 0, 0.08) !important;
+}
+
+.home-debug .home-container::before {
+  box-shadow: inset 0 0 0 9999px rgba(0, 255, 0, 0.04);
+  outline: 2px dashed rgba(0, 255, 0, 0.9);
+}
+
+.home-debug .hero-section,
+.home-debug .benefits-section,
+.home-debug .cta-section {
+  outline: 2px solid rgba(255, 200, 0, 0.85);
+  background-color: rgba(255, 200, 0, 0.06) !important;
+}
+
+.home-debug .home-container > * {
+  box-shadow: inset 0 0 0 9999px rgba(0, 0, 255, 0.02);
+}
+
+.home-debug .benefit-card {
+  outline: 2px dotted rgba(120, 80, 200, 0.9);
 }
