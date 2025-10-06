@@ -47,6 +47,60 @@ function Home() {
     <div className="home-container">
       <section className="hero-section">
         <div className="hero-grid">
+          <div className="hero-content">
+            <div className="hero-eyebrow">Medi Citas 2025</div>
+            <h1 className="hero-title">Gestiona tus citas médicas con calma</h1>
+            <p className="hero-subtitle">
+              Reserva, organiza y sigue tus consultas médicas desde un solo
+              lugar. Diseñado para clínicas modernas con experiencia premium.
+            </p>
+            <div className="hero-actions">
+              {currentUser ? (
+                <>
+                  <Link to="/agendar-cita">
+                    <McButton
+                      variant="primary"
+                      size="lg"
+                      icon={<CalendarIcon size={20} />}
+                    >
+                      Crear Cita
+                    </McButton>
+                  </Link>
+                  <Link to="/mis-citas">
+                    <McButton variant="outline" size="lg">
+                      Ver Mis Citas
+                    </McButton>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/register">
+                    <McButton
+                      variant="primary"
+                      size="lg"
+                      icon={<ArrowRightIcon size={20} />}
+                    >
+                      Crear Cuenta
+                    </McButton>
+                  </Link>
+                  <Link to="/login">
+                    <McButton variant="ghost" size="lg">
+                      Ingresar
+                    </McButton>
+                  </Link>
+                </>
+              )}
+            </div>
+            <div className="hero-metrics" role="list">
+              {metrics.map(({ label, value }) => (
+                <div className="hero-metric" key={label} role="listitem">
+                  <strong className="hero-metric__value">{value}</strong>
+                  <span className="hero-metric__label">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <div className="hero-visual" aria-hidden="true">
             <div className="hero-device">
               <div className="hero-device__card hero-device__card--primary">
@@ -99,60 +153,6 @@ function Home() {
               </div>
 
               <div className="hero-device__glow" />
-            </div>
-          </div>
-
-          <div className="hero-content">
-            <div className="hero-eyebrow">Medi Citas 2025</div>
-            <h1 className="hero-title">Gestiona tus citas médicas con calma</h1>
-            <p className="hero-subtitle">
-              Reserva, organiza y sigue tus consultas médicas desde un solo
-              lugar. Diseñado para clínicas modernas con experiencia premium.
-            </p>
-            <div className="hero-actions">
-              {currentUser ? (
-                <>
-                  <Link to="/agendar-cita">
-                    <McButton
-                      variant="primary"
-                      size="lg"
-                      icon={<CalendarIcon size={20} />}
-                    >
-                      Crear Cita
-                    </McButton>
-                  </Link>
-                  <Link to="/mis-citas">
-                    <McButton variant="outline" size="lg">
-                      Ver Mis Citas
-                    </McButton>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link to="/register">
-                    <McButton
-                      variant="primary"
-                      size="lg"
-                      icon={<ArrowRightIcon size={20} />}
-                    >
-                      Crear Cuenta
-                    </McButton>
-                  </Link>
-                  <Link to="/login">
-                    <McButton variant="ghost" size="lg">
-                      Ingresar
-                    </McButton>
-                  </Link>
-                </>
-              )}
-            </div>
-            <div className="hero-metrics" role="list">
-              {metrics.map(({ label, value }) => (
-                <div className="hero-metric" key={label} role="listitem">
-                  <strong className="hero-metric__value">{value}</strong>
-                  <span className="hero-metric__label">{label}</span>
-                </div>
-              ))}
             </div>
           </div>
         </div>

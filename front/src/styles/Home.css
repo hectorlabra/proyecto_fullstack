@@ -84,12 +84,14 @@
 
 .hero-content {
   text-align: center;
-  order: 2;
+  /* Neutral order so DOM order determines mobile sequence (we moved DOM order in Home.jsx) */
+  order: 0;
   color: inherit;
 }
 
 .hero-visual {
-  order: 1;
+  /* Neutral order for mobile; desktop rules in media query will set explicit order */
+  order: 0;
   display: flex;
   justify-content: center;
   align-items: center;
