@@ -241,7 +241,7 @@ Guía completa de 500+ líneas con:
 1. **Actualizar vistas pendientes:**
 
    - Login/Register con McInputField
-   - MisTurnos con McSkeleton loading
+   - MisCitas con McSkeleton loading
    - CreateAppointment con validación inline
 
 2. **Componentes faltantes del JSON:**
@@ -287,7 +287,7 @@ Guía completa de 500+ líneas con:
 | navigation              | ✅           | Navbar sticky, active indicator fluido                        |
 | pages.home              | ✅           | Hero two-column, benefits 3-col                               |
 | pages.auth              | ⏳           | Login/Register existentes, pendiente actualizar               |
-| pages.appointments_list | ⏳           | MisTurnos existente, pendiente McSkeleton + filtros           |
+| pages.appointments_list | ⏳           | MisCitas existente, pendiente McSkeleton + filtros            |
 | components.button       | ✅           | 5 variantes, loading, icons                                   |
 | components.input_field  | ✅           | Label, error, helper, ARIA                                    |
 | components.badge        | ✅           | 5 variantes semánticas                                        |

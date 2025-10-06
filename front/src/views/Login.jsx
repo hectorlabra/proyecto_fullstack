@@ -25,7 +25,8 @@ function Login() {
     switch (name) {
       case "username":
         if (!value.trim()) error = "El nombre de usuario es obligatorio";
-        else if (value.trim().length < 3) error = "Debe tener al menos 3 caracteres";
+        else if (value.trim().length < 3)
+          error = "Debe tener al menos 3 caracteres";
         break;
       case "password":
         if (!value) error = "La contraseña es obligatoria";
@@ -43,8 +44,12 @@ function Login() {
   };
 
   const isFormValid = () => {
-    const allFieldsFilled = Object.values(formData).every((value) => value && value.trim() !== "");
-    const noErrors = Object.values(errors).every((error) => !error || error === "");
+    const allFieldsFilled = Object.values(formData).every(
+      (value) => value && value.trim() !== ""
+    );
+    const noErrors = Object.values(errors).every(
+      (error) => !error || error === ""
+    );
     return allFieldsFilled && noErrors;
   };
 
@@ -73,7 +78,7 @@ function Login() {
         toast.success("¡Inicio de sesión exitoso!");
         setFormData({ username: "", password: "" });
         setErrors({});
-        setTimeout(() => navigate("/mis-turnos"), 1000);
+        setTimeout(() => navigate("/mis-citas"), 1000);
       } else {
         toast.error(result.error || "Credenciales incorrectas");
       }

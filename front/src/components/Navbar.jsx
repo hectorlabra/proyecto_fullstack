@@ -130,7 +130,7 @@ function Navbar() {
         { label: "Inicio", path: "/", icon: <HomeIcon size={18} /> },
         {
           label: "Mis Citas",
-          path: "/mis-turnos",
+          path: "/mis-citas",
           icon: <CalendarIcon size={18} />,
         },
         {

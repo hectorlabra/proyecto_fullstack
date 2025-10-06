@@ -121,7 +121,7 @@ function Home() {
                       Crear Cita
                     </McButton>
                   </Link>
-                  <Link to="/mis-turnos">
+                  <Link to="/mis-citas">
                     <McButton variant="outline" size="lg">
                       Ver Mis Citas
                     </McButton>

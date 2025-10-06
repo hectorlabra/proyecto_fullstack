@@ -16,10 +16,7 @@ export function Breadcrumbs({ items, separator = "/", className = "" }) {
   if (breadcrumbItems.length === 0) return null;
 
   return (
-    <nav
-      className={`breadcrumbs ${className}`}
-      aria-label="breadcrumbs"
-    >
+    <nav className={`breadcrumbs ${className}`} aria-label="breadcrumbs">
       <ol className="breadcrumbs-list">
         {breadcrumbItems.map((item, index) => {
           const isLast = index === breadcrumbItems.length - 1;
@@ -28,10 +25,7 @@ export function Breadcrumbs({ items, separator = "/", className = "" }) {
             <li key={item.path || index} className="breadcrumbs-item">
               {!isLast ? (
                 <>
-                  <Link
-                    to={item.path}
-                    className="breadcrumbs-link"
-                  >
+                  <Link to={item.path} className="breadcrumbs-link">
                     {index === 0 && item.label === "Inicio" ? (
                       <span className="breadcrumbs-home" aria-label="Inicio">
                         🏠
@@ -68,6 +62,9 @@ function generateBreadcrumbs(pathname) {
     "/login": "Iniciar Sesión",
     "/register": "Registro",
     "/appointments": "Mis Citas",
+    // Friendly app routes
+    "/mis-citas": "Mis Citas",
+    "/mis-turnos": "Mis Citas",
     "/appointments/new": "Nueva Cita",
     "/appointments/create": "Crear Cita",
     "/dashboard": "Panel",
@@ -85,10 +82,10 @@ function generateBreadcrumbs(pathname) {
   let currentPath = "";
   segments.forEach((segment) => {
     currentPath += `/${segment}`;
-    
+
     // Check if it's a dynamic route (ID)
     const isId = /^\d+$/.test(segment);
-    
+
     if (isId) {
       // Skip numeric IDs in breadcrumbs (detail pages)
       return;

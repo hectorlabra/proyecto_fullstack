@@ -1,12 +1,12 @@
-/* MisTurnos - Healthcare Theme */
-.mis-turnos-container {
+/* MisCitas - Healthcare Theme (renamed from MisTurnos) */
+.mis-citas-container {
   padding: var(--space-6) var(--space-6) var(--space-10);
   max-width: var(--container-xl);
   margin: 0 auto;
   min-height: calc(100vh - var(--navbar-height));
 }
 
-.mis-turnos-header {
+.mis-citas-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -14,7 +14,7 @@
   margin-bottom: var(--space-8);
 }
 
-.mis-turnos-eyebrow {
+.mis-citas-eyebrow {
   margin: 0 0 var(--space-2) 0;
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
@@ -23,7 +23,7 @@
   text-transform: uppercase;
 }
 
-.mis-turnos-title {
+.mis-citas-title {
   margin: 0;
   font-size: var(--text-4xl);
   font-weight: var(--font-bold);
@@ -31,7 +31,7 @@
   line-height: var(--line-height-tight);
 }
 
-.mis-turnos-subtitle {
+.mis-citas-subtitle {
   margin: var(--space-3) 0 0;
   font-size: var(--text-lg);
   color: var(--color-text-secondary);
@@ -39,13 +39,13 @@
   line-height: var(--line-height-relaxed);
 }
 
-.mis-turnos-actions {
+.mis-citas-actions {
   display: flex;
   gap: var(--space-3);
   align-items: center;
 }
 
-.mis-turnos-summary {
+.mis-citas-summary {
   margin-bottom: var(--space-8);
 }
 
@@ -133,7 +133,7 @@
   color: var(--color-danger-text);
 }
 
-.mis-turnos-loading {
+.mis-citas-loading {
   display: grid;
   place-items: center;
   padding: var(--space-16) 0;
@@ -141,29 +141,29 @@
 }
 
 @media (max-width: 960px) {
-  .mis-turnos-container {
+  .mis-citas-container {
     padding: var(--space-5) var(--space-4) var(--space-8);
   }
 
-  .mis-turnos-header {
+  .mis-citas-header {
     flex-direction: column;
     gap: var(--space-4);
   }
 
-  .mis-turnos-actions {
+  .mis-citas-actions {
     width: 100%;
     justify-content: flex-start;
     flex-wrap: wrap;
   }
 
-  .mis-turnos-actions .btn {
+  .mis-citas-actions .btn {
     flex: 1;
     min-width: 160px;
   }
 }
 
 @media (max-width: 600px) {
-  .mis-turnos-title {
+  .mis-citas-title {
     font-size: var(--text-3xl);
   }
 
@@ -179,30 +179,30 @@
     background: var(--color-bg-soft);
   }
 
-  .mis-turnos-actions {
+  .mis-citas-actions {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .mis-turnos-actions .btn {
+  .mis-citas-actions .btn {
     width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .mis-turnos-container {
+  .mis-citas-container {
     padding: var(--space-4) var(--space-3) var(--space-6);
   }
 
-  .mis-turnos-title {
+  .mis-citas-title {
     font-size: var(--text-2xl);
   }
 
-  .mis-turnos-subtitle {
+  .mis-citas-subtitle {
     font-size: var(--text-base);
   }
 
-  .mis-turnos-actions {
+  .mis-citas-actions {
     gap: var(--space-2);
   }
 

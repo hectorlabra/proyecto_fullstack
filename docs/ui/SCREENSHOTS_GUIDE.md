@@ -8,11 +8,11 @@
 - **Contenido**: Página de inicio mostrando navbar y login/registro
 - **Nombre**: `docs/screenshot-home.png`
 
-### Screenshot 2: Dashboard de Turnos
+### Screenshot 2: Dashboard de Citas
 
-- **URL**: `https://tu-app.onrender.com/mis-turnos` (logueado)
-- **Contenido**: Vista de turnos del usuario con tarjetas de citas
-- **Nombre**: `docs/screenshot-turnos.png`
+- **URL**: `https://tu-app.onrender.com/mis-citas` (logueado)
+- **Contenido**: Vista de citas del usuario con tarjetas de citas
+- **Nombre**: `docs/screenshot-mis-citas.png`
 
 ### Screenshot 3 (Opcional): Crear Turno
 

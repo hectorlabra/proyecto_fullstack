@@ -1,11 +1,11 @@
 import "./App.css";
 import "./styles/accessibility.css";
 import Home from "./views/Home";
-import MisTurnos from "./views/MisTurnos";
+import MisCitas from "./views/MisCitas";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import CreateAppointment from "./views/CreateAppointment";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { UserProvider } from "./context/UserContext";
 import { ToastProvider } from "./context/ToastContext";
@@ -24,7 +24,13 @@ function App() {
             <main id="main-content" role="main">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/mis-turnos" element={<MisTurnos />} />
+                {/* New canonical route name */}
+                <Route path="/mis-citas" element={<MisCitas />} />
+                {/* Backwards compatibility: redirect old route */}
+                <Route
+                  path="/mis-turnos"
+                  element={<Navigate to="/mis-citas" replace />}
+                />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/agendar-cita" element={<CreateAppointment />} />

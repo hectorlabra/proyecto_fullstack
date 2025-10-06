@@ -182,7 +182,7 @@ front/src/
 │   ├── Home.jsx          # Landing page
 │   ├── Login.jsx         # Autenticación
 │   ├── Register.jsx      # Registro de usuario
-│   ├── MisTurnos.jsx     # Lista de citas del usuario
+│   ├── MisCitas.jsx     # Lista de citas del usuario
 │   └── CreateAppointment.jsx  # Formulario nueva cita
 │
 ├── components/           # 🧩 Componentes UI reutilizables
@@ -218,7 +218,7 @@ front/src/
 2️⃣ React Router (App.jsx)
    └─ Match ruta → Componente View
    ↓
-3️⃣ View Component (e.g., MisTurnos)
+3️⃣ View Component (e.g., MisCitas)
    ├─ useEffect → llama Context API
    └─ UserContext.refreshAppointments()
    ↓

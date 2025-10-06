@@ -16,9 +16,9 @@ import {
   CheckCircleIcon,
   AlertCircleIcon,
 } from "../components/icons";
-import "../styles/MisTurnos.css";
+import "../styles/MisCitas.css";
 
-const MisTurnos = () => {
+const MisCitas = () => {
   const navigate = useNavigate();
   const { user, userAppointments, isLoading, error, refreshAppointments } =
     useUser();
@@ -29,7 +29,7 @@ const MisTurnos = () => {
       return;
     }
 
-    console.log("MisTurnos mounted, userAppointments:", userAppointments);
+    console.log("MisCitas mounted, userAppointments:", userAppointments);
     console.log("User ID:", user.id || user.user?.id);
 
     refreshAppointments();
@@ -74,20 +74,20 @@ const MisTurnos = () => {
   }, [normalizedAppointments]);
 
   return (
-    <div className="mis-turnos-container">
+    <div className="mis-citas-container">
       <Breadcrumbs />
       {user ? (
         <>
-          <header className="mis-turnos-header">
+          <header className="mis-citas-header">
             <div>
-              <p className="mis-turnos-eyebrow">Panel de paciente</p>
-              <h1 className="mis-turnos-title">Mis citas</h1>
-              <p className="mis-turnos-subtitle">
+              <p className="mis-citas-eyebrow">Panel de paciente</p>
+              <h1 className="mis-citas-title">Mis citas</h1>
+              <p className="mis-citas-subtitle">
                 Hola, {user.firstName} {user.lastName}. Gestiona tus citas
                 médicas y mantén un seguimiento claro de tu historial clínico.
               </p>
             </div>
-            <div className="mis-turnos-actions">
+            <div className="mis-citas-actions">
               <Button
                 variant="ghost"
                 size="sm"
@@ -107,7 +107,7 @@ const MisTurnos = () => {
             </div>
           </header>
 
-          <section className="mis-turnos-summary">
+          <section className="mis-citas-summary">
             <Card variant="flat" className="summary-card">
               <CardContent>
                 <div className="summary-item">
@@ -176,7 +176,7 @@ const MisTurnos = () => {
           )}
         </>
       ) : (
-        <div className="mis-turnos-loading">
+        <div className="mis-citas-loading">
           <p>Verificando autenticación...</p>
         </div>
       )}
@@ -184,4 +184,4 @@ const MisTurnos = () => {
   );
 };
 
-export default MisTurnos;
+export default MisCitas;

@@ -1,1 +1,4 @@
 /*    /index.html   200
+
+# Redirect old route to new canonical route (server-side friendly)
+/mis-turnos    /mis-citas   301!

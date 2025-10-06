@@ -104,7 +104,7 @@ const CreateAppointment = () => {
       toast.success("¡Cita agendada exitosamente!");
       setFormData({ date: "", time: "", notes: "" });
       setErrors({});
-      setTimeout(() => navigate("/mis-turnos"), 1500);
+      setTimeout(() => navigate("/mis-citas"), 1500);
     } else {
       toast.error("Error al agendar la cita. Intenta nuevamente.");
     }
