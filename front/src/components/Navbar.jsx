@@ -82,13 +82,34 @@ function Navbar() {
   }, [isMenuOpen]);
 
   useEffect(() => {
+    // Robust scroll lock for mobile menu: store scroll position, fix body and
+    // restore on cleanup. We use a class so CSS can control any additional
+    // behaviors and to avoid conflicts with other code that manipulates
+    // document.body.style.overflow directly.
     if (!isMobileView || !isMenuOpen) return undefined;
 
-    const { overflow } = document.body.style;
+    const scrollY = window.scrollY;
+    // save previous inline styles to restore later
+    const prevPosition = document.body.style.position;
+    const prevTop = document.body.style.top;
+    const prevOverflow = document.body.style.overflow;
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
     document.body.style.overflow = "hidden";
+    document.documentElement.classList.add("mc-nav-open");
 
     return () => {
-      document.body.style.overflow = overflow;
+      document.documentElement.classList.remove("mc-nav-open");
+      document.body.style.position = prevPosition || "";
+      document.body.style.top = prevTop || "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.overflow = prevOverflow || "";
+      // restore scroll position
+      window.scrollTo(0, scrollY);
     };
   }, [isMenuOpen, isMobileView]);
 

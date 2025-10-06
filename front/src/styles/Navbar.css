@@ -560,6 +560,24 @@
   }
 }
 
+/* When JS sets .mc-nav-open on the documentElement, ensure the page behind
+   the menu cannot scroll. This complements the fixed-body approach in JS and
+   provides a style-level safeguard. */
+html.mc-nav-open,
+html.mc-nav-open body {
+  height: 100vh;
+  overflow: hidden !important;
+  touch-action: none;
+}
+
+@media (max-width: 767px) {
+  /* Ensure inner menu body still scrolls even when root is locked */
+  html.mc-nav-open .navbar-menu__body {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
 @media (min-width: 1025px) {
   .navbar-container {
     padding-inline: var(--space-8);
@@ -574,5 +592,39 @@
   .navbar-menu,
   .navbar-overlay {
     transition: none;
+  }
+}
+
+/* Fix: force correct mobile menu scroll behavior and precedence to avoid build-time overrides */
+@media (max-width: 767px) {
+  /* Ensure the menu consistently occupies the viewport and does not allow the underlying
+     page to scroll when open. Use higher specificity and !important to prevent build
+     output or other CSS from overriding this behavior. */
+  .navbar-menu {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    overflow-x: hidden !important;
+    /* allow the menu container to manage its own scrolling if necessary
+       but prefer the inner body to scroll (see .navbar-menu__body) */
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    z-index: var(--z-modal) !important;
+  }
+
+  /* Inner body must be scrollable so CTAs can stay sticky at the bottom */
+  .navbar-menu__body {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    min-height: 0 !important;
+  }
+
+  /* CTA should remain pinned to the bottom of the menu */
+  .navbar-cta {
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: calc(var(--z-modal) + 2) !important;
   }
 }
