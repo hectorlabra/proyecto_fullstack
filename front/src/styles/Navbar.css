@@ -234,7 +234,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     max-width: none;
     display: flex;
@@ -576,7 +576,7 @@ html.mc-nav-open body {
   .navbar-menu {
     position: fixed !important;
     inset: 0 !important;
-    width: 100vw !important;
+    width: 100% !important;
     height: 100vh !important;
     max-width: none !important;
     overflow-x: hidden !important;

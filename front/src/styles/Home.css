@@ -60,9 +60,10 @@
 .hero-section::before {
   content: "";
   position: absolute;
-  inset: 22% 12% auto auto;
-  width: 520px;
-  height: 520px;
+  inset: 22% 50% auto auto;
+  transform: translateX(-50%);
+  width: min(520px, 60vw);
+  height: min(520px, 60vw);
   background: radial-gradient(
     circle,
     rgba(110, 92, 255, 0.22),
@@ -96,6 +97,18 @@
   justify-content: center;
   align-items: center;
   pointer-events: none;
+}
+
+/* Ensure hero section does not cause horizontal overflow on small screens */
+@media (max-width: 768px) {
+  .home-container {
+    overflow-x: hidden;
+  }
+
+  .hero-visual {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .hero-device {
@@ -396,8 +409,9 @@
   content: "";
   position: absolute;
   top: -220px;
-  left: -220px;
-  right: -220px;
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
   height: 440px;
   pointer-events: none;
   z-index: 4;
@@ -713,4 +727,112 @@
 
 .home-debug .benefit-card {
   outline: 2px dotted rgba(120, 80, 200, 0.9);
+}
+
+/* ============================
+   Hero metrics: horizontal (mobile) variant
+   - Fixed: avoid horizontal overflow on all screens
+   - Keep desktop/grid appearance; on mobile display a single horizontal row
+   - No extra inner backgrounds or shadows so it matches desktop look
+   ============================ */
+
+.hero-metrics--horizontal {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 8px 12px;
+  border-radius: var(--radius-2xl);
+  background: var(--gradient-metrics-card); /* restored visual: gradient card */
+  border: 1px solid var(--border-glass-strong);
+  box-shadow: var(--shadow-card-elevated);
+  overflow: visible;
+  display: grid; /* default to grid so mid-breakpoints match desktop look */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+/* Mobile: show items in a single horizontal row but let them shrink to fit.
+   This keeps the desktop grid look but saves vertical space without causing
+   horizontal overflow or nested inner cards. */
+@media (max-width: 640px) {
+  .hero-metrics--horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 6px 8px;
+    align-items: center;
+    overflow-x: hidden; /* ensure page doesn't scroll horizontally */
+  }
+
+  /* Let metrics share available width and shrink to fit the viewport. No
+     inner backgrounds or shadows so the visual mirrors desktop but compact. */
+  .hero-metrics--horizontal .hero-metric {
+    flex: 1 1 0;
+    min-width: 0; /* critical to allow shrinking and avoid overflow */
+    max-width: 100%;
+    border-radius: 0;
+    padding: 6px 6px;
+    background: transparent;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 44px;
+  }
+
+  .hero-metrics--horizontal .hero-metric__value {
+    font-size: clamp(16px, 6.5vw, 20px);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .hero-metrics--horizontal .hero-metric__label {
+    font-size: clamp(9px, 3vw, 11px);
+    white-space: normal;
+    text-transform: uppercase;
+    color: var(--color-ink-inverted-soft);
+  }
+
+  /* Keep keyboard focus visible for accessibility */
+  .hero-metrics--horizontal .hero-metric:focus {
+    outline: 2px solid rgba(124, 58, 237, 0.18);
+    outline-offset: 2px;
+  }
+}
+
+/* Desktop/tablet: revert to grid so layout matches original desktop design */
+@media (min-width: 768px) {
+  .hero-metrics--horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+
+  .hero-metrics--horizontal .hero-metric {
+    min-width: auto;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    min-height: auto;
+    border-radius: var(--radius-xl);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-metrics--horizontal {
+    transition: none;
+  }
+}
+
+/* Prevent any remaining page-level horizontal overflow on small devices.
+   This is conservative (applies only to <=1024px). If you prefer a narrower
+   breakpoint change the media query. */
+@media (max-width: 1024px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
 }

@@ -91,7 +91,7 @@ function Home() {
                 </>
               )}
             </div>
-            <div className="hero-metrics" role="list">
+            <div className="hero-metrics hero-metrics--horizontal" role="list">
               {metrics.map(({ label, value }) => (
                 <div className="hero-metric" key={label} role="listitem">
                   <strong className="hero-metric__value">{value}</strong>
