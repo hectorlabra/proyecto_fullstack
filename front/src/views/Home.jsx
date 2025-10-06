@@ -119,10 +119,15 @@ function Home() {
                 <div className="hero-dashboard__schedule">
                   <div className="hero-appointment">
                     <span className="hero-appointment__time">09:30</span>
-                    <p className="hero-appointment__patient">Juan Pérez</p>
-                    <span className="hero-appointment__type">
-                      Control anual
-                    </span>
+                    <div className="hero-appointment__info">
+                      <p className="hero-appointment__patient">Juan Pérez</p>
+                      <span className="hero-appointment__meta">
+                        Consulta rutinaria
+                      </span>
+                      <span className="hero-appointment__type">
+                        Control anual
+                      </span>
+                    </div>
                   </div>
                   <div className="hero-analytics" role="list">
                     <div className="hero-analytics__chip" role="listitem">

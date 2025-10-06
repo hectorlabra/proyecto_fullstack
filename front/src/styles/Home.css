@@ -109,6 +109,17 @@
     max-width: 100%;
     box-sizing: border-box;
   }
+
+  .hero-appointment__info {
+    align-items: flex-start;
+  }
+
+  .hero-appointment__meta {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    color: rgba(36, 30, 80, 0.68);
+  }
 }
 
 .hero-device {
@@ -241,6 +252,28 @@
   grid-column: 2 / -1;
   font-size: var(--text-sm);
   color: rgba(36, 30, 80, 0.76);
+}
+
+/* Group patient name + micro-copy + type so layout stays stable */
+.hero-appointment__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hero-appointment__meta {
+  font-size: calc(var(--text-sm) - 1px);
+  color: rgba(36, 30, 80, 0.64);
+  line-height: 1.2;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* allow up to two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  margin-top: 2px;
 }
 
 .hero-analytics {
