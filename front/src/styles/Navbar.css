@@ -1,4 +1,3 @@
-/* Navbar */
 .navbar {
   position: sticky;
   top: 0;
@@ -185,7 +184,6 @@
   }
 }
 
-/* Overlay for mobile navigation */
 .navbar-overlay {
   position: fixed;
   top: 0;
@@ -204,7 +202,6 @@
   pointer-events: auto;
 }
 
-/* Tablet tweaks */
 @media (max-width: 1024px) {
   .navbar-container {
     padding-inline: var(--space-6);
@@ -221,7 +218,6 @@
   }
 }
 
-/* Mobile */
 @media (max-width: 767px) {
   .navbar-container {
     padding-inline: var(--space-4);
@@ -464,11 +460,8 @@
     align-items: stretch;
     width: auto;
     gap: var(--space-3);
-    /* reduce horizontal margin to avoid overflow */
     margin: 0 var(--space-4);
-    /* keep safe-area space but avoid pushing CTAs outside the scrollable area */
     margin-bottom: 0;
-    /* restore original CTA block styling (padding + rounded background) */
     padding: var(--space-4);
     border-radius: var(--radius-xl);
     background: rgba(255, 255, 255, 0.08);
@@ -477,16 +470,14 @@
     box-sizing: border-box;
   }
 
-  /* Make mobile CTAs smaller so they fit in the viewport and remain tappable */
   .navbar-cta > * {
     width: 100%;
-    min-height: 40px; /* compact but still reachable */
+    min-height: 40px;
     font-size: 14px;
-    padding: 0; /* let the button control its own padding */
+    padding: 0;
     box-sizing: border-box;
   }
 
-  /* Override mc-button defaults inside the CTA to make them visually smaller */
   .navbar-cta .mc-button {
     padding-inline: 12px !important;
     min-height: 40px !important;
@@ -496,7 +487,6 @@
     border-radius: calc(var(--radius-xl) - 4px) !important;
   }
 
-  /* Make CTA buttons fill the CTA container (rounded block) on mobile */
   .navbar-cta .mc-button,
   .navbar-cta .mc-button--full-width {
     width: 100% !important;
@@ -505,7 +495,6 @@
     display: block;
   }
 
-  /* Style outline/ghost buttons inside CTA so they visually match the rounded block */
   .navbar-cta .mc-button--outline,
   .navbar-cta .mc-button--ghost {
     background: rgba(255, 255, 255, 0.04) !important;
@@ -513,38 +502,30 @@
     color: var(--color-ink-inverted) !important;
   }
 
-  /* New: scrollable body inside the full-screen menu */
   .navbar-menu__body {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
-    /* take remaining space and scroll internally so CTA stays pinned */
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    /* keep only safe-area padding at the bottom so CTA can stick above it */
     padding-bottom: calc(env(safe-area-inset-bottom, 0) + var(--space-2));
   }
 
-  /* Keep CTA visually attached and reachable: sticky at end of scroll area */
   .navbar-cta {
     position: sticky;
     bottom: 0;
     z-index: calc(var(--z-modal) + 1);
     margin-bottom: calc(env(safe-area-inset-bottom, 0) + var(--space-2));
-    /* keep same subtle translucent background as the non-sticky state */
     background: rgba(255, 255, 255, 0.08);
   }
 
-  /* Ensure the menu has comfortable bottom padding so CTA is reachable and not clipped
-     on devices with safe-area insets. Make the menu scrollable on iOS with momentum. */
   .navbar-menu {
     -webkit-overflow-scrolling: touch;
-    /* occupy full viewport so inner flex scroll works consistently */
     height: 100vh;
-    padding-bottom: 0; /* inner body handles safe-area padding */
-    overflow-x: hidden; /* ensure no horizontal scroll */
+    padding-bottom: 0;
+    overflow-x: hidden;
   }
 
   .navbar-user {
@@ -560,9 +541,6 @@
   }
 }
 
-/* When JS sets .mc-nav-open on the documentElement, ensure the page behind
-   the menu cannot scroll. This complements the fixed-body approach in JS and
-   provides a style-level safeguard. */
 html.mc-nav-open,
 html.mc-nav-open body {
   height: 100vh;
@@ -571,7 +549,6 @@ html.mc-nav-open body {
 }
 
 @media (max-width: 767px) {
-  /* Ensure inner menu body still scrolls even when root is locked */
   html.mc-nav-open .navbar-menu__body {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
@@ -595,11 +572,7 @@ html.mc-nav-open body {
   }
 }
 
-/* Fix: force correct mobile menu scroll behavior and precedence to avoid build-time overrides */
 @media (max-width: 767px) {
-  /* Ensure the menu consistently occupies the viewport and does not allow the underlying
-     page to scroll when open. Use higher specificity and !important to prevent build
-     output or other CSS from overriding this behavior. */
   .navbar-menu {
     position: fixed !important;
     inset: 0 !important;
@@ -607,21 +580,17 @@ html.mc-nav-open body {
     height: 100vh !important;
     max-width: none !important;
     overflow-x: hidden !important;
-    /* allow the menu container to manage its own scrolling if necessary
-       but prefer the inner body to scroll (see .navbar-menu__body) */
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     z-index: var(--z-modal) !important;
   }
 
-  /* Inner body must be scrollable so CTAs can stay sticky at the bottom */
   .navbar-menu__body {
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
     min-height: 0 !important;
   }
 
-  /* CTA should remain pinned to the bottom of the menu */
   .navbar-cta {
     position: sticky !important;
     bottom: 0 !important;
