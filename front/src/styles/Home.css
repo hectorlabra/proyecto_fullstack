@@ -561,13 +561,19 @@
     background: var(--surface-glass-muted);
   }
   .benefit-card:hover {
+    /* Hover in dark mode: don't remove the card surface color.
+       Apply a subtle light overlay, keep base surface, and increase border/shadow for contrast. */
     background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.02) 0%,
-      rgba(88, 68, 191, 0.02) 100%
-    );
-    border-color: rgba(138, 118, 246, 0.36);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+        180deg,
+        rgba(255, 255, 255, 0.06) 0%,
+        rgba(255, 255, 255, 0.03) 100%
+      ),
+      var(--surface-glass-muted);
+    background-blend-mode: overlay, normal;
+    border-color: rgba(180, 150, 255, 0.6);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32),
+      0 6px 18px rgba(88, 68, 191, 0.25);
+    transform: translateY(-6px) scale(1.01);
   }
 }
 
