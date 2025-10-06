@@ -705,6 +705,7 @@
     max-width: none;
     width: 100%;
     margin-left: 0;
+    padding: var(--space-6); /* mobile-only: extra internal breathing room */
   }
 
   .hero-title {
