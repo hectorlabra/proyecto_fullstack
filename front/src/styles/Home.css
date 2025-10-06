@@ -677,17 +677,34 @@
     gap: var(--space-8);
   }
 
+  /* On mobile use the full available width for the hero device
+     Instead of constraining to a small fixed max-width, let the
+     device grow to the viewport width while preserving padding via
+     box-sizing. Also remove the visual scale so the card can use
+     the available space naturally. */
   .hero-visual {
-    transform: scale(0.92);
+    transform: none;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .hero-device {
-    max-width: 320px;
+    max-width: 100%; /* allow full width */
+    width: 100%;
     padding: var(--space-3);
+    box-sizing: border-box; /* ensure padding is included in width */
   }
 
   .hero-device__card {
     padding: var(--space-4);
+  }
+
+  /* Make the floating card stack and use full width on mobile to avoid
+     it limiting the visual width or causing overflow. */
+  .hero-device__card--floating {
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
   }
 
   .hero-title {
@@ -739,8 +756,10 @@
     white-space: normal;
   }
 
+  /* Avoid additional scaling on very small screens to keep the
+     hero occupying the available width. */
   .hero-visual {
-    transform: scale(0.88);
+    transform: none;
   }
 
   .hero-metrics {
