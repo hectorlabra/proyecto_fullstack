@@ -10,7 +10,6 @@ import {
   ArrowRightIcon,
 } from "../components/icons";
 import "../styles/Home.css";
-import "../styles/benefit-fix.css";
 
 function Home() {
   const { user } = useUser();

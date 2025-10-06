@@ -269,6 +269,8 @@
   max-width: 100%;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* allow up to two lines */
+  /* Standard property for compatibility with non-webkit implementations */
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -488,18 +490,26 @@
 
 .benefit-card {
   padding: var(--space-6);
-  background: var(--gradient-benefit-card);
+  /* Gradiente MUY visible - lavanda fuerte */
+  background: linear-gradient(
+    135deg,
+    rgba(240, 230, 255, 1) 0%,
+    rgba(220, 200, 255, 1) 50%,
+    rgba(200, 170, 255, 1) 100%
+  );
   border-radius: var(--radius-2xl);
-  border: 1px solid var(--border-glass);
+  border: 2px solid rgba(180, 150, 255, 0.7);
   text-align: left;
-  box-shadow: var(--shadow-card-soft);
+  box-shadow: 0 12px 32px rgba(100, 80, 200, 0.25),
+    0 4px 12px rgba(120, 90, 220, 0.15);
   backdrop-filter: blur(16px);
   transition: transform var(--transition-base),
     box-shadow var(--transition-base), border-color var(--transition-base),
     background var(--transition-base);
-  --card-text: #181237;
-  --card-muted: rgba(24, 18, 55, 0.76);
+  --card-text: #1b1538;
+  --card-muted: rgba(27, 21, 56, 0.78);
   color: var(--card-text);
+  z-index: 6;
 }
 
 .benefit-card .benefit-title {
@@ -530,16 +540,34 @@
 }
 
 .benefit-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-card-elevated);
-  border-color: var(--border-glass-strong);
-  background: var(--gradient-benefit-card-hover);
+  /* Hover: gradiente MUCHO más visible - lavanda brillante */
+  background: linear-gradient(
+    135deg,
+    rgba(250, 240, 255, 1) 0%,
+    rgba(230, 210, 255, 1) 50%,
+    rgba(210, 180, 255, 1) 100%
+  );
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(120, 90, 220, 0.3),
+    0 8px 20px rgba(140, 100, 240, 0.2);
+  border-color: rgba(180, 150, 255, 0.9);
+  backdrop-filter: blur(16px);
 }
 
 @media (prefers-color-scheme: dark) {
   .benefit-card {
     --card-text: #1b1538;
     --card-muted: rgba(27, 21, 56, 0.78);
+    background: var(--surface-glass-muted);
+  }
+  .benefit-card:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.02) 0%,
+      rgba(88, 68, 191, 0.02) 100%
+    );
+    border-color: rgba(138, 118, 246, 0.36);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
   }
 }
 
