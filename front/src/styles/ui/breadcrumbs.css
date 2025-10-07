@@ -31,6 +31,14 @@
   border-radius: var(--radius-sm);
 }
 
+/* Ensure links align icon + text vertically */
+.breadcrumbs-link,
+.breadcrumbs-link.active {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
 .breadcrumbs-link:hover {
   color: var(--color-primary);
   background-color: var(--color-surface-hover);
@@ -79,12 +87,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  /* Make the home icon slightly larger for better visibility */
+  width: 20px;
+  height: 20px;
+  /* Ensure the icon aligns vertically with text baseline */
+  line-height: 0;
 }
 
 .breadcrumbs-home svg {
   display: block;
+  /* Allow the svg to scale to the container and avoid extra whitespace */
+  width: 100%;
+  height: 100%;
 }
 
 .breadcrumbs-separator {
