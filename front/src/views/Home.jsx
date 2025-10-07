@@ -16,12 +16,15 @@ function Home() {
   const { user } = useUser();
   const currentUser = user?.user ?? user;
 
+  // Timings tuned for a snappy Apple Watch-like surge effect.
+  // exit + settle should be smaller than interval so the enter animation can finish.
+  // interval controls how often content cycles; user requested ~2s responsiveness.
   const SURGE_TIMING = useMemo(
     () => ({
-      exit: 280,
-      settle: 680,
-      interval: 5400,
-      initialDelay: 3600,
+      exit: 320, // slightly longer exit so content unmounts cleanly
+      settle: 820, // allow enter animation (~720ms) to finish with a small buffer
+      interval: 4200, // cycle every ~4.2s — noticeably slower than before
+      initialDelay: 2200, // initial pop after page load (give user time to orient)
     }),
     []
   );
@@ -177,7 +180,7 @@ function Home() {
       setCurrentMetrics((prev) =>
         prev.map((val, idx) => (val + 1) % metricsData[idx].values.length)
       );
-    }, 3000);
+  }, 2500);
 
     return () => clearInterval(interval);
   }, [metricsData]);
