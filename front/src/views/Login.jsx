@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
-import { Input, Button, Breadcrumbs } from "../components/ui";
+import { Breadcrumbs } from "../components/ui";
 import { useToast } from "../hooks/useToast";
-import { ShieldCheckIcon, ClockIcon, CalendarIcon } from "../components/icons";
+import {
+  ShieldCheckIcon,
+  ClockIcon,
+  CalendarIcon,
+  UserIcon,
+} from "../components/icons";
+import McButton from "../components/ui/McButton";
+import McInputField from "../components/ui/McInputField";
 import "../styles/Auth.css";
 
 function Login() {
@@ -112,52 +119,62 @@ function Login() {
   };
 
   return (
-    <div className="page-shell page-shell--auth">
+    <div className="page-shell auth-container-page">
       <div className="page-shell__content page-shell__content--padded">
         <Breadcrumbs className="breadcrumbs--inverted" />
-        <div className="auth-container">
-          <section className="auth-hero">
-            <span className="auth-hero__badge">Medi Citas 2025</span>
-            <h1 className="auth-hero__title">Tu acceso a la salud digital</h1>
-            <p className="auth-hero__subtitle">
-              Gestiona tus citas, recordatorios y seguimientos clínicos desde un
-              único lugar seguro.
-            </p>
 
-            <ul className="auth-hero__highlights">
+        <div className="auth-grid-layout">
+          {/* Columna izquierda: Información */}
+          <section className="auth-info-section">
+            <div className="auth-info-header">
+              <span className="auth-info-badge">Medi Citas 2025</span>
+              <h1 className="auth-info-title">Tu acceso a la salud digital</h1>
+              <p className="auth-info-subtitle">
+                Gestiona tus citas, recordatorios y seguimientos clínicos desde
+                un único lugar seguro.
+              </p>
+            </div>
+
+            <div className="auth-info-highlights">
               {highlights.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <li className="auth-highlight-card" key={item.title}>
-                    <span className="auth-highlight-icon" aria-hidden="true">
-                      <Icon size={20} />
+                  <article className="auth-highlight-item" key={item.title}>
+                    <span
+                      className="auth-highlight-icon-wrapper"
+                      aria-hidden="true"
+                    >
+                      <Icon size={22} />
                     </span>
-                    <div>
-                      <h3 className="auth-highlight-title">{item.title}</h3>
-                      <p className="auth-highlight-description">
-                        {item.description}
-                      </p>
+                    <div className="auth-highlight-content">
+                      <h3 className="auth-highlight-heading">{item.title}</h3>
+                      <p className="auth-highlight-text">{item.description}</p>
                     </div>
-                  </li>
+                  </article>
                 );
               })}
-            </ul>
+            </div>
 
-            <div className="auth-hero__cta">
-              ¿Aún no tienes cuenta?
-              <Link to="/register">Crear cuenta gratuita</Link>
+            <div className="auth-info-footer">
+              <p>¿Aún no tienes cuenta?</p>
+              <Link to="/register" className="auth-info-link">
+                Crear cuenta gratuita →
+              </Link>
             </div>
           </section>
 
-          <div className="auth-panel">
-            <div className="auth-card">
-              <div className="auth-header">
-                <h2 className="auth-title">Iniciar sesión</h2>
-                <p className="auth-subtitle">Accede a tu cuenta de MediCitas</p>
+          {/* Columna derecha: Formulario */}
+          <section className="auth-form-section">
+            <div className="auth-form-card">
+              <div className="auth-form-header">
+                <h2 className="auth-form-title">Iniciar sesión</h2>
+                <p className="auth-form-subtitle">
+                  Accede a tu cuenta de MediCitas
+                </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="auth-form">
-                <Input
+              <form onSubmit={handleSubmit} className="auth-form-content">
+                <McInputField
                   label="Nombre de Usuario"
                   name="username"
                   type="text"
@@ -166,9 +183,10 @@ function Login() {
                   error={errors.username}
                   placeholder="Ingresa tu usuario"
                   required
+                  icon={<UserIcon size={20} />}
                 />
 
-                <Input
+                <McInputField
                   label="Contraseña"
                   name="password"
                   type="password"
@@ -177,29 +195,34 @@ function Login() {
                   error={errors.password}
                   placeholder="Ingresa tu contraseña"
                   required
+                  icon={<ShieldCheckIcon size={20} />}
                 />
 
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  disabled={!isFormValid() || isLoading}
-                  fullWidth
-                >
-                  {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
-                </Button>
+                <div className="auth-form-actions">
+                  <McButton
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    disabled={!isFormValid() || isLoading}
+                    loading={isLoading}
+                    icon={<UserIcon size={20} />}
+                    fullWidth
+                  >
+                    {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
+                  </McButton>
+                </div>
               </form>
 
-              <div className="auth-footer">
+              <div className="auth-form-footer">
                 <p>
-                  ¿No tienes cuenta? {""}
-                  <Link to="/register" className="auth-link">
+                  ¿No tienes cuenta?{" "}
+                  <Link to="/register" className="auth-form-link">
                     Regístrate aquí
                   </Link>
                 </p>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>

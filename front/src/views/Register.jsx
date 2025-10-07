@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Input, Button, Breadcrumbs } from "../components/ui";
+import { Breadcrumbs } from "../components/ui";
 import { useToast } from "../hooks/useToast";
 import {
   ClipboardCheckIcon,
   HeartPulseIcon,
   ShieldCheckIcon,
+  UserIcon,
+  MailIcon,
+  PhoneIcon,
+  CalendarIcon,
 } from "../components/icons";
+import McButton from "../components/ui/McButton";
+import McInputField from "../components/ui/McInputField";
 import API_URL from "../config/api";
 import "../styles/Auth.css";
 
@@ -183,55 +189,65 @@ function Register() {
   };
 
   return (
-    <div className="page-shell page-shell--auth">
+    <div className="page-shell auth-container-page">
       <div className="page-shell__content page-shell__content--padded">
         <Breadcrumbs className="breadcrumbs--inverted" />
-        <div className="auth-container">
-          <section className="auth-hero">
-            <span className="auth-hero__badge">Medi Citas 2025</span>
-            <h1 className="auth-hero__title">Crea tu perfil clínico digital</h1>
-            <p className="auth-hero__subtitle">
-              Centraliza tus datos, agiliza la admisión y accede a un tablero de
-              salud personalizado desde el primer día.
-            </p>
 
-            <ul className="auth-hero__highlights">
+        <div className="auth-grid-layout">
+          {/* Columna izquierda: Información */}
+          <section className="auth-info-section">
+            <div className="auth-info-header">
+              <span className="auth-info-badge">Medi Citas 2025</span>
+              <h1 className="auth-info-title">
+                Crea tu perfil clínico digital
+              </h1>
+              <p className="auth-info-subtitle">
+                Centraliza tus datos, agiliza la admisión y accede a un tablero
+                de salud personalizado desde el primer día.
+              </p>
+            </div>
+
+            <div className="auth-info-highlights">
               {highlights.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <li className="auth-highlight-card" key={item.title}>
-                    <span className="auth-highlight-icon" aria-hidden="true">
-                      <Icon size={20} />
+                  <article className="auth-highlight-item" key={item.title}>
+                    <span
+                      className="auth-highlight-icon-wrapper"
+                      aria-hidden="true"
+                    >
+                      <Icon size={22} />
                     </span>
-                    <div>
-                      <h3 className="auth-highlight-title">{item.title}</h3>
-                      <p className="auth-highlight-description">
-                        {item.description}
-                      </p>
+                    <div className="auth-highlight-content">
+                      <h3 className="auth-highlight-heading">{item.title}</h3>
+                      <p className="auth-highlight-text">{item.description}</p>
                     </div>
-                  </li>
+                  </article>
                 );
               })}
-            </ul>
+            </div>
 
-            <div className="auth-hero__cta">
-              ¿Ya tienes una cuenta?
-              <Link to="/login">Inicia sesión</Link>
+            <div className="auth-info-footer">
+              <p>¿Ya tienes una cuenta?</p>
+              <Link to="/login" className="auth-info-link">
+                Inicia sesión →
+              </Link>
             </div>
           </section>
 
-          <div className="auth-panel">
-            <div className="auth-card auth-card--wide">
-              <div className="auth-header">
-                <h2 className="auth-title">Crear cuenta</h2>
-                <p className="auth-subtitle">
+          {/* Columna derecha: Formulario */}
+          <section className="auth-form-section">
+            <div className="auth-form-card auth-form-card--wide">
+              <div className="auth-form-header">
+                <h2 className="auth-form-title">Crear cuenta</h2>
+                <p className="auth-form-subtitle">
                   Completa tus datos para registrarte
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="auth-form">
-                <div className="auth-grid auth-grid--two">
-                  <Input
+              <form onSubmit={handleSubmit} className="auth-form-content">
+                <div className="auth-form-grid">
+                  <McInputField
                     label="Nombre"
                     name="firstName"
                     type="text"
@@ -240,8 +256,9 @@ function Register() {
                     error={errors.firstName}
                     placeholder="Juan"
                     required
+                    icon={<UserIcon size={20} />}
                   />
-                  <Input
+                  <McInputField
                     label="Apellido"
                     name="lastName"
                     type="text"
@@ -250,10 +267,11 @@ function Register() {
                     error={errors.lastName}
                     placeholder="Pérez"
                     required
+                    icon={<UserIcon size={20} />}
                   />
                 </div>
 
-                <Input
+                <McInputField
                   label="Email"
                   name="email"
                   type="email"
@@ -262,10 +280,11 @@ function Register() {
                   error={errors.email}
                   placeholder="tu@email.com"
                   required
+                  icon={<MailIcon size={20} />}
                 />
 
-                <div className="auth-grid auth-grid--two">
-                  <Input
+                <div className="auth-form-grid">
+                  <McInputField
                     label="Teléfono"
                     name="phone"
                     type="tel"
@@ -274,8 +293,9 @@ function Register() {
                     error={errors.phone}
                     placeholder="+54 11 1234-5678"
                     required
+                    icon={<PhoneIcon size={20} />}
                   />
-                  <Input
+                  <McInputField
                     label="DNI"
                     name="nDni"
                     type="text"
@@ -284,10 +304,11 @@ function Register() {
                     error={errors.nDni}
                     placeholder="12345678"
                     required
+                    icon={<ClipboardCheckIcon size={20} />}
                   />
                 </div>
 
-                <Input
+                <McInputField
                   label="Fecha de Nacimiento"
                   name="dateOfBirth"
                   type="date"
@@ -295,9 +316,10 @@ function Register() {
                   onChange={handleInputChange}
                   error={errors.dateOfBirth}
                   required
+                  icon={<CalendarIcon size={20} />}
                 />
 
-                <Input
+                <McInputField
                   label="Nombre de Usuario"
                   name="username"
                   type="text"
@@ -306,9 +328,10 @@ function Register() {
                   error={errors.username}
                   placeholder="usuario123"
                   required
+                  icon={<UserIcon size={20} />}
                 />
 
-                <Input
+                <McInputField
                   label="Contraseña"
                   name="password"
                   type="password"
@@ -317,29 +340,34 @@ function Register() {
                   error={errors.password}
                   placeholder="••••••••"
                   required
+                  icon={<ShieldCheckIcon size={20} />}
                 />
 
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  disabled={!isFormValid() || isLoading}
-                  fullWidth
-                >
-                  {isLoading ? "Registrando..." : "Crear cuenta"}
-                </Button>
+                <div className="auth-form-actions">
+                  <McButton
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    disabled={!isFormValid() || isLoading}
+                    loading={isLoading}
+                    icon={<ClipboardCheckIcon size={20} />}
+                    fullWidth
+                  >
+                    {isLoading ? "Registrando..." : "Crear cuenta"}
+                  </McButton>
+                </div>
               </form>
 
-              <div className="auth-footer">
+              <div className="auth-form-footer">
                 <p>
-                  ¿Ya tienes cuenta? {""}
-                  <Link to="/login" className="auth-link">
+                  ¿Ya tienes cuenta?{" "}
+                  <Link to="/login" className="auth-form-link">
                     Inicia sesión aquí
                   </Link>
                 </p>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>
