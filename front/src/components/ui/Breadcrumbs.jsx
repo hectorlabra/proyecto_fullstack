@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/ui/breadcrumbs.css";
+import { HomeIcon } from "../icons";
 
 /**
  * Breadcrumbs component for contextual navigation
@@ -28,7 +29,7 @@ export function Breadcrumbs({ items, separator = "/", className = "" }) {
                   <Link to={item.path} className="breadcrumbs-link">
                     {index === 0 && item.label === "Inicio" ? (
                       <span className="breadcrumbs-home" aria-label="Inicio">
-                        🏠
+                        <HomeIcon size={16} />
                       </span>
                     ) : (
                       item.label
