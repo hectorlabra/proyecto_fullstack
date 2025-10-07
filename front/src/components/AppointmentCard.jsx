@@ -5,6 +5,7 @@ import { StatusBadge } from "./ui/Badge";
 import { Button } from "./ui/Button";
 import { ConfirmModal } from "./ui/Modal";
 import { CalendarIcon, ClockIcon, UserIcon, MailIcon } from "./icons";
+import { parseLocalDate, normalizeToStartOfDay } from "../helpers/dateUtils";
 import "../styles/ui/appointment-card.css";
 
 const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
@@ -14,13 +15,15 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
 
   const formattedDate = useMemo(() => {
     if (!date) return "--";
+    const parsedDate = parseLocalDate(date);
+    if (!parsedDate) return date;
     try {
       return new Intl.DateTimeFormat("es-ES", {
         weekday: "long",
         day: "numeric",
         month: "long",
         year: "numeric",
-      }).format(new Date(date));
+      }).format(parsedDate);
     } catch {
       return date;
     }
@@ -41,11 +44,20 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
       return false;
     }
 
-    const appointmentDate = new Date(date);
-    const today = new Date();
+    const parsedDate = parseLocalDate(date);
+    if (!parsedDate) {
+      return false;
+    }
+
+    const appointmentDate = normalizeToStartOfDay(parsedDate);
+    const today = normalizeToStartOfDay(new Date());
+
+    if (!appointmentDate || !today) {
+      return false;
+    }
+
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
 
     return appointmentDate >= tomorrow;
   }, [date, status]);

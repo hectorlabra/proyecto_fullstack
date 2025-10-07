@@ -10,6 +10,7 @@ import {
   CheckCircleIcon,
   AlertCircleIcon,
 } from "../components/icons";
+import { parseLocalDate, normalizeToStartOfDay } from "../helpers/dateUtils";
 import "../styles/MisCitas.css";
 
 const MisCitas = () => {
@@ -44,16 +45,17 @@ const MisCitas = () => {
       "📊 Calculating metrics for appointments:",
       normalizedAppointments
     );
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = normalizeToStartOfDay(new Date());
     let upcoming = 0;
     let completed = 0;
     let cancelled = 0;
 
     normalizedAppointments.forEach((appointment) => {
       const statusValue = appointment.status?.toLowerCase();
-      const appointmentDate = new Date(appointment.date);
-      appointmentDate.setHours(0, 0, 0, 0);
+      const parsedDate = parseLocalDate(appointment.date);
+      const appointmentDate = parsedDate
+        ? normalizeToStartOfDay(parsedDate)
+        : null;
 
       console.log(
         `  - Appointment ${appointment.id}: status=${statusValue}, date=${appointment.date}`
@@ -66,6 +68,10 @@ const MisCitas = () => {
 
       if (statusValue === "completed") {
         completed += 1;
+        return;
+      }
+
+      if (!appointmentDate || !today) {
         return;
       }
 
