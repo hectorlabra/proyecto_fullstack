@@ -145,6 +145,42 @@
     rgba(233, 229, 255, 0.88)
   );
   color: #1b1540;
+  overflow: visible;
+  isolation: isolate;
+  transform-origin: center;
+}
+
+.hero-device__card--primary::before,
+.hero-device__card--primary::after {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(26px);
+  opacity: 0.28;
+  transform: scale(1);
+}
+
+.hero-device__card--primary::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(125, 108, 255, 0.42),
+    rgba(143, 123, 255, 0.18) 55%,
+    transparent 75%
+  );
+}
+
+.hero-device__card--primary::after {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.25),
+    rgba(208, 197, 255, 0.08) 60%,
+    transparent 85%
+  );
+  filter: blur(22px);
+  opacity: 0.18;
 }
 
 .hero-dashboard__header {
@@ -946,5 +982,574 @@
   html,
   body {
     overflow-x: hidden;
+  }
+}
+
+/* ============================
+   ANIMACIONES TIPO APPLE WATCH - Efecto "Surge desde la nada"
+   Sin movimientos laterales/verticales - Solo scale + blur
+   ============================ */
+
+/* Curvas de Bézier premium */
+:root {
+  --apple-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --apple-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --apple-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --apple-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== CONTENEDOR ESTÁTICO ===== */
+.hero-device__card--primary {
+  position: relative;
+  transition: box-shadow 0.6s var(--apple-ease-out);
+}
+
+/* ===== IDLE - Estado por defecto visible ===== */
+.hero-content-idle {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  transition: all 0.3s var(--apple-ease-out);
+}
+
+/* ===== ELEMENTOS INTERNOS - Solo scale y blur ===== */
+
+/* Estado EXIT - Desvanece y achica desde el centro */
+.hero-content-exit {
+  animation: surgirExit 320ms var(--apple-ease-in) forwards;
+}
+
+@keyframes surgirExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.45);
+    filter: blur(14px);
+  }
+}
+
+/* Estado ENTER - Surge desde pequeño y borroso */
+.hero-content-enter {
+  animation: surgirEnter 720ms var(--apple-spring) forwards;
+}
+
+@keyframes surgirEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.42);
+    filter: blur(18px);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* ===== AVATAR - Surge desde el centro ===== */
+.hero-avatar {
+  transition: all 0.3s var(--apple-ease-out);
+  transform-origin: center center;
+}
+
+.hero-avatar.hero-content-idle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-avatar.hero-content-enter {
+  animation: avatarSurgir 700ms var(--apple-spring) forwards;
+}
+
+@keyframes avatarSurgir {
+  0% {
+    opacity: 0;
+    transform: scale(0.32);
+    filter: blur(18px);
+  }
+  50% {
+    transform: scale(1.12);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+.hero-avatar.hero-content-exit {
+  animation: avatarDesaparecer 340ms var(--apple-ease-in) forwards;
+}
+
+@keyframes avatarDesaparecer {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.35);
+    filter: blur(12px);
+  }
+}
+
+/* ===== NOMBRES Y TEXTO - Surge desde el centro ===== */
+.hero-dashboard__name,
+.hero-dashboard__role {
+  transition: all 0.3s var(--apple-ease-out);
+  transform-origin: left center;
+}
+
+.hero-dashboard__name.hero-content-idle,
+.hero-dashboard__role.hero-content-idle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-dashboard__name.hero-content-enter,
+.hero-dashboard__role.hero-content-enter {
+  animation: textoSurgir 600ms var(--apple-spring) forwards;
+}
+
+.hero-dashboard__name.hero-content-exit,
+.hero-dashboard__role.hero-content-exit {
+  animation: textoDesaparecer 320ms var(--apple-ease-in) forwards;
+}
+
+@keyframes textoSurgir {
+  0% {
+    opacity: 0;
+    transform: scale(0.45);
+    filter: blur(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes textoDesaparecer {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.48);
+    filter: blur(12px);
+  }
+}
+
+/* ===== BADGE - Surge desde el centro ===== */
+.hero-badge-wrapper {
+  transition: all 0.3s var(--apple-ease-out);
+  transform-origin: center center;
+}
+
+.hero-badge-wrapper.hero-content-idle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-badge-wrapper.hero-content-enter {
+  animation: badgeSurgir 650ms var(--apple-spring) forwards;
+}
+
+.hero-badge-wrapper.hero-content-exit {
+  animation: badgeDesvanecer 300ms var(--apple-ease-in) forwards;
+}
+
+@keyframes badgeSurgir {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+    filter: blur(16px);
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes badgeDesvanecer {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.42);
+    filter: blur(12px);
+  }
+}
+
+/* ===== APPOINTMENT CARD - Surge desde el centro ===== */
+.hero-appointment {
+  transition: all 0.3s var(--apple-ease-out);
+  transform-origin: center center;
+}
+
+.hero-appointment.hero-content-idle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-appointment.hero-content-enter {
+  animation: appointmentSurgir 680ms var(--apple-spring) forwards;
+}
+
+.hero-appointment.hero-content-exit {
+  animation: appointmentDesvanecer 340ms var(--apple-ease-in) forwards;
+}
+
+@keyframes appointmentSurgir {
+  0% {
+    opacity: 0;
+    transform: scale(0.38);
+    filter: blur(20px);
+  }
+  52% {
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes appointmentDesvanecer {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.42);
+    filter: blur(14px);
+  }
+}
+
+/* ===== TIEMPO DE CITA - Surge con énfasis desde el centro ===== */
+.hero-appointment__time {
+  transition: all 0.3s var(--apple-ease-out);
+  transform-origin: center center;
+}
+
+.hero-appointment.hero-content-enter .hero-appointment__time {
+  animation: tiempoSurgir 750ms var(--apple-spring) forwards;
+}
+
+.hero-appointment.hero-content-exit .hero-appointment__time {
+  animation: tiempoDesvanecer 320ms var(--apple-ease-in) forwards;
+}
+
+@keyframes tiempoSurgir {
+  0% {
+    opacity: 0;
+    transform: scale(0.28);
+    filter: blur(22px);
+  }
+  50% {
+    transform: scale(1.16);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes tiempoDesvanecer {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.32);
+    filter: blur(14px);
+  }
+}
+
+/* ===== INFO DEL PACIENTE - Cascada desde el centro ===== */
+.hero-appointment__patient,
+.hero-appointment__meta,
+.hero-appointment__type {
+  transition: all 0.3s var(--apple-ease-out);
+  transform-origin: left center;
+}
+
+.hero-appointment.hero-content-enter .hero-appointment__patient {
+  animation: infoPacienteSurgir 550ms var(--apple-spring) forwards;
+  animation-delay: 80ms;
+}
+
+.hero-appointment.hero-content-enter .hero-appointment__meta {
+  animation: infoPacienteSurgir 550ms var(--apple-spring) forwards;
+  animation-delay: 120ms;
+}
+
+.hero-appointment.hero-content-enter .hero-appointment__type {
+  animation: infoPacienteSurgir 550ms var(--apple-spring) forwards;
+  animation-delay: 160ms;
+}
+
+@keyframes infoPacienteSurgir {
+  0% {
+    opacity: 0;
+    transform: scale(0.46);
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* ===== ANALYTICS CHIPS - Surgen desde el centro ===== */
+.hero-analytics__chip {
+  transition: all 0.3s var(--apple-ease-out);
+  transform-origin: center center;
+}
+
+.hero-analytics__chip.hero-content-idle {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-analytics__chip.hero-content-enter:nth-child(1) {
+  animation: chipSurgir 600ms var(--apple-spring) forwards;
+  animation-delay: 100ms;
+}
+
+.hero-analytics__chip.hero-content-enter:nth-child(2) {
+  animation: chipSurgir 600ms var(--apple-spring) forwards;
+  animation-delay: 150ms;
+}
+
+.hero-analytics__chip.hero-content-exit {
+  animation: chipDesvanecer 280ms var(--apple-ease-in) forwards;
+}
+
+@keyframes chipSurgir {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+    filter: blur(14px);
+  }
+  60% {
+    transform: scale(1.07);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes chipDesvanecer {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.46);
+    filter: blur(12px);
+  }
+}
+
+/* ===== HOVER STATES - Interactividad refinada ===== */
+.hero-analytics__chip {
+  cursor: pointer;
+}
+
+.hero-analytics__chip:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 16px rgba(88, 68, 191, 0.15),
+    0 0 0 1px rgba(132, 114, 255, 0.1);
+}
+
+/* ===== MÉTRICAS - Surge desde el centro ===== */
+.hero-metric__value {
+  animation: metricCambio 0.65s var(--apple-spring);
+  transition: all 0.3s ease;
+  transform-origin: center center;
+}
+
+@keyframes metricCambio {
+  0% {
+    opacity: 0;
+    transform: scale(0.44);
+    filter: blur(12px);
+  }
+  52% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* ===== EFECTOS AMBIENTALES ===== */
+.hero-device__glow {
+  animation: glowPulseWatch 5s ease-in-out infinite;
+}
+
+@keyframes glowPulseWatch {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+    filter: blur(28px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.08);
+    filter: blur(30px);
+  }
+}
+
+/* ===== PREVENCIÓN DE PARPADEOS ===== */
+.hero-device__card--primary * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Forzar aceleración por GPU */
+.hero-avatar,
+.hero-dashboard__name,
+.hero-dashboard__role,
+.hero-badge-wrapper,
+.hero-appointment,
+.hero-appointment__time,
+.hero-analytics__chip {
+  will-change: transform, opacity;
+}
+
+/* Shimmer effect para la tarjeta flotante */
+.hero-device__card--floating {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-floating__cta:hover {
+  transform: translateX(5px);
+  color: var(--color-primary-bright);
+}
+
+/* Animación de entrada escalonada para beneficios */
+.benefit-card {
+  animation: benefitSlideUp 0.6s ease-out backwards;
+}
+
+.benefit-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.benefit-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.benefit-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes benefitSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación del ícono de beneficio */
+.benefit-icon {
+  animation: iconRotate 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) backwards;
+}
+
+.benefit-card:nth-child(1) .benefit-icon {
+  animation-delay: 0.2s;
+}
+
+.benefit-card:nth-child(2) .benefit-icon {
+  animation-delay: 0.3s;
+}
+
+.benefit-card:nth-child(3) .benefit-icon {
+  animation-delay: 0.4s;
+}
+
+@keyframes iconRotate {
+  0% {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* Reducir animaciones para usuarios que lo prefieran */
+@media (prefers-reduced-motion: reduce) {
+  .hero-dashboard__name,
+  .hero-dashboard__role,
+  .hero-appointment__patient,
+  .hero-appointment__meta,
+  .hero-appointment__type,
+  .hero-avatar,
+  .hero-appointment__time,
+  .mc-badge,
+  .hero-analytics__chip,
+  .hero-metric__value,
+  .hero-metric,
+  .hero-device__glow,
+  .hero-device__card--floating::before,
+  .benefit-card,
+  .benefit-icon {
+    animation: none;
+    transition: none;
+  }
+
+  .hero-device__card--primary::before,
+  .hero-device__card--primary::after {
+    animation: none !important;
+    opacity: 0.2;
+    transform: scale(1);
+    filter: blur(24px);
+  }
+
+  .hero-device__card--floating::before {
+    display: none;
   }
 }
