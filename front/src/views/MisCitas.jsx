@@ -44,7 +44,8 @@ const MisCitas = () => {
       "📊 Calculating metrics for appointments:",
       normalizedAppointments
     );
-    const now = new Date();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     let upcoming = 0;
     let completed = 0;
     let cancelled = 0;
@@ -52,6 +53,7 @@ const MisCitas = () => {
     normalizedAppointments.forEach((appointment) => {
       const statusValue = appointment.status?.toLowerCase();
       const appointmentDate = new Date(appointment.date);
+      appointmentDate.setHours(0, 0, 0, 0);
 
       console.log(
         `  - Appointment ${appointment.id}: status=${statusValue}, date=${appointment.date}`
@@ -67,7 +69,7 @@ const MisCitas = () => {
         return;
       }
 
-      if (appointmentDate >= now) {
+      if (appointmentDate >= today) {
         upcoming += 1;
       }
     });
