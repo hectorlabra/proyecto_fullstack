@@ -4,21 +4,22 @@
 }
 
 .mis-citas-hero {
-  display: grid;
-  gap: var(--space-10);
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  padding: clamp(var(--space-8), 6vw, var(--space-12));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: var(--container-lg);
+  margin: 0 auto var(--space-12);
+  padding: clamp(var(--space-8), 6vw, var(--space-10));
   border-radius: var(--radius-2xl);
   background: linear-gradient(
       145deg,
-      rgba(132, 114, 255, 0.2),
-      rgba(28, 93, 148, 0.34)
+      rgba(132, 114, 255, 0.18),
+      rgba(28, 93, 148, 0.28)
     ),
-    rgba(12, 9, 31, 0.6);
-  border: 1px solid rgba(220, 214, 255, 0.26);
-  box-shadow: 0 28px 52px rgba(8, 10, 36, 0.32);
-  backdrop-filter: blur(24px);
-  margin-bottom: var(--space-12);
+    rgba(12, 9, 31, 0.58);
+  border: 1px solid rgba(220, 214, 255, 0.24);
+  box-shadow: 0 24px 48px rgba(8, 10, 36, 0.3);
+  backdrop-filter: blur(22px);
 }
 
 .mis-citas-hero__content {
@@ -63,181 +64,84 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
-  margin-top: var(--space-4);
+  margin-top: var(--space-2);
 }
 
 .mis-citas-hero__actions .btn {
-  min-width: 160px;
+  min-width: 150px;
 }
 
-.mis-citas-hero__stats {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  align-content: start;
-}
-
-.mis-citas-stat {
+.mis-citas-metrics {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: var(--space-3);
-  padding: var(--space-5);
-  border-radius: var(--radius-xl);
-  background: rgba(10, 8, 38, 0.58);
-  border: 1px solid rgba(236, 233, 255, 0.22);
-  box-shadow: 0 18px 36px rgba(8, 12, 46, 0.28);
 }
 
-.mis-citas-stat__icon {
+.mis-citas-metric {
+  flex: 1 1 180px;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: rgba(10, 8, 38, 0.52);
+  border: 1px solid rgba(236, 233, 255, 0.18);
+  box-shadow: 0 14px 32px rgba(8, 12, 46, 0.24);
+}
+
+.mis-citas-metric__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-lg);
-  background: rgba(132, 114, 255, 0.45);
+  background: rgba(132, 114, 255, 0.38);
   color: #ffffff;
-  box-shadow: 0 12px 24px rgba(132, 114, 255, 0.18);
+  box-shadow: 0 10px 20px rgba(132, 114, 255, 0.18);
 }
 
-.mis-citas-stat__value {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-bold);
+.mis-citas-metric__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mis-citas-metric__label {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(226, 222, 255, 0.78);
+}
+
+.mis-citas-metric__value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
   color: var(--color-ink-inverted);
 }
 
-.mis-citas-stat__label {
-  font-size: var(--text-sm);
-  color: var(--color-ink-inverted-soft);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.mis-citas-stat--primary .mis-citas-stat__icon {
+.mis-citas-metric--primary .mis-citas-metric__icon {
   background: linear-gradient(140deg, #7560ff 0%, #41b4d2 100%);
 }
 
-.mis-citas-stat--success .mis-citas-stat__icon {
+.mis-citas-metric--success .mis-citas-metric__icon {
   background: rgba(22, 163, 74, 0.32);
   color: #bbf7d0;
 }
 
-.mis-citas-stat--danger .mis-citas-stat__icon {
+.mis-citas-metric--danger .mis-citas-metric__icon {
   background: rgba(239, 68, 68, 0.32);
   color: #fecaca;
-}
-
-.mis-citas-summary {
-  margin-bottom: var(--space-10);
-}
-
-.mis-citas-summary__panel {
-  display: grid;
-  gap: var(--space-6);
-  padding: clamp(var(--space-8), 5vw, var(--space-10));
-  border-radius: var(--radius-2xl);
-  background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.08),
-      rgba(10, 8, 36, 0.58)
-    ),
-    rgba(12, 9, 31, 0.52);
-  border: 1px solid rgba(220, 214, 255, 0.22);
-  box-shadow: 0 22px 48px rgba(8, 10, 40, 0.3);
-  backdrop-filter: blur(24px);
-}
-
-.mis-citas-summary__list {
-  display: grid;
-  gap: var(--space-5);
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-.mis-citas-summary__item {
-  display: flex;
-  gap: var(--space-3);
-  align-items: flex-start;
-  padding: var(--space-4);
-  border-radius: var(--radius-xl);
-  background: rgba(15, 12, 40, 0.52);
-  border: 1px solid rgba(236, 233, 255, 0.18);
-}
-
-.mis-citas-summary__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(132, 114, 255, 0.32);
-  color: var(--color-ink-inverted);
-  flex-shrink: 0;
-}
-
-.mis-citas-summary__item--primary .mis-citas-summary__icon {
-  background: linear-gradient(140deg, #7560ff 0%, #41b4d2 100%);
-  color: #ffffff;
-}
-
-.mis-citas-summary__item--success .mis-citas-summary__icon {
-  background: rgba(22, 163, 74, 0.28);
-  color: #bbf7d0;
-}
-
-.mis-citas-summary__item--danger .mis-citas-summary__icon {
-  background: rgba(239, 68, 68, 0.28);
-  color: #fecaca;
-}
-
-.mis-citas-summary__title {
-  margin: 0;
-  font-size: var(--text-md);
-  font-weight: var(--font-semibold);
-  color: var(--color-ink-inverted);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.mis-citas-summary__badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 12px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.12);
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  color: var(--color-ink-inverted);
-}
-
-.mis-citas-summary__description {
-  margin: var(--space-2) 0 0;
-  font-size: var(--text-sm);
-  line-height: var(--line-normal);
-  color: var(--color-ink-inverted-soft);
-}
-
-.mis-citas-summary__cta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-  color: var(--color-ink-inverted-soft);
-  font-size: var(--text-sm);
-}
-
-.mis-citas-summary__cta p {
-  margin: 0;
-  max-width: 420px;
 }
 
 .mis-citas-content {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  max-width: var(--container-lg);
+  margin: 0 auto var(--space-12);
+  width: 100%;
 }
 
 .appointments-list {
@@ -275,19 +179,18 @@
 
 @media (max-width: 1080px) {
   .mis-citas-hero {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
+    padding: var(--space-8);
   }
 
-  .mis-citas-hero__stats {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  .mis-citas-metric {
+    flex: 1 1 160px;
+    min-width: 160px;
   }
 }
 
 @media (max-width: 768px) {
   .mis-citas-hero {
-    padding: var(--space-8);
-    margin-bottom: var(--space-10);
+    padding: var(--space-7);
   }
 
   .mis-citas-hero__actions {
@@ -299,33 +202,24 @@
     width: 100%;
   }
 
-  .mis-citas-summary__panel {
-    padding: var(--space-8);
+  .mis-citas-metrics {
+    flex-direction: column;
   }
 
-  .mis-citas-summary__list {
-    grid-template-columns: 1fr;
+  .mis-citas-metric {
+    min-width: auto;
   }
 }
 
 @media (max-width: 640px) {
   .mis-citas-hero {
+    gap: var(--space-5);
     padding: var(--space-6);
     border-radius: var(--radius-xl);
   }
 
-  .mis-citas-summary__panel {
-    padding: var(--space-6);
-    border-radius: var(--radius-xl);
-  }
-
-  .mis-citas-summary__cta {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .mis-citas-summary__cta .btn {
-    width: 100%;
+  .mis-citas-content {
+    margin-bottom: var(--space-10);
   }
 }
 
@@ -335,237 +229,19 @@
     padding: 4px 12px;
   }
 
-  .mis-citas-stat {
-    padding: var(--space-4);
-  }
-
-  .mis-citas-summary__item {
+  .mis-citas-metric {
     padding: var(--space-3);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .mis-citas-hero,
-  .mis-citas-stat,
-  .mis-citas-summary__panel,
-  .mis-citas-summary__item,
   .error-container {
     transition: none !important;
     box-shadow: none;
   }
-} /* MisCitas - Healthcare Theme (renamed from MisTurnos) */
-.mis-citas-container {
-  padding: var(--space-6) var(--space-6) var(--space-10);
-  max-width: var(--container-xl);
-  margin: 0 auto;
-  min-height: calc(100vh - var(--navbar-height));
-}
-
-.mis-citas-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-8);
-  margin-bottom: var(--space-8);
-}
-
-.mis-citas-eyebrow {
-  margin: 0 0 var(--space-2) 0;
-  font-size: var(--text-sm);
-  font-weight: var(--font-semibold);
-  color: var(--color-text-muted);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.mis-citas-title {
-  margin: 0;
-  font-size: var(--text-4xl);
-  font-weight: var(--font-bold);
-  color: var(--color-text);
-  line-height: var(--line-height-tight);
-}
-
-.mis-citas-subtitle {
-  margin: var(--space-3) 0 0;
-  font-size: var(--text-lg);
-  color: var(--color-text-secondary);
-  max-width: 560px;
-  line-height: var(--line-height-relaxed);
-}
-
-.mis-citas-actions {
-  display: flex;
-  gap: var(--space-3);
-  align-items: center;
-}
-
-.mis-citas-summary {
-  margin-bottom: var(--space-8);
-}
-
-.summary-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-2xl);
-  border: 1px solid var(--color-border-light);
-  box-shadow: var(--shadow-md);
-}
-
-.summary-card .card-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-6);
-  padding: var(--space-6);
-}
-
-.summary-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.summary-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-sm);
-}
-
-.summary-icon-primary {
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-}
-
-.summary-icon-success {
-  background: var(--color-success-bg);
-  color: var(--color-success);
-}
-
-.summary-icon-danger {
-  background: var(--color-danger-bg);
-  color: var(--color-danger);
-}
-
-.summary-label {
-  margin: 0;
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.summary-value {
-  margin: 0;
-  font-size: var(--text-3xl);
-  font-weight: var(--font-semibold);
-  color: var(--color-text);
-}
-
-.appointments-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-}
-
-.error-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-  padding: var(--space-10);
-  border-radius: var(--radius-xl);
-  background: var(--color-danger-bg);
-  border: 1px solid var(--color-danger-border);
-  text-align: center;
-}
-
-.error-message {
-  margin: 0;
-  font-size: var(--text-md);
-  color: var(--color-danger-text);
-}
-
-.mis-citas-loading {
-  display: grid;
-  place-items: center;
-  padding: var(--space-16) 0;
-  color: var(--color-text-muted);
-}
-
-@media (max-width: 960px) {
-  .mis-citas-container {
-    padding: var(--space-5) var(--space-4) var(--space-8);
-  }
-
-  .mis-citas-header {
-    flex-direction: column;
-    gap: var(--space-4);
-  }
-
-  .mis-citas-actions {
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .mis-citas-actions .btn {
-    flex: 1;
-    min-width: 160px;
-  }
-}
-
-@media (max-width: 600px) {
-  .mis-citas-title {
-    font-size: var(--text-3xl);
-  }
-
-  .summary-card .card-content {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-
-  .summary-item {
-    padding: var(--space-3);
-    border: 1px solid var(--color-border-light);
-    border-radius: var(--radius-xl);
-    background: var(--color-bg-soft);
-  }
-
-  .mis-citas-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .mis-citas-actions .btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .mis-citas-container {
-    padding: var(--space-4) var(--space-3) var(--space-6);
-  }
-
-  .mis-citas-title {
-    font-size: var(--text-2xl);
-  }
-
-  .mis-citas-subtitle {
-    font-size: var(--text-base);
-  }
-
-  .mis-citas-actions {
-    gap: var(--space-2);
-  }
-
-  .summary-card .card-content {
-    padding: var(--space-5);
-  }
-
-  .summary-value {
-    font-size: var(--text-2xl);
+  .mis-citas-metric {
+    transition: none !important;
+    box-shadow: none;
   }
 }

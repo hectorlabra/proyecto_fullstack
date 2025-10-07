@@ -94,6 +94,11 @@ const MisCitas = () => {
     [upcomingCount, completedCount, cancelledCount]
   );
 
+  const currentUser = user?.user ?? user;
+  const patientName = currentUser
+    ? `${currentUser.firstName ?? ""} ${currentUser.lastName ?? ""}`.trim()
+    : "";
+
   return (
     <div className="page-shell page-shell--dashboard mis-citas-container">
       <div className="page-shell__content page-shell__content--padded">
@@ -105,9 +110,9 @@ const MisCitas = () => {
                 <span className="mis-citas-hero__badge">Panel de paciente</span>
                 <h1 className="mis-citas-hero__title">Mis citas</h1>
                 <p className="mis-citas-hero__subtitle">
-                  Hola, {user.firstName} {user.lastName}. Gestiona tus turnos,
-                  revisa resultados y mantén tu historial clínico siempre
-                  actualizado.
+                  {`Hola${
+                    patientName ? `, ${patientName}` : ""
+                  }. Gestiona tus turnos, revisa resultados y mantén tu historial clínico siempre actualizado.`}
                 </p>
                 <div className="mis-citas-hero__actions">
                   <Button
@@ -128,73 +133,32 @@ const MisCitas = () => {
                   </Button>
                 </div>
               </div>
-              <div className="mis-citas-hero__stats">
+
+              <div className="mis-citas-metrics">
                 {statusMetrics.map((metric) => {
                   const Icon = metric.icon;
                   return (
                     <article
-                      className={`mis-citas-stat mis-citas-stat--${metric.tone}`}
                       key={metric.label}
+                      className={`mis-citas-metric mis-citas-metric--${metric.tone}`}
                     >
-                      <span className="mis-citas-stat__icon" aria-hidden="true">
-                        <Icon size={20} />
+                      <span
+                        className="mis-citas-metric__icon"
+                        aria-hidden="true"
+                      >
+                        <Icon size={18} />
                       </span>
-                      <strong className="mis-citas-stat__value">
-                        {metric.value}
-                      </strong>
-                      <span className="mis-citas-stat__label">
-                        {metric.label}
-                      </span>
+                      <div className="mis-citas-metric__info">
+                        <span className="mis-citas-metric__label">
+                          {metric.label}
+                        </span>
+                        <strong className="mis-citas-metric__value">
+                          {metric.value}
+                        </strong>
+                      </div>
                     </article>
                   );
                 })}
-              </div>
-            </section>
-
-            <section className="mis-citas-summary">
-              <div className="mis-citas-summary__panel">
-                <div className="mis-citas-summary__list">
-                  {statusMetrics.map((metric) => {
-                    const Icon = metric.icon;
-                    return (
-                      <div
-                        className={`mis-citas-summary__item mis-citas-summary__item--${metric.tone}`}
-                        key={metric.label}
-                      >
-                        <span
-                          className="mis-citas-summary__icon"
-                          aria-hidden="true"
-                        >
-                          <Icon size={18} />
-                        </span>
-                        <div>
-                          <p className="mis-citas-summary__title">
-                            {metric.label}
-                            <span className="mis-citas-summary__badge">
-                              {metric.value}
-                            </span>
-                          </p>
-                          <p className="mis-citas-summary__description">
-                            {metric.description}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="mis-citas-summary__cta">
-                  <p>
-                    Mantén tu agenda sincronizada para optimizar recordatorios y
-                    notificaciones con tu equipo médico.
-                  </p>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={() => navigate("/agendar-cita")}
-                  >
-                    Crear nueva cita
-                  </Button>
-                </div>
               </div>
             </section>
 
