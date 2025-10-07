@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import PropTypes from "prop-types";
 import "./McInputField.css";
 
@@ -15,25 +15,37 @@ export default function McInputField({
   onBlur,
   placeholder = "",
   error = "",
+  helpText = "",
   helperText = "",
   disabled = false,
   required = false,
   autoComplete,
   maxLength,
   className = "",
+  icon,
   ...props
 }) {
   const [focused, setFocused] = useState(false);
+  const inputRef = useRef(null);
   const hasError = Boolean(error);
   const inputId = `mc-input-${name}`;
   const errorId = `${inputId}-error`;
   const helperId = `${inputId}-helper`;
+  const finalHelperText = helpText || helperText;
+
+  const handleWrapperClick = () => {
+    if (inputRef.current && (type === "date" || type === "time")) {
+      inputRef.current.showPicker?.();
+      inputRef.current.focus();
+    }
+  };
 
   const classNames = [
     "mc-input-field",
     hasError && "mc-input-field--error",
     disabled && "mc-input-field--disabled",
     focused && "mc-input-field--focused",
+    icon && "mc-input-field--with-icon",
     className,
   ]
     .filter(Boolean)
@@ -53,8 +65,14 @@ export default function McInputField({
         </label>
       )}
 
-      <div className="mc-input-field__wrapper">
+      <div className="mc-input-field__wrapper" onClick={handleWrapperClick}>
+        {icon && (
+          <span className="mc-input-field__icon" aria-hidden="true">
+            {icon}
+          </span>
+        )}
         <input
+          ref={inputRef}
           id={inputId}
           name={name}
           type={type}
@@ -73,7 +91,7 @@ export default function McInputField({
           className="mc-input-field__input"
           aria-invalid={hasError}
           aria-describedby={
-            [hasError && errorId, helperText && helperId]
+            [hasError && errorId, finalHelperText && helperId]
               .filter(Boolean)
               .join(" ") || undefined
           }
@@ -87,9 +105,9 @@ export default function McInputField({
         </p>
       )}
 
-      {!hasError && helperText && (
+      {!hasError && finalHelperText && (
         <p id={helperId} className="mc-input-field__helper">
-          {helperText}
+          {finalHelperText}
         </p>
       )}
     </div>
@@ -105,10 +123,12 @@ McInputField.propTypes = {
   onBlur: PropTypes.func,
   placeholder: PropTypes.string,
   error: PropTypes.string,
+  helpText: PropTypes.string,
   helperText: PropTypes.string,
   disabled: PropTypes.bool,
   required: PropTypes.bool,
   autoComplete: PropTypes.string,
   maxLength: PropTypes.number,
   className: PropTypes.string,
+  icon: PropTypes.node,
 };

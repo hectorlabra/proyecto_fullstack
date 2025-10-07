@@ -20,6 +20,38 @@
 .mc-input-field__wrapper {
   position: relative;
   width: 100%;
+  cursor: pointer;
+}
+
+/* Hacer clic en el wrapper activa el input */
+.mc-input-field__wrapper:has(input[type="date"]),
+.mc-input-field__wrapper:has(input[type="time"]) {
+  cursor: pointer;
+}
+
+.mc-input-field__icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mc-input-field--with-icon .mc-input-field__input {
+  padding-left: 44px;
+}
+
+.mc-input-field--focused .mc-input-field__icon {
+  color: var(--color-accent);
+}
+
+.mc-input-field--error .mc-input-field__icon {
+  color: var(--color-danger);
 }
 
 .mc-input-field__input {

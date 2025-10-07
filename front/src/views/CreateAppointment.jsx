@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
-import { Input, Button, Breadcrumbs } from "../components/ui";
+import { Breadcrumbs } from "../components/ui";
 import { useToast } from "../hooks/useToast";
-import { CalendarIcon, ClockIcon, ShieldCheckIcon } from "../components/icons";
-import "../styles/Auth.css";
+import {
+  CalendarIcon,
+  ClockIcon,
+  ShieldCheckIcon,
+  AlertCircleIcon,
+} from "../components/icons";
+import McButton from "../components/ui/McButton";
+import McInputField from "../components/ui/McInputField";
+import "../styles/CreateAppointment.css";
 
 const CreateAppointment = () => {
   const navigate = useNavigate();
@@ -39,6 +46,11 @@ const CreateAppointment = () => {
         "Tus detalles clínicos permanecen cifrados y solo accesibles para tu equipo médico.",
     },
   ];
+
+  const currentUser = user?.user ?? user;
+  const patientName = currentUser
+    ? `${currentUser.firstName ?? ""} ${currentUser.lastName ?? ""}`.trim()
+    : "";
 
   useEffect(() => {
     if (!user) navigate("/login");
@@ -134,58 +146,100 @@ const CreateAppointment = () => {
 
   if (!user) return null;
 
+  const appointmentPreview = formData.date && formData.time;
+
   return (
-    <div className="page-shell page-shell--auth">
+    <div className="page-shell create-appointment-container">
       <div className="page-shell__content page-shell__content--padded">
         <Breadcrumbs className="breadcrumbs--inverted" />
-        <div className="auth-container">
-          <section className="auth-hero">
-            <span className="auth-hero__badge">Medi Citas 2025</span>
-            <h1 className="auth-hero__title">
-              Agenda la atención que necesitas
-            </h1>
-            <p className="auth-hero__subtitle">
-              Coordina tus consultas con profesionales verificados en menos de
-              un minuto y recibe seguimiento continuo.
-            </p>
 
-            <ul className="auth-hero__highlights">
+        <div className="create-appointment-grid">
+          {/* Columna izquierda: Información y beneficios */}
+          <section className="create-appointment-info">
+            <div className="info-header">
+              <span className="info-badge">Medi Citas 2025</span>
+              <h1 className="info-title">Agenda la atención que necesitas</h1>
+              <p className="info-subtitle">
+                {patientName ? `Hola, ${patientName}. ` : ""}Coordina tus
+                consultas con profesionales verificados en menos de un minuto.
+              </p>
+            </div>
+
+            <div className="info-highlights">
               {highlights.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <li className="auth-highlight-card" key={item.title}>
-                    <span className="auth-highlight-icon" aria-hidden="true">
-                      <Icon size={20} />
+                  <article className="highlight-card" key={item.title}>
+                    <span className="highlight-icon" aria-hidden="true">
+                      <Icon size={22} />
                     </span>
-                    <div>
-                      <h3 className="auth-highlight-title">{item.title}</h3>
-                      <p className="auth-highlight-description">
+                    <div className="highlight-content">
+                      <h3 className="highlight-title">{item.title}</h3>
+                      <p className="highlight-description">
                         {item.description}
                       </p>
                     </div>
-                  </li>
+                  </article>
                 );
               })}
-            </ul>
+            </div>
 
-            <div className="auth-hero__cta">
-              ¿Necesitas revisar tus turnos?
-              <Link to="/mis-citas">Ver mis citas</Link>
+            {appointmentPreview && (
+              <div className="appointment-preview">
+                <div className="preview-header">
+                  <CalendarIcon size={18} />
+                  <h4>Vista previa de tu cita</h4>
+                </div>
+                <div className="preview-content">
+                  <div className="preview-item">
+                    <span className="preview-label">Fecha</span>
+                    <span className="preview-value">
+                      {new Date(formData.date).toLocaleDateString("es-ES", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  <div className="preview-item">
+                    <span className="preview-label">Hora</span>
+                    <span className="preview-value">{formData.time}</span>
+                  </div>
+                  {formData.notes && (
+                    <div className="preview-item">
+                      <span className="preview-label">Notas</span>
+                      <span className="preview-value preview-value--notes">
+                        {formData.notes.substring(0, 80)}
+                        {formData.notes.length > 80 ? "..." : ""}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="info-footer">
+              <p>¿Necesitas revisar tus turnos?</p>
+              <Link to="/mis-citas" className="info-link">
+                Ver mis citas →
+              </Link>
             </div>
           </section>
 
-          <div className="auth-panel">
-            <div className="auth-card">
-              <div className="auth-header">
-                <h2 className="auth-title">Agendar nueva cita</h2>
-                <p className="auth-subtitle">
-                  Selecciona fecha, hora y agrega notas
+          {/* Columna derecha: Formulario */}
+          <section className="create-appointment-form-section">
+            <div className="form-card">
+              <div className="form-header">
+                <h2 className="form-title">Agendar nueva cita</h2>
+                <p className="form-subtitle">
+                  Selecciona fecha, hora y agrega notas opcionales
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="auth-form">
-                <Input
-                  label="Fecha"
+              <form onSubmit={handleSubmit} className="appointment-form">
+                <McInputField
+                  label="Fecha de la cita"
                   name="date"
                   type="date"
                   value={formData.date}
@@ -194,62 +248,102 @@ const CreateAppointment = () => {
                   min={getMinDate()}
                   max={getMaxDate()}
                   required
-                  helpText="Disponible de lunes a viernes"
+                  helpText={
+                    formData.date && !errors.date
+                      ? "✓ Fecha válida seleccionada"
+                      : "Disponible de lunes a viernes"
+                  }
+                  icon={<CalendarIcon size={20} />}
                 />
 
-                <Input
-                  label="Hora"
+                <McInputField
+                  label="Hora de la cita"
                   name="time"
                   type="time"
                   value={formData.time}
                   onChange={handleInputChange}
                   error={errors.time}
                   required
-                  helpText="Horario de atención: 8:00 AM - 6:00 PM"
+                  helpText={
+                    formData.time && !errors.time
+                      ? "✓ Horario válido seleccionado"
+                      : "Horario de atención: 8:00 AM - 6:00 PM"
+                  }
+                  icon={<ClockIcon size={20} />}
                 />
 
-                <div className="auth-field">
-                  <label htmlFor="notes" className="auth-field-label">
-                    Notas (Opcional)
+                <div className="form-field">
+                  <label htmlFor="notes" className="form-field-label">
+                    Notas adicionales{" "}
+                    <span className="optional-badge">Opcional</span>
                   </label>
-                  <textarea
-                    id="notes"
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleInputChange}
-                    placeholder="Describe tus síntomas o motivo de la consulta..."
-                    rows={4}
-                    maxLength={500}
-                    className={`auth-textarea ${
-                      errors.notes ? "has-error" : ""
-                    }`}
-                  />
-                  <div className="auth-field-meta">
-                    {errors.notes ? (
-                      <span className="auth-field-error">{errors.notes}</span>
-                    ) : (
-                      <span className="auth-field-helper">
-                        Puedes agregar detalles para el profesional.
-                      </span>
-                    )}
-                    <span className="auth-field-counter">
-                      {formData.notes.length}/500 caracteres
+                  <div className="textarea-wrapper">
+                    <textarea
+                      id="notes"
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleInputChange}
+                      placeholder="Describe tus síntomas o motivo de la consulta para que el profesional pueda prepararse mejor..."
+                      rows={5}
+                      maxLength={500}
+                      className={`form-textarea ${
+                        errors.notes ? "has-error" : ""
+                      }`}
+                    />
+                  </div>
+                  <div className="field-meta">
+                    <div className="field-helper">
+                      {errors.notes ? (
+                        <>
+                          <AlertCircleIcon size={14} />
+                          <span className="field-error">{errors.notes}</span>
+                        </>
+                      ) : (
+                        <span className="field-hint">
+                          Ayuda al profesional con información relevante
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className={`char-counter ${
+                        formData.notes.length > 450
+                          ? "char-counter--warning"
+                          : ""
+                      } ${
+                        formData.notes.length === 500 ? "char-counter--max" : ""
+                      }`}
+                    >
+                      {formData.notes.length}/500
                     </span>
                   </div>
                 </div>
 
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  disabled={!isFormValid() || isLoading}
-                  fullWidth
-                >
-                  {isLoading ? "Agendando..." : "Confirmar cita"}
-                </Button>
+                <div className="form-actions">
+                  <McButton
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    disabled={!isFormValid() || isLoading}
+                    loading={isLoading}
+                    icon={<CalendarIcon size={20} />}
+                    fullWidth
+                  >
+                    {isLoading ? "Agendando cita..." : "Confirmar cita"}
+                  </McButton>
+                  <McButton
+                    type="button"
+                    variant="ghost"
+                    size="md"
+                    onClick={() => navigate("/mis-citas")}
+                    disabled={isLoading}
+                    fullWidth
+                  >
+                    Cancelar
+                  </McButton>
+                </div>
               </form>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </div>
