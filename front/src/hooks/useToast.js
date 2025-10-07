@@ -8,7 +8,20 @@ import { ToastContext } from "../context/ToastContext";
 export function useToast() {
   const context = useContext(ToastContext);
   if (!context) {
-    throw new Error("useToast must be used within ToastProvider");
+    if (import.meta?.env?.DEV) {
+      console.warn("useToast: no ToastProvider found. Using no-op fallback.");
+    }
+
+    const noop = () => undefined;
+
+    return {
+      addToast: noop,
+      removeToast: noop,
+      success: noop,
+      error: noop,
+      warning: noop,
+      info: noop,
+    };
   }
   return context;
 }

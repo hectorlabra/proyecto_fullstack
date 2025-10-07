@@ -6,20 +6,20 @@
 .mis-citas-hero {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
   max-width: var(--container-lg);
-  margin: 0 auto var(--space-12);
-  padding: clamp(var(--space-8), 6vw, var(--space-10));
-  border-radius: var(--radius-2xl);
+  margin: 0 auto var(--space-10);
+  padding: clamp(var(--space-6), 5vw, var(--space-8));
+  border-radius: var(--radius-xl);
   background: linear-gradient(
       145deg,
-      rgba(132, 114, 255, 0.18),
-      rgba(28, 93, 148, 0.28)
+      rgba(132, 114, 255, 0.15),
+      rgba(28, 93, 148, 0.22)
     ),
-    rgba(12, 9, 31, 0.58);
-  border: 1px solid rgba(220, 214, 255, 0.24);
-  box-shadow: 0 24px 48px rgba(8, 10, 36, 0.3);
-  backdrop-filter: blur(22px);
+    rgba(12, 9, 31, 0.5);
+  border: 1px solid rgba(220, 214, 255, 0.18);
+  box-shadow: 0 16px 36px rgba(8, 10, 36, 0.28);
+  backdrop-filter: blur(18px);
 }
 
 .mis-citas-hero__content {
@@ -32,7 +32,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 6px 16px;
+  padding: 4px 14px;
   border-radius: var(--radius-full);
   background: rgba(132, 114, 255, 0.26);
   color: var(--color-eyebrow-text);
@@ -44,8 +44,8 @@
 }
 
 .mis-citas-hero__title {
-  margin: var(--space-2) 0;
-  font-size: clamp(var(--text-3xl), 6vw, var(--text-4xl));
+  margin: var(--space-1) 0;
+  font-size: clamp(var(--text-2xl), 5vw, var(--text-3xl));
   font-weight: var(--font-bold);
   color: var(--color-ink-inverted);
   line-height: var(--line-tight);
@@ -53,8 +53,8 @@
 
 .mis-citas-hero__subtitle {
   margin: 0;
-  font-size: var(--text-lg);
-  line-height: var(--line-relaxed);
+  font-size: var(--text-md);
+  line-height: var(--line-normal);
   color: var(--color-ink-inverted-soft);
   max-width: 60ch;
 }
@@ -63,40 +63,40 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-3);
-  margin-top: var(--space-2);
+  gap: var(--space-2);
+  margin-top: var(--space-1);
 }
 
 .mis-citas-hero__actions .mc-button {
-  min-width: 150px;
+  min-width: 140px;
 }
 
 .mis-citas-metrics {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
 }
 
 .mis-citas-metric {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-5);
-  border-radius: var(--radius-xl);
-  background: rgba(10, 8, 38, 0.65);
-  border: 1px solid rgba(236, 233, 255, 0.18);
-  box-shadow: 0 18px 40px rgba(8, 12, 46, 0.28);
-  backdrop-filter: blur(10px);
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: rgba(10, 8, 38, 0.58);
+  border: 1px solid rgba(236, 233, 255, 0.16);
+  box-shadow: 0 14px 32px rgba(8, 12, 46, 0.24);
+  backdrop-filter: blur(8px);
 }
 
 .mis-citas-metric__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-lg);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
   background: rgba(132, 114, 255, 0.38);
   color: #ffffff;
   box-shadow: 0 10px 20px rgba(132, 114, 255, 0.18);
@@ -105,7 +105,7 @@
 .mis-citas-metric__header {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   width: 100%;
 }
 
@@ -117,17 +117,17 @@
 }
 
 .mis-citas-metric__value {
-  font-size: clamp(var(--text-2xl), 4vw, var(--text-3xl));
+  font-size: clamp(var(--text-xl), 3.3vw, var(--text-2xl));
   font-weight: var(--font-semibold);
   color: var(--color-ink-inverted);
 }
 
 .mis-citas-metric__description {
   margin: 0;
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   color: var(--color-ink-inverted-soft);
-  line-height: var(--line-relaxed);
-  max-width: 32ch;
+  line-height: var(--line-normal);
+  max-width: 28ch;
 }
 
 .mis-citas-metric--primary .mis-citas-metric__icon {
@@ -147,16 +147,16 @@
 .mis-citas-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
   max-width: var(--container-lg);
-  margin: 0 auto var(--space-12);
+  margin: 0 auto var(--space-10);
   width: 100%;
 }
 
 .appointments-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 .error-container {
@@ -164,8 +164,8 @@
   flex-direction: column;
   gap: var(--space-4);
   align-items: center;
-  padding: var(--space-8);
-  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
   background: rgba(239, 68, 68, 0.16);
   border: 1px solid rgba(252, 165, 165, 0.32);
   box-shadow: 0 18px 36px rgba(239, 68, 68, 0.18);
@@ -188,17 +188,17 @@
 
 @media (max-width: 1080px) {
   .mis-citas-hero {
-    padding: var(--space-8);
+    padding: var(--space-6);
   }
 
   .mis-citas-metric {
-    padding: var(--space-4);
+    padding: var(--space-3);
   }
 }
 
 @media (max-width: 768px) {
   .mis-citas-hero {
-    padding: var(--space-7);
+    padding: var(--space-6);
   }
 
   .mis-citas-hero__actions {
@@ -217,9 +217,9 @@
 
 @media (max-width: 640px) {
   .mis-citas-hero {
-    gap: var(--space-5);
-    padding: var(--space-6);
-    border-radius: var(--radius-xl);
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border-radius: var(--radius-lg);
   }
 
   .mis-citas-content {
@@ -230,7 +230,7 @@
 @media (max-width: 480px) {
   .mis-citas-hero__badge {
     font-size: var(--text-xs);
-    padding: 4px 12px;
+    padding: 4px 10px;
   }
 
   .mis-citas-metric {
