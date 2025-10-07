@@ -750,6 +750,47 @@
   .cta-subtitle {
     font-size: var(--text-base);
   }
+
+  /* Mobile header tweaks: push info slightly right, reduce text size,
+     and make avatar more square and prevent it from being squashed
+     by the flex layout. These overrides are mobile-only and documented
+     to avoid surprising desktop rules. */
+  .hero-dashboard__header {
+    /* keep vertical alignment but increase spacing slightly on mobile */
+    gap: calc(var(--space-2) + 6px);
+    align-items: center;
+  }
+
+  /* Move the info block a touch to the right and allow it to wrap
+     without causing overflow. min-width:0 is critical for flex children
+     to allow proper shrinking/wrapping. */
+  .hero-dashboard__info {
+    margin-left: 6px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Slightly smaller typography for compact mobile header */
+  .hero-dashboard__name {
+    font-size: calc(var(--text-base) - 2px);
+    line-height: 1.1;
+  }
+
+  .hero-dashboard__role {
+    font-size: calc(var(--text-sm) - 1px);
+  }
+
+  /* Make avatar more square and prevent flex from shrinking its width
+     too much on narrow screens. Use a slightly smaller size than the
+     appointment time but preserve touch-friendly minimum. */
+  .hero-avatar {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 10px;
+    flex: 0 0 auto;
+  }
 }
 
 @media (max-width: 480px) {
