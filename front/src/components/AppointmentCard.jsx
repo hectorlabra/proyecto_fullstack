@@ -4,7 +4,7 @@ import McCard from "./ui/McCard";
 import McBadge from "./ui/McBadge";
 import McButton from "./ui/McButton";
 import McModal from "./ui/McModal";
-import { useToast } from "./ui";
+import { useToast } from "../hooks/useToast";
 import { CalendarIcon, ClockIcon, UserIcon, MailIcon } from "./icons";
 import { parseLocalDate, normalizeToStartOfDay } from "../helpers/dateUtils";
 import "../styles/ui/appointment-card.css";
@@ -121,23 +121,17 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     try {
       const result = await cancelAppointmentContext(id);
       if (result.success) {
-        showSuccessToast("La cita se canceló correctamente", "Cita cancelada");
+        showSuccessToast("La cita se canceló correctamente.");
         if (onAppointmentUpdate) {
           onAppointmentUpdate();
         }
         setShowConfirmDialog(false);
       } else {
-        showErrorToast(
-          result.error || "No pudimos cancelar la cita",
-          "Error al cancelar"
-        );
+        showErrorToast(result.error || "No pudimos cancelar la cita.");
       }
     } catch (error) {
       console.error("Error al cancelar cita:", error);
-      showErrorToast(
-        error.message || "No pudimos completar la cancelación",
-        "Error inesperado"
-      );
+      showErrorToast(error.message || "No pudimos completar la cancelación.");
     }
   };
 
