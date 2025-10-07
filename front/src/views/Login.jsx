@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { Input, Button, Breadcrumbs } from "../components/ui";
-import { useToast } from "../components/ui/toast-context";
+import { useToast } from "../hooks/useToast";
+import { ShieldCheckIcon, ClockIcon, CalendarIcon } from "../components/icons";
 import "../styles/Auth.css";
 
 function Login() {
@@ -17,6 +18,27 @@ function Login() {
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const highlights = [
+    {
+      icon: ShieldCheckIcon,
+      title: "Autenticación segura",
+      description:
+        "Verificación reforzada, sesiones protegidas y cifrado de extremo a extremo para tu tranquilidad.",
+    },
+    {
+      icon: ClockIcon,
+      title: "Ingreso en segundos",
+      description:
+        "Recordamos tus preferencias y dispositivos de confianza para que todo sea ágil.",
+    },
+    {
+      icon: CalendarIcon,
+      title: "Agenda sincronizada",
+      description:
+        "Al iniciar sesión verás tus próximas citas y recordatorios integrados en un mismo panel.",
+    },
+  ];
 
   const validateField = (name, value) => {
     let error = "";
@@ -90,55 +112,94 @@ function Login() {
   };
 
   return (
-    <div className="auth-container">
-      <Breadcrumbs />
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1 className="auth-title">Iniciar sesión</h1>
-          <p className="auth-subtitle">Accede a tu cuenta de MediCitas</p>
-        </div>
+    <div className="page-shell page-shell--auth">
+      <div className="page-shell__content page-shell__content--padded">
+        <Breadcrumbs className="breadcrumbs--inverted" />
+        <div className="auth-container">
+          <section className="auth-hero">
+            <span className="auth-hero__badge">Medi Citas 2025</span>
+            <h1 className="auth-hero__title">Tu acceso a la salud digital</h1>
+            <p className="auth-hero__subtitle">
+              Gestiona tus citas, recordatorios y seguimientos clínicos desde un
+              único lugar seguro.
+            </p>
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <Input
-            label="Nombre de Usuario"
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleInputChange}
-            error={errors.username}
-            placeholder="Ingresa tu usuario"
-            required
-          />
+            <ul className="auth-hero__highlights">
+              {highlights.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li className="auth-highlight-card" key={item.title}>
+                    <span className="auth-highlight-icon" aria-hidden="true">
+                      <Icon size={20} />
+                    </span>
+                    <div>
+                      <h3 className="auth-highlight-title">{item.title}</h3>
+                      <p className="auth-highlight-description">
+                        {item.description}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
 
-          <Input
-            label="Contraseña"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            error={errors.password}
-            placeholder="Ingresa tu contraseña"
-            required
-          />
+            <div className="auth-hero__cta">
+              ¿Aún no tienes cuenta?
+              <Link to="/register">Crear cuenta gratuita</Link>
+            </div>
+          </section>
 
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            disabled={!isFormValid() || isLoading}
-            fullWidth
-          >
-            {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
-          </Button>
-        </form>
+          <div className="auth-panel">
+            <div className="auth-card">
+              <div className="auth-header">
+                <h2 className="auth-title">Iniciar sesión</h2>
+                <p className="auth-subtitle">Accede a tu cuenta de MediCitas</p>
+              </div>
 
-        <div className="auth-footer">
-          <p>
-            ¿No tienes cuenta?{" "}
-            <Link to="/register" className="auth-link">
-              Regístrate aquí
-            </Link>
-          </p>
+              <form onSubmit={handleSubmit} className="auth-form">
+                <Input
+                  label="Nombre de Usuario"
+                  name="username"
+                  type="text"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  error={errors.username}
+                  placeholder="Ingresa tu usuario"
+                  required
+                />
+
+                <Input
+                  label="Contraseña"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  error={errors.password}
+                  placeholder="Ingresa tu contraseña"
+                  required
+                />
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  disabled={!isFormValid() || isLoading}
+                  fullWidth
+                >
+                  {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
+                </Button>
+              </form>
+
+              <div className="auth-footer">
+                <p>
+                  ¿No tienes cuenta? {""}
+                  <Link to="/register" className="auth-link">
+                    Regístrate aquí
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

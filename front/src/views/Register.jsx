@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Input, Button, Breadcrumbs } from "../components/ui";
-import { useToast } from "../components/ui/toast-context";
+import { useToast } from "../hooks/useToast";
+import {
+  ClipboardCheckIcon,
+  HeartPulseIcon,
+  ShieldCheckIcon,
+} from "../components/icons";
 import API_URL from "../config/api";
 import "../styles/Auth.css";
 
@@ -22,6 +27,27 @@ function Register() {
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  const highlights = [
+    {
+      icon: ClipboardCheckIcon,
+      title: "Historial centralizado",
+      description:
+        "Registra tus datos personales y contactos clínicos para agilizar futuras atenciones.",
+    },
+    {
+      icon: HeartPulseIcon,
+      title: "Seguimiento inteligente",
+      description:
+        "Configura recordatorios proactivos, notas y alertas de adherencia en cada cita.",
+    },
+    {
+      icon: ShieldCheckIcon,
+      title: "Privacidad garantizada",
+      description:
+        "Cumplimos con normativas de protección de datos y cifrado médico de grado profesional.",
+    },
+  ];
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePassword = (password) =>
@@ -157,122 +183,163 @@ function Register() {
   };
 
   return (
-    <div className="auth-container">
-      <Breadcrumbs />
-      <div className="auth-card auth-card--wide">
-        <div className="auth-header">
-          <h1 className="auth-title">Crear cuenta</h1>
-          <p className="auth-subtitle">Completa tus datos para registrarte</p>
-        </div>
+    <div className="page-shell page-shell--auth">
+      <div className="page-shell__content page-shell__content--padded">
+        <Breadcrumbs className="breadcrumbs--inverted" />
+        <div className="auth-container">
+          <section className="auth-hero">
+            <span className="auth-hero__badge">Medi Citas 2025</span>
+            <h1 className="auth-hero__title">Crea tu perfil clínico digital</h1>
+            <p className="auth-hero__subtitle">
+              Centraliza tus datos, agiliza la admisión y accede a un tablero de
+              salud personalizado desde el primer día.
+            </p>
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="auth-grid auth-grid--two">
-            <Input
-              label="Nombre"
-              name="firstName"
-              type="text"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              error={errors.firstName}
-              placeholder="Juan"
-              required
-            />
-            <Input
-              label="Apellido"
-              name="lastName"
-              type="text"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              error={errors.lastName}
-              placeholder="Pérez"
-              required
-            />
+            <ul className="auth-hero__highlights">
+              {highlights.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li className="auth-highlight-card" key={item.title}>
+                    <span className="auth-highlight-icon" aria-hidden="true">
+                      <Icon size={20} />
+                    </span>
+                    <div>
+                      <h3 className="auth-highlight-title">{item.title}</h3>
+                      <p className="auth-highlight-description">
+                        {item.description}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="auth-hero__cta">
+              ¿Ya tienes una cuenta?
+              <Link to="/login">Inicia sesión</Link>
+            </div>
+          </section>
+
+          <div className="auth-panel">
+            <div className="auth-card auth-card--wide">
+              <div className="auth-header">
+                <h2 className="auth-title">Crear cuenta</h2>
+                <p className="auth-subtitle">
+                  Completa tus datos para registrarte
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="auth-form">
+                <div className="auth-grid auth-grid--two">
+                  <Input
+                    label="Nombre"
+                    name="firstName"
+                    type="text"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    error={errors.firstName}
+                    placeholder="Juan"
+                    required
+                  />
+                  <Input
+                    label="Apellido"
+                    name="lastName"
+                    type="text"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    error={errors.lastName}
+                    placeholder="Pérez"
+                    required
+                  />
+                </div>
+
+                <Input
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  error={errors.email}
+                  placeholder="tu@email.com"
+                  required
+                />
+
+                <div className="auth-grid auth-grid--two">
+                  <Input
+                    label="Teléfono"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    error={errors.phone}
+                    placeholder="+54 11 1234-5678"
+                    required
+                  />
+                  <Input
+                    label="DNI"
+                    name="nDni"
+                    type="text"
+                    value={formData.nDni}
+                    onChange={handleInputChange}
+                    error={errors.nDni}
+                    placeholder="12345678"
+                    required
+                  />
+                </div>
+
+                <Input
+                  label="Fecha de Nacimiento"
+                  name="dateOfBirth"
+                  type="date"
+                  value={formData.dateOfBirth}
+                  onChange={handleInputChange}
+                  error={errors.dateOfBirth}
+                  required
+                />
+
+                <Input
+                  label="Nombre de Usuario"
+                  name="username"
+                  type="text"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                  error={errors.username}
+                  placeholder="usuario123"
+                  required
+                />
+
+                <Input
+                  label="Contraseña"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  error={errors.password}
+                  placeholder="••••••••"
+                  required
+                />
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  disabled={!isFormValid() || isLoading}
+                  fullWidth
+                >
+                  {isLoading ? "Registrando..." : "Crear cuenta"}
+                </Button>
+              </form>
+
+              <div className="auth-footer">
+                <p>
+                  ¿Ya tienes cuenta? {""}
+                  <Link to="/login" className="auth-link">
+                    Inicia sesión aquí
+                  </Link>
+                </p>
+              </div>
+            </div>
           </div>
-
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            error={errors.email}
-            placeholder="tu@email.com"
-            required
-          />
-
-          <div className="auth-grid auth-grid--two">
-            <Input
-              label="Teléfono"
-              name="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={handleInputChange}
-              error={errors.phone}
-              placeholder="+54 11 1234-5678"
-              required
-            />
-            <Input
-              label="DNI"
-              name="nDni"
-              type="text"
-              value={formData.nDni}
-              onChange={handleInputChange}
-              error={errors.nDni}
-              placeholder="12345678"
-              required
-            />
-          </div>
-
-          <Input
-            label="Fecha de Nacimiento"
-            name="dateOfBirth"
-            type="date"
-            value={formData.dateOfBirth}
-            onChange={handleInputChange}
-            error={errors.dateOfBirth}
-            required
-          />
-
-          <Input
-            label="Nombre de Usuario"
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleInputChange}
-            error={errors.username}
-            placeholder="usuario123"
-            required
-          />
-
-          <Input
-            label="Contraseña"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            error={errors.password}
-            placeholder="••••••••"
-            required
-          />
-
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            disabled={!isFormValid() || isLoading}
-            fullWidth
-          >
-            {isLoading ? "Registrando..." : "Crear cuenta"}
-          </Button>
-        </form>
-
-        <div className="auth-footer">
-          <p>
-            ¿Ya tienes cuenta?{" "}
-            <Link to="/login" className="auth-link">
-              Inicia sesión aquí
-            </Link>
-          </p>
         </div>
       </div>
     </div>

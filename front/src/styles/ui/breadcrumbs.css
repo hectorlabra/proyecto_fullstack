@@ -53,6 +53,27 @@
   font-size: var(--text-xs);
 }
 
+.breadcrumbs--inverted {
+  color: var(--color-ink-inverted-soft);
+}
+
+.breadcrumbs--inverted .breadcrumbs-link {
+  color: var(--color-ink-inverted-soft);
+}
+
+.breadcrumbs--inverted .breadcrumbs-link:hover {
+  color: var(--color-ink-inverted);
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+.breadcrumbs--inverted .breadcrumbs-link.active {
+  color: var(--color-ink-inverted);
+}
+
+.breadcrumbs--inverted .breadcrumbs-separator {
+  color: rgba(236, 233, 255, 0.42);
+}
+
 /* Home icon for first item */
 .breadcrumbs-home {
   display: inline-flex;

@@ -1,5 +1,6 @@
 import "./App.css";
 import "./styles/accessibility.css";
+import "./styles/PageShell.css";
 import Home from "./views/Home";
 import MisCitas from "./views/MisCitas";
 import Register from "./views/Register";

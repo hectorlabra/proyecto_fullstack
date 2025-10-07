@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import { Input, Button, Breadcrumbs } from "../components/ui";
-import { useToast } from "../components/ui/toast-context";
+import { useToast } from "../hooks/useToast";
+import { CalendarIcon, ClockIcon, ShieldCheckIcon } from "../components/icons";
 import "../styles/Auth.css";
 
 const CreateAppointment = () => {
@@ -17,6 +18,27 @@ const CreateAppointment = () => {
   });
 
   const [errors, setErrors] = useState({});
+
+  const highlights = [
+    {
+      icon: CalendarIcon,
+      title: "Disponibilidad inteligente",
+      description:
+        "Selecciona días hábiles y horarios compatibles con tu agenda en segundos.",
+    },
+    {
+      icon: ClockIcon,
+      title: "Recordatorios automáticos",
+      description:
+        "Recibe alertas antes de cada consulta y sincroniza con tus calendarios.",
+    },
+    {
+      icon: ShieldCheckIcon,
+      title: "Información protegida",
+      description:
+        "Tus detalles clínicos permanecen cifrados y solo accesibles para tu equipo médico.",
+    },
+  ];
 
   useEffect(() => {
     if (!user) navigate("/login");
@@ -113,77 +135,122 @@ const CreateAppointment = () => {
   if (!user) return null;
 
   return (
-    <div className="auth-container">
-      <Breadcrumbs />
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1 className="auth-title">Agendar nueva cita</h1>
-          <p className="auth-subtitle">Selecciona fecha, hora y agrega notas</p>
-        </div>
+    <div className="page-shell page-shell--auth">
+      <div className="page-shell__content page-shell__content--padded">
+        <Breadcrumbs className="breadcrumbs--inverted" />
+        <div className="auth-container">
+          <section className="auth-hero">
+            <span className="auth-hero__badge">Medi Citas 2025</span>
+            <h1 className="auth-hero__title">
+              Agenda la atención que necesitas
+            </h1>
+            <p className="auth-hero__subtitle">
+              Coordina tus consultas con profesionales verificados en menos de
+              un minuto y recibe seguimiento continuo.
+            </p>
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <Input
-            label="Fecha"
-            name="date"
-            type="date"
-            value={formData.date}
-            onChange={handleInputChange}
-            error={errors.date}
-            min={getMinDate()}
-            max={getMaxDate()}
-            required
-            helpText="Disponible de lunes a viernes"
-          />
+            <ul className="auth-hero__highlights">
+              {highlights.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li className="auth-highlight-card" key={item.title}>
+                    <span className="auth-highlight-icon" aria-hidden="true">
+                      <Icon size={20} />
+                    </span>
+                    <div>
+                      <h3 className="auth-highlight-title">{item.title}</h3>
+                      <p className="auth-highlight-description">
+                        {item.description}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
 
-          <Input
-            label="Hora"
-            name="time"
-            type="time"
-            value={formData.time}
-            onChange={handleInputChange}
-            error={errors.time}
-            required
-            helpText="Horario de atención: 8:00 AM - 6:00 PM"
-          />
+            <div className="auth-hero__cta">
+              ¿Necesitas revisar tus turnos?
+              <Link to="/mis-citas">Ver mis citas</Link>
+            </div>
+          </section>
 
-          <div className="auth-field">
-            <label htmlFor="notes" className="auth-field-label">
-              Notas (Opcional)
-            </label>
-            <textarea
-              id="notes"
-              name="notes"
-              value={formData.notes}
-              onChange={handleInputChange}
-              placeholder="Describe tus síntomas o motivo de la consulta..."
-              rows={4}
-              maxLength={500}
-              className={`auth-textarea ${errors.notes ? "has-error" : ""}`}
-            />
-            <div className="auth-field-meta">
-              {errors.notes ? (
-                <span className="auth-field-error">{errors.notes}</span>
-              ) : (
-                <span className="auth-field-helper">
-                  Puedes agregar detalles para el profesional.
-                </span>
-              )}
-              <span className="auth-field-counter">
-                {formData.notes.length}/500 caracteres
-              </span>
+          <div className="auth-panel">
+            <div className="auth-card">
+              <div className="auth-header">
+                <h2 className="auth-title">Agendar nueva cita</h2>
+                <p className="auth-subtitle">
+                  Selecciona fecha, hora y agrega notas
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="auth-form">
+                <Input
+                  label="Fecha"
+                  name="date"
+                  type="date"
+                  value={formData.date}
+                  onChange={handleInputChange}
+                  error={errors.date}
+                  min={getMinDate()}
+                  max={getMaxDate()}
+                  required
+                  helpText="Disponible de lunes a viernes"
+                />
+
+                <Input
+                  label="Hora"
+                  name="time"
+                  type="time"
+                  value={formData.time}
+                  onChange={handleInputChange}
+                  error={errors.time}
+                  required
+                  helpText="Horario de atención: 8:00 AM - 6:00 PM"
+                />
+
+                <div className="auth-field">
+                  <label htmlFor="notes" className="auth-field-label">
+                    Notas (Opcional)
+                  </label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    value={formData.notes}
+                    onChange={handleInputChange}
+                    placeholder="Describe tus síntomas o motivo de la consulta..."
+                    rows={4}
+                    maxLength={500}
+                    className={`auth-textarea ${
+                      errors.notes ? "has-error" : ""
+                    }`}
+                  />
+                  <div className="auth-field-meta">
+                    {errors.notes ? (
+                      <span className="auth-field-error">{errors.notes}</span>
+                    ) : (
+                      <span className="auth-field-helper">
+                        Puedes agregar detalles para el profesional.
+                      </span>
+                    )}
+                    <span className="auth-field-counter">
+                      {formData.notes.length}/500 caracteres
+                    </span>
+                  </div>
+                </div>
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  disabled={!isFormValid() || isLoading}
+                  fullWidth
+                >
+                  {isLoading ? "Agendando..." : "Confirmar cita"}
+                </Button>
+              </form>
             </div>
           </div>
-
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            disabled={!isFormValid() || isLoading}
-            fullWidth
-          >
-            {isLoading ? "Agendando..." : "Confirmar cita"}
-          </Button>
-        </form>
+        </div>
       </div>
     </div>
   );
