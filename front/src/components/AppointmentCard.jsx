@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
 import { useUser } from "../hooks/useUser";
-import { Card, CardHeader, CardContent, CardActions } from "./ui/Card";
-import { StatusBadge } from "./ui/Badge";
-import { Button } from "./ui/Button";
-import { ConfirmModal } from "./ui/Modal";
+import McCard from "./ui/McCard";
+import McBadge from "./ui/McBadge";
+import McButton from "./ui/McButton";
+import McModal from "./ui/McModal";
+import { useToast } from "./ui";
 import { CalendarIcon, ClockIcon, UserIcon, MailIcon } from "./icons";
 import { parseLocalDate, normalizeToStartOfDay } from "../helpers/dateUtils";
 import "../styles/ui/appointment-card.css";
@@ -12,6 +13,28 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
   const { id, date, time, status, notes, user } = appointment;
   const { cancelAppointment: cancelAppointmentContext, isLoading } = useUser();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const { success: showSuccessToast, error: showErrorToast } = useToast();
+
+  const normalizedStatus = (status || "").toLowerCase();
+
+  const statusCopy = useMemo(() => {
+    const statusMap = {
+      scheduled: { label: "Programada", variant: "info" },
+      confirmed: { label: "Confirmada", variant: "info" },
+      pending: { label: "Pendiente", variant: "default" },
+      completed: { label: "Completada", variant: "success" },
+      canceled: { label: "Cancelada", variant: "danger" },
+      cancelled: { label: "Cancelada", variant: "danger" },
+      rescheduled: { label: "Reprogramada", variant: "warning" },
+    };
+
+    return (
+      statusMap[normalizedStatus] || {
+        label: status ? status : "Sin estado",
+        variant: "default",
+      }
+    );
+  }, [normalizedStatus, status]);
 
   const formattedDate = useMemo(() => {
     if (!date) return "--";
@@ -98,20 +121,26 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     try {
       const result = await cancelAppointmentContext(id);
       if (result.success) {
+        showSuccessToast("La cita se canceló correctamente", "Cita cancelada");
         if (onAppointmentUpdate) {
           onAppointmentUpdate();
         }
         setShowConfirmDialog(false);
       } else {
-        alert(`Error al cancelar la cita: ${result.error}`);
+        showErrorToast(
+          result.error || "No pudimos cancelar la cita",
+          "Error al cancelar"
+        );
       }
     } catch (error) {
       console.error("Error al cancelar cita:", error);
-      alert(`Error al cancelar la cita: ${error.message}`);
+      showErrorToast(
+        error.message || "No pudimos completar la cancelación",
+        "Error inesperado"
+      );
     }
   };
 
-  const normalizedStatus = (status || "").toLowerCase();
   const blockedMessage = useMemo(() => {
     if (normalizedStatus === "completed") {
       return "Esta cita ya fue completada";
@@ -124,67 +153,112 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     return "Las citas solo pueden cancelarse hasta el día anterior";
   }, [normalizedStatus]);
 
+  const footnoteMessage = canCancel
+    ? "Puedes cancelar tu cita hasta el día anterior."
+    : blockedMessage;
+
+  const confirmModalFooter = (
+    <>
+      <McButton
+        variant="outline"
+        onClick={() => setShowConfirmDialog(false)}
+        disabled={isLoading}
+      >
+        Mantener cita
+      </McButton>
+      <McButton variant="danger" onClick={handleCancel} loading={isLoading}>
+        Confirmar cancelación
+      </McButton>
+    </>
+  );
+
   return (
     <>
-      <Card className="appointment-card-container">
-        <CardHeader className="appointment-card-header">
-          <div>
-            <p className="appointment-card-subtitle">Cita #{id}</p>
-            <h3 className="appointment-card-title">Gestión de consulta</h3>
-          </div>
-          <StatusBadge status={status} />
-        </CardHeader>
-
-        <CardContent>
-          <div className="appointment-card-info">
-            {detailItems.map(({ icon, label, value }) => {
-              const IconComponent = icon;
-              return (
-                <div className="appointment-card-row" key={label}>
-                  <span className="appointment-card-icon" aria-hidden="true">
-                    <IconComponent size={18} />
-                  </span>
-                  <span className="appointment-card-label">{label}</span>
-                  <span className="appointment-card-value">{value}</span>
-                </div>
-              );
-            })}
-          </div>
-
-          {notes && (
-            <div className="appointment-card-notes">
-              <p className="appointment-card-notes-title">Notas del paciente</p>
-              <p className="appointment-card-notes-text">{notes}</p>
+      <McCard
+        className={`appointment-card appointment-card--${
+          normalizedStatus || "default"
+        }`}
+        header={
+          <div className="appointment-card__header">
+            <div className="appointment-card__heading">
+              <span className="appointment-card__eyebrow">Cita #{id}</span>
+              <h3 className="appointment-card__title">Gestión de consulta</h3>
             </div>
-          )}
-        </CardContent>
-
-        <CardActions className="appointment-card-actions">
-          {canCancel ? (
-            <Button
-              variant="danger"
-              onClick={() => setShowConfirmDialog(true)}
-              disabled={isLoading}
+            <McBadge
+              variant={statusCopy.variant}
+              size="sm"
+              className="appointment-card__status"
             >
-              {isLoading ? "Cancelando..." : "Cancelar cita"}
-            </Button>
-          ) : (
-            <p className="appointment-card-info-text">{blockedMessage}</p>
-          )}
-        </CardActions>
-      </Card>
+              {statusCopy.label}
+            </McBadge>
+          </div>
+        }
+        footer={
+          <div className="appointment-card__footer">
+            <div className="appointment-card__footnote">
+              <span
+                className="appointment-card__footnote-indicator"
+                aria-hidden="true"
+              />
+              <p>{footnoteMessage}</p>
+            </div>
+            {canCancel && (
+              <McButton
+                variant="danger"
+                onClick={() => setShowConfirmDialog(true)}
+                loading={isLoading}
+                className="appointment-card__action"
+              >
+                Cancelar cita
+              </McButton>
+            )}
+          </div>
+        }
+      >
+        <div className="appointment-card__details">
+          {detailItems.map(({ icon, label, value }) => {
+            const IconComponent = icon;
+            return (
+              <div className="appointment-card__detail" key={label}>
+                <span
+                  className="appointment-card__detail-icon"
+                  aria-hidden="true"
+                >
+                  <IconComponent size={20} />
+                </span>
+                <span className="appointment-card__detail-label">{label}</span>
+                <span className="appointment-card__detail-value">{value}</span>
+              </div>
+            );
+          })}
+        </div>
 
-      <ConfirmModal
+        <div
+          className={`appointment-card__notes ${
+            notes ? "" : "appointment-card__notes--empty"
+          }`}
+        >
+          <span className="appointment-card__notes-label">
+            Notas del paciente
+          </span>
+          <p className="appointment-card__notes-text">
+            {notes || "Sin notas registradas para esta cita."}
+          </p>
+        </div>
+      </McCard>
+
+      <McModal
         isOpen={showConfirmDialog}
         onClose={() => setShowConfirmDialog(false)}
-        onConfirm={handleCancel}
         title="Confirmar cancelación"
-        message={`¿Deseas cancelar la cita del ${formattedDate} a las ${formattedTime}? Esta acción no se puede deshacer.`}
-        confirmText="Sí, cancelar cita"
-        cancelText="Mantener cita"
-        variant="danger"
-        isLoading={isLoading}
-      />
+        size="sm"
+        closeOnOverlayClick={!isLoading}
+        footer={confirmModalFooter}
+      >
+        <p className="appointment-card__confirm-text">
+          {`¿Deseas cancelar la cita del ${formattedDate} a las ${formattedTime}? Esta acción no se puede deshacer.`}
+        </p>
+      </McModal>
     </>
   );
 };

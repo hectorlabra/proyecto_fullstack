@@ -1,4 +1,5 @@
-import { Card, CardContent, CardFooter, Button } from "./ui";
+import { Card, CardContent, CardFooter } from "./ui";
+import McButton from "./ui/McButton";
 import {
   CalendarIcon,
   PlusCircleIcon,
@@ -60,14 +61,14 @@ const EmptyAppointments = ({ onScheduleClick }) => {
               recibe recordatorios, seguimiento y asistencia personalizada en un
               único lugar.
             </p>
-            <Button
+            <McButton
               variant="primary"
               size="lg"
+              icon={<PlusCircleIcon size={20} />}
               onClick={onScheduleClick}
-              leadingIcon={<PlusCircleIcon size={20} />}
             >
               Agendar primera cita
-            </Button>
+            </McButton>
           </div>
 
           <div className="empty-appointments-grid">

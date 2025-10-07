@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/useUser";
 import AppointmentCard from "../components/AppointmentCard";
 import EmptyAppointments from "../components/EmptyAppointments";
-import { Breadcrumbs, AppointmentListSkeleton, Button } from "../components/ui";
+import { Breadcrumbs, AppointmentListSkeleton } from "../components/ui";
 import {
   RefreshCwIcon,
   CalendarIcon,
@@ -11,6 +11,7 @@ import {
   AlertCircleIcon,
 } from "../components/icons";
 import { parseLocalDate, normalizeToStartOfDay } from "../helpers/dateUtils";
+import McButton from "../components/ui/McButton";
 import "../styles/MisCitas.css";
 
 const MisCitas = () => {
@@ -20,31 +21,18 @@ const MisCitas = () => {
 
   useEffect(() => {
     if (!user) {
-      console.log("⚠️ No user found, redirecting to home");
       navigate("/");
       return;
     }
-
-    console.log("📋 MisCitas mounted");
-    console.log("👤 Full user object:", user);
-    console.log("🆔 User ID:", user.id || user.user?.id);
-    console.log("📅 Initial userAppointments:", userAppointments);
-    console.log("📊 Appointments count:", userAppointments?.length || 0);
-
     refreshAppointments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const normalizedAppointments = useMemo(() => {
-    console.log("🔄 Normalizing appointments:", userAppointments);
     return userAppointments || [];
   }, [userAppointments]);
 
   const { upcomingCount, completedCount, cancelledCount } = useMemo(() => {
-    console.log(
-      "📊 Calculating metrics for appointments:",
-      normalizedAppointments
-    );
     const today = normalizeToStartOfDay(new Date());
     let upcoming = 0;
     let completed = 0;
@@ -56,10 +44,6 @@ const MisCitas = () => {
       const appointmentDate = parsedDate
         ? normalizeToStartOfDay(parsedDate)
         : null;
-
-      console.log(
-        `  - Appointment ${appointment.id}: status=${statusValue}, date=${appointment.date}`
-      );
 
       if (["canceled", "cancelled"].includes(statusValue)) {
         cancelled += 1;
@@ -79,10 +63,6 @@ const MisCitas = () => {
         upcoming += 1;
       }
     });
-
-    console.log(
-      `✅ Metrics: upcoming=${upcoming}, completed=${completed}, cancelled=${cancelled}`
-    );
 
     return {
       upcomingCount: upcoming,
@@ -139,47 +119,52 @@ const MisCitas = () => {
                   }. Gestiona tus turnos, revisa resultados y mantén tu historial clínico siempre actualizado.`}
                 </p>
                 <div className="mis-citas-hero__actions">
-                  <Button
+                  <McButton
                     variant="ghost"
                     size="sm"
+                    icon={<RefreshCwIcon size={18} />}
                     onClick={refreshAppointments}
-                    leadingIcon={<RefreshCwIcon size={18} />}
-                    disabled={isLoading}
+                    loading={isLoading}
                   >
                     {isLoading ? "Actualizando" : "Actualizar"}
-                  </Button>
-                  <Button
+                  </McButton>
+                  <McButton
                     variant="primary"
                     size="sm"
+                    icon={<CalendarIcon size={18} />}
                     onClick={() => navigate("/agendar-cita")}
                   >
                     Agendar nueva cita
-                  </Button>
+                  </McButton>
                 </div>
               </div>
 
-              <div className="mis-citas-metrics">
+              <div className="mis-citas-metrics" role="list">
                 {statusMetrics.map((metric) => {
                   const Icon = metric.icon;
                   return (
                     <article
                       key={metric.label}
                       className={`mis-citas-metric mis-citas-metric--${metric.tone}`}
+                      role="listitem"
                     >
-                      <span
-                        className="mis-citas-metric__icon"
-                        aria-hidden="true"
-                      >
-                        <Icon size={18} />
-                      </span>
-                      <div className="mis-citas-metric__info">
+                      <div className="mis-citas-metric__header">
+                        <span
+                          className="mis-citas-metric__icon"
+                          aria-hidden="true"
+                        >
+                          <Icon size={20} />
+                        </span>
                         <span className="mis-citas-metric__label">
                           {metric.label}
                         </span>
-                        <strong className="mis-citas-metric__value">
-                          {metric.value}
-                        </strong>
                       </div>
+                      <strong className="mis-citas-metric__value">
+                        {metric.value}
+                      </strong>
+                      <p className="mis-citas-metric__description">
+                        {metric.description}
+                      </p>
                     </article>
                   );
                 })}
@@ -192,9 +177,14 @@ const MisCitas = () => {
               ) : error ? (
                 <div className="error-container">
                   <p className="error-message">{error}</p>
-                  <Button onClick={refreshAppointments} variant="primary">
+                  <McButton
+                    onClick={refreshAppointments}
+                    variant="primary"
+                    icon={<RefreshCwIcon size={18} />}
+                    loading={isLoading}
+                  >
                     Reintentar
-                  </Button>
+                  </McButton>
                 </div>
               ) : normalizedAppointments.length === 0 ? (
                 <EmptyAppointments
