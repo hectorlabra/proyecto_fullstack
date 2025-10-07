@@ -5,6 +5,7 @@ import {
   scheduleAppointment,
   cancelAppointment,
 } from "../controllers/appointmentsController";
+import { completeAppointment } from "../controllers/appointmentsController";
 import { validationMiddleware } from "../middlewares/validation.middleware";
 import { CreateAppointmentDto } from "../dtos/appointments/create-appointment.dto";
 
@@ -21,5 +22,7 @@ appointmentsRouter.post(
 );
 
 appointmentsRouter.put("/cancel/:id", cancelAppointment);
+// Mark appointment as completed (patient confirmation)
+appointmentsRouter.patch("/complete/:id", completeAppointment);
 
 export default appointmentsRouter;

@@ -286,6 +286,50 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const completeAppointment = async (appointmentId) => {
+    try {
+      dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
+      dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
+
+      const response = await fetch(
+        `${API_URL}/appointments/complete/${appointmentId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error al marcar cita como completada");
+      }
+
+      dispatch({
+        type: ACTION_TYPES.UPDATE_APPOINTMENT,
+        payload: data.appointment,
+      });
+
+      const userData = JSON.parse(localStorage.getItem("user"));
+      if (userData && userData.appointments) {
+        userData.appointments = userData.appointments.map((appointment) =>
+          appointment.id === appointmentId ? data.appointment : appointment
+        );
+        localStorage.setItem("user", JSON.stringify(userData));
+      }
+
+      return { success: true, data: data.appointment };
+    } catch (error) {
+      const errorMessage = error.message || "Error al completar la cita";
+      dispatch({ type: ACTION_TYPES.SET_ERROR, payload: errorMessage });
+      return { success: false, error: errorMessage };
+    } finally {
+      dispatch({ type: ACTION_TYPES.SET_LOADING, payload: false });
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
   };
@@ -348,6 +392,7 @@ export const UserProvider = ({ children }) => {
     logout,
     createAppointment,
     cancelAppointment,
+    completeAppointment,
     fetchUserAppointments,
     refreshAppointments,
     clearError,

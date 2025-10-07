@@ -12,6 +12,7 @@ import "../styles/ui/appointment-card.css";
 const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
   const { id, date, time, status, notes, user } = appointment;
   const { cancelAppointment: cancelAppointmentContext, isLoading } = useUser();
+  const { completeAppointment: completeAppointmentContext } = useUser();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { success: showSuccessToast, error: showErrorToast } = useToast();
 
@@ -166,6 +167,23 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     </>
   );
 
+  const [showConfirmAttendance, setShowConfirmAttendance] = useState(false);
+
+  const handleConfirmAttendance = async () => {
+    try {
+      const result = await completeAppointmentContext(id);
+      if (result.success) {
+        showSuccessToast("Asistencia confirmada correctamente.");
+        if (onAppointmentUpdate) onAppointmentUpdate();
+        setShowConfirmAttendance(false);
+      } else {
+        showErrorToast(result.error || "No se pudo confirmar asistencia.");
+      }
+    } catch (error) {
+      showErrorToast(error.message || "Error inesperado");
+    }
+  };
+
   return (
     <>
       <McCard
@@ -206,6 +224,29 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
                 Cancelar cita
               </McButton>
             )}
+            {/* Confirm attendance for past scheduled appointments */}
+            {!canCancel &&
+              normalizedStatus === "scheduled" &&
+              (() => {
+                const parsed = parseLocalDate(date);
+                const appointmentDate = parsed
+                  ? normalizeToStartOfDay(parsed)
+                  : null;
+                const today = normalizeToStartOfDay(new Date());
+                if (appointmentDate && appointmentDate < today) {
+                  return (
+                    <McButton
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowConfirmAttendance(true)}
+                    >
+                      Confirmar asistencia
+                    </McButton>
+                  );
+                }
+
+                return null;
+              })()}
           </div>
         }
       >
@@ -251,6 +292,30 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
       >
         <p className="appointment-card__confirm-text">
           {`¿Deseas cancelar la cita del ${formattedDate} a las ${formattedTime}? Esta acción no se puede deshacer.`}
+        </p>
+      </McModal>
+
+      <McModal
+        isOpen={showConfirmAttendance}
+        onClose={() => setShowConfirmAttendance(false)}
+        title="Confirmar asistencia"
+        size="sm"
+        footer={
+          <>
+            <McButton
+              variant="outline"
+              onClick={() => setShowConfirmAttendance(false)}
+            >
+              Volver
+            </McButton>
+            <McButton variant="primary" onClick={handleConfirmAttendance}>
+              Sí, confirmé mi asistencia
+            </McButton>
+          </>
+        }
+      >
+        <p className="appointment-card__confirm-text">
+          {`¿Confirmas que asististe a la cita del ${formattedDate} a las ${formattedTime}?`}
         </p>
       </McModal>
     </>

@@ -124,3 +124,45 @@ export const cancelAppointment = async (
     }
   }
 };
+
+export const completeAppointment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const appointmentId = parseInt(id);
+    if (isNaN(appointmentId)) {
+      res.status(400).json({ error: "ID inválido" });
+      return;
+    }
+
+    const completedAppointment = await appointmentsService.completeAppointment(
+      appointmentId
+    );
+    if (!completedAppointment) {
+      res.status(404).json({ error: "Turno no encontrado" });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Turno marcado como completado",
+      appointment: completedAppointment,
+    });
+  } catch (error: any) {
+    logger.error(
+      { err: error, appointmentId: req.params.id },
+      "Error al completar turno"
+    );
+
+    if (
+      error.message === "La cita no existe" ||
+      error.message === "Solo se pueden completar citas programadas"
+    ) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
+  }
+};
