@@ -19,23 +19,31 @@ const MisCitas = () => {
 
   useEffect(() => {
     if (!user) {
+      console.log("⚠️ No user found, redirecting to home");
       navigate("/");
       return;
     }
 
-    console.log("MisCitas mounted, userAppointments:", userAppointments);
-    console.log("User ID:", user.id || user.user?.id);
+    console.log("📋 MisCitas mounted");
+    console.log("👤 Full user object:", user);
+    console.log("🆔 User ID:", user.id || user.user?.id);
+    console.log("📅 Initial userAppointments:", userAppointments);
+    console.log("📊 Appointments count:", userAppointments?.length || 0);
 
     refreshAppointments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const normalizedAppointments = useMemo(
-    () => userAppointments || [],
-    [userAppointments]
-  );
+  const normalizedAppointments = useMemo(() => {
+    console.log("🔄 Normalizing appointments:", userAppointments);
+    return userAppointments || [];
+  }, [userAppointments]);
 
   const { upcomingCount, completedCount, cancelledCount } = useMemo(() => {
+    console.log(
+      "📊 Calculating metrics for appointments:",
+      normalizedAppointments
+    );
     const now = new Date();
     let upcoming = 0;
     let completed = 0;
@@ -44,6 +52,10 @@ const MisCitas = () => {
     normalizedAppointments.forEach((appointment) => {
       const statusValue = appointment.status?.toLowerCase();
       const appointmentDate = new Date(appointment.date);
+
+      console.log(
+        `  - Appointment ${appointment.id}: status=${statusValue}, date=${appointment.date}`
+      );
 
       if (["canceled", "cancelled"].includes(statusValue)) {
         cancelled += 1;
@@ -59,6 +71,10 @@ const MisCitas = () => {
         upcoming += 1;
       }
     });
+
+    console.log(
+      `✅ Metrics: upcoming=${upcoming}, completed=${completed}, cancelled=${cancelled}`
+    );
 
     return {
       upcomingCount: upcoming,

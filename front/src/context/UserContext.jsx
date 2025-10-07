@@ -141,6 +141,7 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
+      console.log("🔍 Fetching appointments for userId:", userId);
       const response = await fetch(`${API_URL}/appointments`);
 
       if (!response.ok) {
@@ -148,9 +149,25 @@ export const UserProvider = ({ children }) => {
       }
 
       const allAppointments = await response.json();
-      const userAppointments = allAppointments.filter(
-        (appointment) => appointment.userId === userId
-      );
+      console.log("📋 All appointments from backend:", allAppointments);
+      console.log("🔢 Total appointments:", allAppointments.length);
+
+      const userAppointments = allAppointments.filter((appointment) => {
+        console.log(
+          "Comparing appointment.userId:",
+          appointment.userId,
+          "with userId:",
+          userId,
+          "Match:",
+          appointment.userId === userId
+        );
+        return (
+          appointment.userId === userId || appointment.userId === Number(userId)
+        );
+      });
+      console.log("✅ Filtered user appointments:", userAppointments);
+      console.log("✅ Count:", userAppointments.length);
+
       dispatch({
         type: ACTION_TYPES.SET_USER_APPOINTMENTS,
         payload: userAppointments,
@@ -279,12 +296,18 @@ export const UserProvider = ({ children }) => {
       // o puede ser directamente el objeto user {id, firstName, ...}
       const userId = state.user.user?.id || state.user.id;
 
+      console.log("🔄 RefreshAppointments called");
+      console.log("👤 state.user:", state.user);
+      console.log("🆔 Extracted userId:", userId);
+
       if (!userId) {
         console.error("No se pudo extraer userId de state.user");
         return { success: false, error: "Usuario no válido" };
       }
 
       return await fetchUserAppointments(userId);
+    } else {
+      console.log("⚠️ refreshAppointments called but no user in state");
     }
   };
   useEffect(() => {
