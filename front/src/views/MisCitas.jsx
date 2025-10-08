@@ -192,10 +192,11 @@ const MisCitas = () => {
                 />
               ) : (
                 <div className="appointments-list">
-                  {normalizedAppointments.map((appointment) => (
+                  {normalizedAppointments.map((appointment, index) => (
                     <AppointmentCard
                       key={appointment.id}
                       appointment={appointment}
+                      displayIndex={index + 1}
                       onAppointmentUpdate={refreshAppointments}
                     />
                   ))}

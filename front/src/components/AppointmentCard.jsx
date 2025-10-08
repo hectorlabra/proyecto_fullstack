@@ -9,7 +9,11 @@ import { CalendarIcon, ClockIcon, UserIcon, MailIcon } from "./icons";
 import { parseLocalDate, normalizeToStartOfDay } from "../helpers/dateUtils";
 import "../styles/ui/appointment-card.css";
 
-const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
+const AppointmentCard = ({
+  appointment,
+  onAppointmentUpdate,
+  displayIndex,
+}) => {
   const { id, date, time, status, notes, user } = appointment;
   const { cancelAppointment: cancelAppointmentContext, isLoading } = useUser();
   const { completeAppointment: completeAppointmentContext } = useUser();
@@ -184,6 +188,8 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
     }
   };
 
+  const cardNumber = typeof displayIndex === "number" ? displayIndex : id;
+
   return (
     <>
       <McCard
@@ -193,7 +199,9 @@ const AppointmentCard = ({ appointment, onAppointmentUpdate }) => {
         header={
           <div className="appointment-card__header">
             <div className="appointment-card__heading">
-              <span className="appointment-card__eyebrow">Cita #{id}</span>
+              <span className="appointment-card__eyebrow">
+                Cita #{cardNumber}
+              </span>
               <h3 className="appointment-card__title">Gestión de consulta</h3>
             </div>
             <McBadge
