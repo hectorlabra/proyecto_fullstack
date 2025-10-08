@@ -44,6 +44,10 @@ export const createUser = async (userData: CreateUserDto): Promise<User> => {
   const credentialRepository: Repository<Credential> =
     AppDataSource.getRepository(Credential);
 
+  if (userData.password !== userData.confirmPassword) {
+    throw new Error("Las contraseñas no coinciden");
+  }
+
   const existingUserByEmail = await getUserByEmail(userData.email);
   if (existingUserByEmail) {
     throw new Error("El email ya está registrado");
@@ -64,22 +68,24 @@ export const createUser = async (userData: CreateUserDto): Promise<User> => {
   }
 
   return await AppDataSource.transaction(async (manager) => {
+    const { confirmPassword, ...safeUserData } = userData;
+
     const newUser = manager.create(User, {
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      phone: userData.phone,
-      dateOfBirth: userData.dateOfBirth,
-      nDni: userData.nDni,
+      firstName: safeUserData.firstName,
+      lastName: safeUserData.lastName,
+      email: safeUserData.email,
+      phone: safeUserData.phone,
+      dateOfBirth: safeUserData.dateOfBirth,
+      nDni: safeUserData.nDni,
     });
 
     const savedUser = await manager.save(User, newUser);
 
     const saltRounds = 10;
-    const hashedPassword = await hash(userData.password, saltRounds);
+    const hashedPassword = await hash(safeUserData.password, saltRounds);
 
     const newCredential = manager.create(Credential, {
-      username: userData.username,
+      username: safeUserData.username,
       passwordHash: hashedPassword,
       userId: savedUser.id,
     });

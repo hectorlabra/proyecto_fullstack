@@ -68,6 +68,7 @@ export const scheduleAppointment = async (
     if (
       error.message === "El usuario especificado no existe" ||
       error.message === "No se pueden agendar citas en fechas pasadas" ||
+      error.message === "No se pueden agendar citas en el pasado" ||
       error.message ===
         "Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM" ||
       error.message === "Las citas solo pueden agendarse de lunes a viernes" ||

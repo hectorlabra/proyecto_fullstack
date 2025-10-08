@@ -11,6 +11,7 @@ import {
 } from "../components/icons";
 import McButton from "../components/ui/McButton";
 import McInputField from "../components/ui/McInputField";
+import { validateAppointmentSelection } from "../helpers/appointmentValidation";
 import "../styles/CreateAppointment.css";
 
 const CreateAppointment = () => {
@@ -25,6 +26,11 @@ const CreateAppointment = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({
+    date: false,
+    time: false,
+    notes: false,
+  });
 
   const highlights = [
     {
@@ -64,67 +70,47 @@ const CreateAppointment = () => {
     return maxDate.toISOString().split("T")[0];
   };
 
-  const isWeekday = (dateString) => {
-    const date = new Date(dateString);
-    const day = date.getDay();
-    return day >= 1 && day <= 5;
-  };
+  const buildValidationErrors = (values) => {
+    const baseErrors = validateAppointmentSelection(values.date, values.time);
 
-  const isValidTime = (timeString) => {
-    const [hours, minutes] = timeString.split(":").map(Number);
-    const timeInMinutes = hours * 60 + minutes;
-    return timeInMinutes >= 8 * 60 && timeInMinutes <= 18 * 60;
-  };
-
-  const validateField = (name, value) => {
-    let error = "";
-    if (value === undefined || value === null) value = "";
-
-    switch (name) {
-      case "date":
-        if (!value.trim()) error = "La fecha es obligatoria";
-        else if (!isWeekday(value))
-          error = "Solo se pueden agendar citas de lunes a viernes";
-        else if (new Date(value) < new Date(getMinDate()))
-          error = "No se pueden agendar citas en fechas pasadas";
-        break;
-      case "time":
-        if (!value.trim()) error = "La hora es obligatoria";
-        else if (!isValidTime(value))
-          error = "Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM";
-        break;
-      case "notes":
-        if (value && value.length > 500)
-          error = "Las notas no pueden exceder 500 caracteres";
-        break;
+    if (values.notes && values.notes.length > 500) {
+      baseErrors.notes = "Las notas no pueden exceder 500 caracteres";
     }
-    return error;
+
+    return baseErrors;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    const nextValues = { ...formData, [name]: value };
+    const nextTouched = { ...touched, [name]: true };
+
+    setFormData(nextValues);
+    setTouched(nextTouched);
+
+    const validationErrors = buildValidationErrors(nextValues);
+    const filteredErrors = Object.fromEntries(
+      Object.entries(validationErrors).filter(([key]) => nextTouched[key])
+    );
+
+    setErrors(filteredErrors);
   };
 
   const isFormValid = () => {
-    const requiredFieldsFilled = formData.date && formData.time;
-    const noErrors = Object.values(errors).every(
-      (error) => !error || error === ""
+    const validationErrors = buildValidationErrors(formData);
+    return (
+      Boolean(formData.date) &&
+      Boolean(formData.time) &&
+      Object.keys(validationErrors).length === 0
     );
-    return requiredFieldsFilled && noErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newErrors = {};
-    ["date", "time", "notes"].forEach((key) => {
-      const error = validateField(key, formData[key]);
-      if (error) newErrors[key] = error;
-    });
+    setTouched({ date: true, time: true, notes: true });
 
+    const newErrors = buildValidationErrors(formData);
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
@@ -132,15 +118,18 @@ const CreateAppointment = () => {
       return;
     }
 
-    const success = await createAppointment(formData);
+    const result = await createAppointment(formData);
 
-    if (success) {
+    if (result?.success) {
       toast.success("¡Cita agendada exitosamente!");
       setFormData({ date: "", time: "", notes: "" });
       setErrors({});
+      setTouched({ date: false, time: false, notes: false });
       setTimeout(() => navigate("/mis-citas"), 1500);
     } else {
-      toast.error("Error al agendar la cita. Intenta nuevamente.");
+      toast.error(
+        result?.error || "Error al agendar la cita. Intenta nuevamente."
+      );
     }
   };
 

@@ -88,6 +88,37 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, initialState);
 
+  const resolveUserId = () => {
+    const contextUser = state.user;
+
+    if (contextUser?.user?.id) {
+      return contextUser.user.id;
+    }
+
+    if (contextUser?.id) {
+      return contextUser.id;
+    }
+
+    if (typeof localStorage === "undefined") {
+      return null;
+    }
+
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser) return null;
+      const parsed = JSON.parse(storedUser);
+      if (parsed?.user?.id) return parsed.user.id;
+      if (parsed?.id) return parsed.id;
+    } catch (error) {
+      console.error(
+        "No se pudo resolver el userId desde el almacenamiento",
+        error
+      );
+    }
+
+    return null;
+  };
+
   const login = async (credentials) => {
     try {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
@@ -104,7 +135,9 @@ export const UserProvider = ({ children }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al iniciar sesión");
+        throw new Error(
+          data.error || data.message || "Error al iniciar sesión"
+        );
       }
 
       const userData = {
@@ -194,12 +227,25 @@ export const UserProvider = ({ children }) => {
       dispatch({ type: ACTION_TYPES.SET_LOADING, payload: true });
       dispatch({ type: ACTION_TYPES.CLEAR_ERROR });
 
+      const userId = resolveUserId();
+
+      if (!userId) {
+        throw new Error("Usuario no autenticado");
+      }
+
+      const payload = {
+        date: appointmentData.date,
+        time: appointmentData.time,
+        notes: appointmentData.notes?.trim() || "",
+        userId,
+      };
+
       const response = await fetch(`${API_URL}/appointments/schedule`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(appointmentData),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
@@ -226,10 +272,22 @@ export const UserProvider = ({ children }) => {
         payload: data,
       });
 
-      const userData = JSON.parse(localStorage.getItem("user"));
-      if (userData) {
-        userData.appointments = [...(userData.appointments || []), data];
-        localStorage.setItem("user", JSON.stringify(userData));
+      try {
+        const rawUser = localStorage.getItem("user");
+        if (rawUser) {
+          const parsedUser = JSON.parse(rawUser);
+          const updatedAppointments = [
+            ...(parsedUser.appointments || []),
+            data,
+          ];
+          parsedUser.appointments = updatedAppointments;
+          localStorage.setItem("user", JSON.stringify(parsedUser));
+        }
+      } catch (storageError) {
+        console.warn(
+          "No se pudo actualizar el almacenamiento local",
+          storageError
+        );
       }
 
       return { success: true, data };
@@ -336,9 +394,7 @@ export const UserProvider = ({ children }) => {
 
   const refreshAppointments = async () => {
     if (state.user) {
-      // Manejar estructura anidada: state.user puede ser {user: {...}, token, loginTime}
-      // o puede ser directamente el objeto user {id, firstName, ...}
-      const userId = state.user.user?.id || state.user.id;
+      const userId = resolveUserId();
 
       console.log("🔄 RefreshAppointments called");
       console.log("👤 state.user:", state.user);

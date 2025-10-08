@@ -3,6 +3,7 @@ import { Appointment, AppointmentStatus } from "../entities/Appointment.entity";
 import { User } from "../entities/User.entity";
 import { CreateAppointmentDto } from "../dtos/appointments/create-appointment.dto";
 import { Repository } from "typeorm";
+import { validateAppointmentRequest } from "./appointments/appointmentRules";
 
 export const getAllAppointments = async (): Promise<Appointment[]> => {
   const appointmentRepository: Repository<Appointment> =
@@ -51,30 +52,11 @@ export const createAppointment = async (
     throw new Error("El usuario especificado no existe");
   }
 
-  const appointmentDate = new Date(appointmentData.date);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  if (appointmentDate < today) {
-    throw new Error("No se pueden agendar citas en fechas pasadas");
-  }
-
-  const [hours, minutes] = appointmentData.time.split(":").map(Number);
-  const appointmentTimeInMinutes = hours * 60 + minutes;
-  const minTime = 8 * 60;
-  const maxTime = 18 * 60;
-
-  if (
-    appointmentTimeInMinutes < minTime ||
-    appointmentTimeInMinutes >= maxTime
-  ) {
-    throw new Error("Las citas solo pueden agendarse entre 8:00 AM y 6:00 PM");
-  }
-
-  const dayOfWeek = appointmentDate.getDay();
-  if (dayOfWeek === 0 || dayOfWeek === 6) {
-    throw new Error("Las citas solo pueden agendarse de lunes a viernes");
-  }
+  validateAppointmentRequest(
+    appointmentData.date,
+    appointmentData.time,
+    new Date()
+  );
 
   const existingAppointment = await appointmentRepository.findOne({
     where: {
@@ -91,11 +73,13 @@ export const createAppointment = async (
     );
   }
 
+  const sanitizedNotes = appointmentData.notes?.trim();
+
   const newAppointment = appointmentRepository.create({
     date: appointmentData.date,
     time: appointmentData.time,
     userId: appointmentData.userId,
-    notes: appointmentData.notes || "",
+    notes: sanitizedNotes ?? "",
     status: AppointmentStatus.SCHEDULED,
   });
 

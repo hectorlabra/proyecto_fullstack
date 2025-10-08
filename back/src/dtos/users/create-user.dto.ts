@@ -54,4 +54,11 @@ export class CreateUserDto {
   @IsString({ message: "La contraseña debe ser texto" })
   @MinLength(6, { message: "La contraseña debe tener al menos 6 caracteres" })
   password: string;
+
+  @IsNotEmpty({ message: "La confirmación de contraseña es obligatoria" })
+  @IsString({ message: "La confirmación de contraseña debe ser texto" })
+  @MinLength(6, {
+    message: "La confirmación de contraseña debe tener al menos 6 caracteres",
+  })
+  confirmPassword: string;
 }

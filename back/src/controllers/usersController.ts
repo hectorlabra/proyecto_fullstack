@@ -75,7 +75,8 @@ export const registerUser = async (
     if (
       error.message === "El email ya está registrado" ||
       error.message === "El DNI ya está registrado" ||
-      error.message === "El nombre de usuario ya existe"
+      error.message === "El nombre de usuario ya existe" ||
+      error.message === "Las contraseñas no coinciden"
     ) {
       res.status(400).json({ error: error.message });
     } else {

@@ -29,6 +29,7 @@ function Register() {
     nDni: "",
     username: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -76,7 +77,7 @@ function Register() {
     return age >= 18;
   };
 
-  const validateField = (name, value) => {
+  const validateField = (name, value, values = formData) => {
     let error = "";
     if (value === undefined || value === null) value = "";
 
@@ -116,15 +117,36 @@ function Register() {
         else if (!validatePassword(value))
           error = "Mín. 6 caracteres, 1 mayúscula, 1 minúscula y 1 número";
         break;
+      case "confirmPassword":
+        if (!value) error = "La confirmación es obligatoria";
+        else if (value !== values.password)
+          error = "Las contraseñas no coinciden";
+        break;
     }
     return error;
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    const error = validateField(name, value);
-    setErrors((prev) => ({ ...prev, [name]: error }));
+    const nextValues = { ...formData, [name]: value };
+    setFormData(nextValues);
+
+    setErrors((prev) => {
+      const updatedErrors = {
+        ...prev,
+        [name]: validateField(name, value, nextValues),
+      };
+
+      if (name === "password" || name === "confirmPassword") {
+        updatedErrors.confirmPassword = validateField(
+          "confirmPassword",
+          nextValues.confirmPassword,
+          nextValues
+        );
+      }
+
+      return updatedErrors;
+    });
   };
 
   const isFormValid = () => {
@@ -175,6 +197,7 @@ function Register() {
           nDni: "",
           username: "",
           password: "",
+          confirmPassword: "",
         });
         setErrors({});
         setTimeout(() => navigate("/login"), 2000);
@@ -339,6 +362,18 @@ function Register() {
                   onChange={handleInputChange}
                   error={errors.password}
                   placeholder="••••••••"
+                  required
+                  icon={<ShieldCheckIcon size={20} />}
+                />
+
+                <McInputField
+                  label="Confirmar contraseña"
+                  name="confirmPassword"
+                  type="password"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  error={errors.confirmPassword}
+                  placeholder="Repite tu contraseña"
                   required
                   icon={<ShieldCheckIcon size={20} />}
                 />
