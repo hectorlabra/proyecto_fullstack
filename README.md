@@ -1,6 +1,6 @@
-# 📅 Sistema de Gestión de Turnos
+# 📅 Sistema de Gestión de Turnos Médicos
 
-> Aplicación web full-stack para la gestión de turnos médicos con autenticación de usuarios, construida con tecnologías modernas y mejores prácticas.
+> Aplicación web full‑stack (React + Node.js + PostgreSQL) para registrar, autenticar usuarios y gestionar turnos médicos.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
@@ -10,19 +10,15 @@
 
 ---
 
-## 🌟 Visión
+## 🌟 Visión / TL;DR
 
-Este proyecto demuestra una **aplicación full-stack lista para producción** que incluye:
+Sistema para:
 
-- Arquitectura limpia con separación de responsabilidades
-- Backend con seguridad de tipos usando TypeScript y TypeORM
-- Frontend moderno con React y Context API
-- Diseño de API RESTful con validación exhaustiva
-- Autenticación segura y gestión de contraseñas
-- Despliegue profesional en Render (tier gratuito)
-- Documentación y calidad de código lista para portfolio
+1. Registro e inicio de sesión de pacientes.
+2. Creación, listado y cancelación de turnos médicos.
+3. Reglas de negocio (horarios hábiles, no duplicados, cancelación controlada).
 
-**Caso de Uso**: Sistema de gestión de turnos médicos donde los pacientes pueden registrarse, iniciar sesión, ver sus turnos y agendar/cancelar visitas.
+Incluye: migraciones, seed, validación, logging estructurado, rate limiting, variables de entorno tipadas, arquitectura documentada y despliegue productivo.
 
 ---
 
@@ -32,32 +28,37 @@ Este proyecto demuestra una **aplicación full-stack lista para producción** qu
 
 - **Runtime**: Node.js 18+
 - **Framework**: Express 5
-- **Lenguaje**: TypeScript
+- **Lenguaje**: TypeScript (strict)
 - **ORM**: TypeORM 0.3.x
-- **Base de Datos**: PostgreSQL 12+
-- **Validación**: class-validator
-- **Seguridad**: bcrypt (hash de contraseñas)
-- **Variables de Entorno**: dotenv
+- **DB**: PostgreSQL 12+
+- **Validación DTOs**: class-validator
+- **Env Validation**: Zod
+- **Hash contraseñas**: bcrypt
+- **Logging**: pino / pino-http
+- **Rate Limiting**: express-rate-limit
+- **Seguridad**: helmet + CORS allowlist
 
 ### Frontend
 
 - **Librería**: React 19
-- **Herramienta de Build**: Vite 7
-- **Enrutador**: React Router DOM 7
-- **Cliente HTTP**: Axios
-- **Gestión de Estado**: Context API
-- **Estilos**: CSS Modules
+- **Build Tool**: Vite 7
+- **Router**: React Router DOM 7
+- **HTTP**: Axios
+- **Estado Global**: Context API + localStorage
+- **Accesibilidad**: WCAG 2.1 AA (subset)
+- **Estilos**: CSS modular / utilitario
 
 ### DevOps y Herramientas
 
-- **Despliegue**: Render (Web Service + Static Site + PostgreSQL Administrado)
-- **Control de Versiones**: Git & GitHub
+- **Despliegue**: Render (Web Service + Static Site + Managed PostgreSQL)
+- **Control de Versiones**: Git + GitHub
 - **Linting**: ESLint 9
-- **Gestor de Paquetes**: npm
+- **Testing**: Vitest (rules de negocio y helpers)
+- **Paquetes**: npm
 
 ---
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura (Alta Nivel)
 
 ```
 ┌─────────────────┐       HTTPS/REST       ┌──────────────────┐
@@ -71,18 +72,13 @@ Este proyecto demuestra una **aplicación full-stack lista para producción** qu
                                             └──────────────────┘
 ```
 
-**Patrón**: MVC (Modelo-Vista-Controlador) con capa de servicios
+Patrón **MVC + Services Layer**. Separación clara: Rutas → Controladores → Servicios → Entidades. Validación en DTOs, logging y manejo de errores centralizado.
 
-- **Modelos**: Entidades TypeORM (User, Credential, Appointment)
-- **Controladores**: Manejadores de peticiones HTTP con validación
-- **Servicios**: Lógica de negocio y operaciones de base de datos
-- **DTOs**: Validación de entrada con class-validator
-
-Para diagramas detallados de arquitectura y modelo de datos, ver [Documentación de Arquitectura](./docs/architecture/architecture.md).
+Ver diagramas completos y modelo relacional en: `docs/architecture/architecture.md`.
 
 ---
 
-## 🚀 Cómo Ejecutar
+## 🚀 Ejecución Local
 
 ### Prerequisitos
 
@@ -133,63 +129,57 @@ Para diagramas detallados de arquitectura y modelo de datos, ver [Documentación
 
    El frontend correrá en `http://localhost:5173`
 
-4. **Configuración de Base de Datos**:
+4. **Base de Datos & Seed**:
 
-   ```bash
-   # Crear base de datos
-   createdb appointments_db
+```bash
+createdb medical_appointments   # o el nombre configurado en .env
+cd back
+npm run migration:run           # aplica esquema (si no existe)
+npm run seed                     # crea datos de ejemplo
+```
 
-   # Poblar con datos de prueba (recomendado)
-   cd back
-   npm run seed
-   ```
+**Usuarios de ejemplo (seed)**
 
-   **Credenciales de Demo:**
+| Usuario      | Contraseña    | Email                  |
+| ------------ | ------------- | ---------------------- |
+| john_doe     | password123   | john.doe@email.com     |
+| jane_smith   | securepass456 | jane.smith@email.com   |
+| mike_johnson | mypassword789 | mike.johnson@email.com |
+| sarah_wilson | strongpass321 | sarah.wilson@email.com |
+| david_brown  | davidpass654  | david.brown@email.com  |
 
-   | Usuario            | Contraseña   | Rol           | Email                      |
-   | ------------------ | ------------ | ------------- | -------------------------- |
-   | `admin`            | `Admin123!`  | Administrador | admin@medicapp.com         |
-   | `maria.gonzalez`   | `Maria123!`  | Usuario       | maria.gonzalez@email.com   |
-   | `carlos.rodriguez` | `Carlos123!` | Usuario       | carlos.rodriguez@email.com |
-
-   El seed crea automáticamente:
-
-   - 1 usuario administrador
-   - 2 usuarios regulares
-   - 5 citas de ejemplo (scheduled, completed, canceled)
-
-5. **Verificar instalación**:
-   - Estado del backend: http://localhost:3000/health
+5. **Verificación**:
+   - Backend: http://localhost:3000/health
+   - Versión: http://localhost:3000/version
    - Frontend: http://localhost:5173
-   - Documentación API: http://localhost:3000/docs _(próximamente)_
+   - Docs Swagger (si habilitado): http://localhost:3000/docs
 
-### Ejecución en Render (Producción)
+### Despliegue (Render)
 
-Ver guía de despliegue en [Quickstart](./citas_fullstack/specs/001-profesionalizacion-proyecto/quickstart.md).
+Guía detallada: `docs/architecture/architecture.md` (sección despliegue).
 
-**URLs de Producción** _(Desplegado en Render)_:
+Producción:
 
-- 🌐 **Frontend**: https://medical-appointments-frontend.onrender.com
-- 🔧 **API Backend**: https://medical-appointments-api-hlpv.onrender.com
-- ❤️ **Health Check**: https://medical-appointments-api-hlpv.onrender.com/health
-- 📋 **Version**: https://medical-appointments-api-hlpv.onrender.com/version
-- 📚 **API Docs**: https://medical-appointments-api-hlpv.onrender.com/docs
-- 🗄️ **Base de Datos**: PostgreSQL administrada por Render
+- 🌐 Frontend: https://medical-appointments-frontend.onrender.com
+- 🔧 API: https://medical-appointments-api-hlpv.onrender.com
+- ❤️ Health: https://medical-appointments-api-hlpv.onrender.com/health
+- 📋 Version: https://medical-appointments-api-hlpv.onrender.com/version
+- 📚 Swagger: https://medical-appointments-api-hlpv.onrender.com/docs
 
-> **⚠️ Nota**: El tier gratuito de Render tiene cold start (~30s) después de 15 min de inactividad. La primera petición puede tardar.
+> Cold start (~30s) tras inactividad (tier gratuito).
 
-### Funcionalidades Principales ✅
+### Funcionalidades Principales
 
-- [x] **Registro de Usuario** - Formulario con validación completa
-- [x] **Inicio de Sesión** - Autenticación segura con bcrypt
-- [x] **Panel de Turnos** - Lista de citas con filtros por estado
-- [x] **Crear Turno** - Formulario con validación de horarios y fechas
-- [x] **Cancelar Turno** - Solo citas programadas, con reglas de negocio
-- [x] **SPA Routing** - Navegación sin recargas de página
-- [x] **Responsive Design** - Funciona en móvil y desktop
-- [x] **Error Boundaries** - Manejo de errores en producción
-- [x] **Rate Limiting** - Protección contra abuso de API (habilitado en prod)
-- [x] **Migraciones DB** - Control de versiones del esquema de BD---
+| Área            | Funcionalidad                                  | Estado |
+| --------------- | ---------------------------------------------- | ------ |
+| Auth            | Registro / Login (hash bcrypt)                 | ✅     |
+| Turnos          | Crear / Listar / Cancelar                      | ✅     |
+| Validaciones    | Horario laboral, no duplicados, fechas futuras | ✅     |
+| Infraestructura | Migraciones + Seed                             | ✅     |
+| Seguridad       | Helmet, Rate Limit, CORS allowlist             | ✅     |
+| Observabilidad  | Health / Version / Logging estructurado        | ✅     |
+| UX              | Responsive, Accesible, ErrorBoundary           | ✅     |
+| Roadmap         | JWT + Roles + Tests E2E                        | ⏳     |
 
 ## 🔐 Variables de Entorno
 
@@ -213,28 +203,19 @@ APP_VERSION=1.0.0
 ENABLE_RATE_LIMIT=true
 ```
 
-**⚠️ ¡Nunca subas archivos `.env` al control de versiones!**
+Archivo de ejemplo propuesto: `back/.env.example` (ver sección pendientes si aún no existe).
+
+**⚠️ Nunca subir `.env` al repositorio.**
 
 ---
 
-## 📸 Capturas de Pantalla y Demo
+## 📸 Demo
 
-> 📝 **Nota**: Screenshots y GIF de navegación se añadirán en la próxima fase de UI/UX para mostrar la interfaz final optimizada.
+Producción: https://medical-appointments-frontend.onrender.com
 
-**Mientras tanto, puedes probar la aplicación en vivo**:
+Puedes iniciar sesión con cualquier usuario del seed (ej. `john_doe` / `password123`).
 
-- 🌐 **App en Producción**: https://medical-appointments-frontend.onrender.com
-- 🔑 **Credenciales Demo**: `maria.gonzalez` / `Maria123!`
-
-### Funcionalidades Implementadas ✅
-
-- ✅ **Registro de Usuario** - Formulario con validación completa
-- ✅ **Inicio de Sesión** - Autenticación segura con bcrypt
-- ✅ **Panel de Turnos** - Vista de todas las citas del usuario
-- ✅ **Crear Turno** - Formulario con selección de fecha y hora
-- ✅ **Cancelar Turno** - Cambio de estado con validación de reglas
-
-_Screenshots profesionales coming soon en fase UI/UX_ 📷
+> Capturas y GIFs serán añadidos posteriormente en `docs/ui/`.
 
 ---
 
@@ -254,11 +235,11 @@ _Screenshots profesionales coming soon en fase UI/UX_ 📷
 
 ### Limitaciones Conocidas
 
-- **Sin tests automatizados aún**: Planificado para iteraciones futuras (Jest/Vitest)
-- **Manejo de errores básico**: Será mejorado con middleware global de errores
-- **TypeORM `synchronize: true` en dev**: Conveniente pero deshabilitado en prod por seguridad
-- **Sin autorización por roles**: Todos los usuarios tienen los mismos permisos actualmente
-- **Sin paginación**: Todos los endpoints retornan datasets completos (bien para demo pequeña)
+- Cobertura de tests limitada (existen tests unitarios de reglas puntuales).
+- Sin autenticación basada en tokens (JWT pendiente).
+- Sin autorización por roles (v1 todos iguales).
+- Sin paginación / filtrado avanzado.
+- Sin cache / CDN para API.
 
 ---
 
@@ -285,15 +266,14 @@ _Screenshots profesionales coming soon en fase UI/UX_ 📷
 - [x] SPA routing con \_redirects
 - [x] Sistema E2E funcionando en producción
 
-### Fase 3: Mejoras 📋 _(Planificado)_
+### Fase 3: Mejoras 📋 (Planificado)
 
-- [ ] Autenticación JWT con refresh tokens
-- [ ] Autorización basada en roles (admin/usuario)
-- [ ] Tests unitarios y de integración (cobertura 80%+)
-- [ ] Limitación de tasa de API
-- [ ] Flujo de migraciones de base de datos
-- [ ] Manejo exhaustivo de errores
-- [ ] Interceptores de request/response
+- [ ] Autenticación JWT (access + refresh)
+- [ ] Roles y autorización granular
+- [ ] Tests unitarios + integración (80%+ cobertura)
+- [ ] Paginación endpoints `/appointments`
+- [ ] Refuerzo de manejo de errores (códigos estándar + RFC 7807)
+- [ ] OpenAPI contract y generación automática
 
 ### Fase 4: Funcionalidades Avanzadas 🔮 _(Futuro)_
 
@@ -306,7 +286,7 @@ _Screenshots profesionales coming soon en fase UI/UX_ 📷
 
 ---
 
-## 🧪 Cómo Evaluar Este Proyecto
+## 🧪 Evaluación Rápida
 
 ### ⚡ Evaluación Rápida (5 minutos)
 
@@ -338,26 +318,21 @@ _Screenshots profesionales coming soon en fase UI/UX_ 📷
 **Opción 2: Local (más control)**
 
 ```bash
-# 1. Clonar (30 seg)
 git clone https://github.com/hectorlabra/proyecto_fullstack.git
 cd proyecto_fullstack
 
-# 2. Backend (2 min)
+# Backend
 cd back
 npm install
-cp .env.example .env  # Editar DB_* con tus credenciales PostgreSQL
-npm run dev
-
-# 3. Frontend (nueva terminal, 1 min)
-cd front
-npm install
-npm run dev
-
-# 4. Seed datos (30 seg)
-cd back
+cp .env.example .env   # editar valores
+npm run migration:run
 npm run seed
+npm start              # o npm run dev si se agrega script
 
-# 5. Probar en http://localhost:5173
+# Frontend (nueva terminal)
+cd ../front
+npm install
+npm run dev
 ```
 
 ---
@@ -440,7 +415,7 @@ npm run seed
 
 ---
 
-### ✅ Checklist de Evaluación Técnica
+### ✅ Checklist Técnica (Snapshot)
 
 **Backend (API)**
 
@@ -491,26 +466,26 @@ npm run seed
 
 ### 📊 Métricas de Calidad
 
-| Métrica                    | Valor                 | Estado          |
-| -------------------------- | --------------------- | --------------- |
-| **Cobertura de tests**     | 0% (pendiente fase 3) | 🟡 Planificado  |
-| **TypeScript strict**      | 100%                  | ✅ Activo       |
-| **Endpoints documentados** | 100%                  | ✅ Completo     |
-| **Accesibilidad WCAG**     | AA (subset)           | ✅ Implementado |
-| **Uptime producción**      | ~98% (tier gratuito)  | ✅ Estable      |
-| **Tiempo de deploy**       | ~3 min (Render)       | ✅ Automático   |
-| **Seguridad headers**      | A+ (helmet)           | ✅ Configurado  |
-| **Rate limiting**          | 100 req/15min         | ✅ Activo       |
+| Métrica                | Valor (Oct 2025)   | Estado          |
+| ---------------------- | ------------------ | --------------- |
+| Cobertura tests        | Unitaria parcial   | 🟡 Parcial      |
+| TypeScript strict      | 100% backend       | ✅ Activo       |
+| Endpoints documentados | Usuarios / Turnos  | ✅ Completo     |
+| Accesibilidad WCAG     | AA (subset)        | ✅ Implementado |
+| Uptime producción      | ~98% (Render free) | ✅ Estable      |
+| Tiempo de deploy       | ~3 min (Render)    | ✅ Automático   |
+| Headers seguridad      | Helmet completo    | ✅ Configurado  |
+| Rate limiting          | 100 req / 15 min   | ✅ Activo       |
 
 ---
 
-## 📚 Documentación
+## 📚 Documentación Relacionada
 
-- **[Visión General de Arquitectura](./docs/architecture/architecture.md)**: Diseño detallado del sistema, modelo de datos y decisiones técnicas
-- **[Ejemplos de API](./docs/api/api-examples.md)**: Ejemplos de request/response para todos los endpoints
-- **[Guía de Contribución](./CONTRIBUTING.md)**: Cómo contribuir a este proyecto
-- **[Licencia](./LICENSE)**: Licencia MIT
-- **[Especificación OpenAPI](./citas_fullstack/specs/001-profesionalizacion-proyecto/contracts/openapi.yaml)**: Contrato de API _(próximamente)_
+- **Arquitectura**: `docs/architecture/architecture.md`
+- **API Examples**: `docs/api/api-examples.md`
+- **Contribución**: `CONTRIBUTING.md`
+- **Licencia**: `LICENSE`
+- **UI/Accesibilidad**: `docs/ui/`
 
 ---
 
@@ -573,6 +548,6 @@ A **production-ready full-stack web application** for managing medical appointme
 
 ---
 
-**⭐ ¡Si este proyecto te ayudó, considera darle una estrella!**
+**⭐ Si este proyecto te resultó útil, ¡considera dejar una estrella!**
 
 _Última Actualización: Octubre 2025 | Versión 1.0.0_

@@ -5,7 +5,7 @@ Este documento proporciona ejemplos prácticos de peticiones y respuestas de la 
 ## URLs Base
 
 - **Desarrollo Local**: `http://localhost:3000`
-- **Producción (Render)**: `https://[tu-backend].onrender.com` _(se actualizará después del despliegue)_
+- **Producción (Render)**: `https://medical-appointments-api-hlpv.onrender.com`
 
 ## Endpoints de Health y Version
 
@@ -22,7 +22,7 @@ curl -X GET http://localhost:3000/health
 **Petición (Producción)**:
 
 ```bash
-curl -X GET https://[tu-backend].onrender.com/health
+curl -X GET https://medical-appointments-api-hlpv.onrender.com/health
 ```
 
 **Respuesta** (200 OK):
@@ -51,7 +51,7 @@ curl -X GET http://localhost:3000/version
 **Petición (Producción)**:
 
 ```bash
-curl -X GET https://[tu-backend].onrender.com/version
+curl -X GET https://medical-appointments-api-hlpv.onrender.com/version
 ```
 
 **Respuesta** (200 OK):
@@ -73,15 +73,19 @@ curl -X GET https://[tu-backend].onrender.com/version
 
 Registrar un nuevo usuario con credenciales.
 
+> Campos reales según entidad `User`: `firstName`, `lastName`, `email`, `phone`, `dateOfBirth`, `nDni` + credenciales `username`, `password`.
+
 **Petición**:
 
 ```bash
 curl -X POST http://localhost:3000/users/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Juan Pérez",
+    "firstName": "Juan",
+    "lastName": "Pérez",
     "email": "juan.perez@example.com",
-    "birthdate": "1990-05-15",
+    "phone": "+34123456789",
+    "dateOfBirth": "1990-05-15",
     "nDni": "12345678",
     "username": "juanperez",
     "password": "ContraseñaSegura123!"
@@ -93,14 +97,13 @@ curl -X POST http://localhost:3000/users/register \
 ```json
 {
   "id": 1,
-  "name": "Juan Pérez",
+  "firstName": "Juan",
+  "lastName": "Pérez",
   "email": "juan.perez@example.com",
-  "birthdate": "1990-05-15",
+  "phone": "+34123456789",
+  "dateOfBirth": "1990-05-15",
   "nDni": "12345678",
-  "credential": {
-    "id": 1,
-    "username": "juanperez"
-  }
+  "credential": { "id": 1, "username": "juanperez" }
 }
 ```
 
@@ -142,7 +145,8 @@ curl -X POST http://localhost:3000/users/login \
   "login": true,
   "user": {
     "id": 1,
-    "name": "Juan Pérez",
+    "firstName": "Juan",
+    "lastName": "Pérez",
     "email": "juan.perez@example.com",
     "nDni": "12345678"
   }
@@ -176,16 +180,18 @@ curl -X GET http://localhost:3000/users
 [
   {
     "id": 1,
-    "name": "Juan Pérez",
+    "firstName": "Juan",
+    "lastName": "Pérez",
     "email": "juan.perez@example.com",
-    "birthdate": "1990-05-15",
+    "dateOfBirth": "1990-05-15",
     "nDni": "12345678"
   },
   {
     "id": 2,
-    "name": "María García",
+    "firstName": "María",
+    "lastName": "García",
     "email": "maria.garcia@example.com",
-    "birthdate": "1985-08-22",
+    "dateOfBirth": "1985-08-22",
     "nDni": "87654321"
   }
 ]
@@ -208,17 +214,18 @@ curl -X GET http://localhost:3000/users/1
 ```json
 {
   "id": 1,
-  "name": "Juan Pérez",
+  "firstName": "Juan",
+  "lastName": "Pérez",
   "email": "juan.perez@example.com",
-  "birthdate": "1990-05-15",
+  "dateOfBirth": "1990-05-15",
   "nDni": "12345678",
   "appointments": [
     {
       "id": 1,
       "date": "2025-10-15",
       "time": "10:00",
-      "status": "active",
-      "description": "Consulta general"
+      "status": "scheduled",
+      "notes": "Consulta general"
     }
   ]
 }
@@ -250,7 +257,7 @@ curl -X POST http://localhost:3000/appointments/schedule \
     "date": "2025-10-15",
     "time": "10:00",
     "userId": 1,
-    "description": "Consulta general"
+    "notes": "Consulta general"
   }'
 ```
 
@@ -261,8 +268,8 @@ curl -X POST http://localhost:3000/appointments/schedule \
   "id": 1,
   "date": "2025-10-15",
   "time": "10:00",
-  "status": "active",
-  "description": "Consulta general",
+  "status": "scheduled",
+  "notes": "Consulta general",
   "userId": 1
 }
 ```
@@ -301,22 +308,24 @@ curl -X GET http://localhost:3000/appointments
     "id": 1,
     "date": "2025-10-15",
     "time": "10:00",
-    "status": "active",
-    "description": "Consulta general",
+    "status": "scheduled",
+    "notes": "Consulta general",
     "user": {
       "id": 1,
-      "name": "Juan Pérez"
+      "firstName": "Juan",
+      "lastName": "Pérez"
     }
   },
   {
     "id": 2,
     "date": "2025-10-20",
     "time": "14:30",
-    "status": "cancelled",
-    "description": "Revisión médica",
+    "status": "canceled",
+    "notes": "Revisión médica",
     "user": {
       "id": 2,
-      "name": "María García"
+      "firstName": "María",
+      "lastName": "García"
     }
   }
 ]
@@ -341,11 +350,12 @@ curl -X GET http://localhost:3000/appointments/1
   "id": 1,
   "date": "2025-10-15",
   "time": "10:00",
-  "status": "active",
-  "description": "Consulta general",
+  "status": "scheduled",
+  "notes": "Consulta general",
   "user": {
     "id": 1,
-    "name": "Juan Pérez",
+    "firstName": "Juan",
+    "lastName": "Pérez",
     "email": "juan.perez@example.com"
   }
 }
@@ -371,8 +381,8 @@ curl -X PUT http://localhost:3000/appointments/cancel/1 \
   "id": 1,
   "date": "2025-10-15",
   "time": "10:00",
-  "status": "cancelled",
-  "description": "Consulta general",
+  "status": "canceled",
+  "notes": "Consulta general",
   "userId": 1
 }
 ```
