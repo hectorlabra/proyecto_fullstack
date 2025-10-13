@@ -11,14 +11,13 @@
 ---
 
 <!-- Hero mockup: centered, responsive preview (desktop + mobile) -->
+<!-- Hero mockup: centered, responsive preview (desktop + mobile) -->
 <p align="center">
-      <picture>
-         <!-- high-res / wide screens -->
-         <source media="(min-width:1024px)" srcset="front/src/assets/mockup-hero.png">
-         <!-- fallback image -->
-         <img src="front/src/assets/mockup-hero.png" alt="Mockup de la aplicación de gestión de turnos médicos en escritorio y móvil" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(14,20,40,0.25);" />
-      </picture>
+   <!-- Markdown-friendly image (widely supported in previews and GitHub) -->
+   <img src="front/src/assets/mockup-hero.png" alt="Mockup de la aplicación de gestión de turnos médicos en escritorio y móvil" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(14,20,40,0.25);" />
 </p>
+
+<p align="center"><em>Si no se visualiza en la vista previa local, abre esta URL directa (GitHub raw): <a href="https://raw.githubusercontent.com/hectorlabra/proyecto_fullstack/main/front/src/assets/mockup-hero.png">raw image</a> o refresca la vista previa.</em></p>
 
 ## 🌟 Visión / TL;DR
 
