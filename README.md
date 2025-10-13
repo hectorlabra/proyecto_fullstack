@@ -10,6 +10,16 @@
 
 ---
 
+<!-- Hero mockup: centered, responsive preview (desktop + mobile) -->
+<p align="center">
+      <picture>
+         <!-- high-res / wide screens -->
+         <source media="(min-width:1024px)" srcset="assets/mockup-hero.png">
+         <!-- fallback image -->
+         <img src="assets/mockup-hero.png" alt="Mockup de la aplicación de gestión de turnos médicos en escritorio y móvil" style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(14,20,40,0.25);" />
+      </picture>
+</p>
+
 ## 🌟 Visión / TL;DR
 
 Sistema para:
