@@ -461,7 +461,7 @@ rateLimit({
 ```typescript
 const allowlist = [
   "http://localhost:5173", // Dev frontend
-  "https://medical-appointments-frontend.onrender.com", // Prod frontend
+  "https://medical-appointments-web.onrender.com", // Prod frontend
 ];
 
 cors({
@@ -571,7 +571,7 @@ ENABLE_RATE_LIMIT=true
 
 ### 🌍 URLs de Producción
 
-- **Frontend**: https://medical-appointments-frontend.onrender.com
+- **Frontend**: https://medical-appointments-web.onrender.com
 - **API Backend**: https://medical-appointments-api-hlpv.onrender.com
 - **Health Check**: https://medical-appointments-api-hlpv.onrender.com/health
 - **API Docs**: https://medical-appointments-api-hlpv.onrender.com/docs

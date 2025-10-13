@@ -170,7 +170,7 @@ Guía detallada: `docs/architecture/architecture.md` (sección despliegue).
 
 Producción:
 
-- 🌐 Frontend: https://medical-appointments-frontend.onrender.com
+- 🌐 Frontend: https://medical-appointments-web.onrender.com
 - 🔧 API: https://medical-appointments-api-hlpv.onrender.com
 - ❤️ Health: https://medical-appointments-api-hlpv.onrender.com/health
 - 📋 Version: https://medical-appointments-api-hlpv.onrender.com/version
@@ -221,7 +221,7 @@ Archivo de ejemplo propuesto: `back/.env.example` (ver sección pendientes si a�
 
 ## 📸 Demo
 
-Producción: https://medical-appointments-frontend.onrender.com
+Producción: https://medical-appointments-web.onrender.com
 
 Puedes iniciar sesión con cualquier usuario del seed (ej. `john_doe` / `password123`).
 
@@ -314,7 +314,7 @@ Puedes iniciar sesión con cualquier usuario del seed (ej. `john_doe` / `passwor
 
 2. **Probar aplicación completa** (3 minutos)
 
-   - Abrir: https://medical-appointments-frontend.onrender.com
+   - Abrir: https://medical-appointments-web.onrender.com
    - Login con credenciales demo: `maria.gonzalez` / `Maria123!`
    - Ver turnos existentes
    - Crear nuevo turno
@@ -552,7 +552,7 @@ A **production-ready full-stack web application** for managing medical appointme
 - ✅ Structured logging with request correlation
 - ✅ Production deployment on Render
 
-**Live Demo**: https://medical-appointments-frontend.onrender.com
+**Live Demo**: https://medical-appointments-web.onrender.com
 
 **Skills Demonstrated**: Full-stack development • Clean architecture • Security best practices • API design • Database modeling • DevOps deployment • Technical documentation
 
